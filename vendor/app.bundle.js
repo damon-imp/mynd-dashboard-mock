@@ -1,7 +1,7 @@
 (function(){
 
 /* ==== data.jsx ==== */
-// data.jsx — MOCK. Anchored to real MYND figures where they exist so DB recognises
+// data.jsx, MOCK. Anchored to real MYND figures where they exist so DB recognizes
 // his own business. Everything else is shaped to demonstrate the surface.
 
 const D = {
@@ -164,7 +164,7 @@ const D = {
     l: "Support tickets",
     v: "6"
   }, {
-    l: "Subs cancelled",
+    l: "Subs canceled",
     v: "2",
     tone: "bad"
   }],
@@ -199,7 +199,7 @@ const D = {
     t: "Three data sources still unconnected, so channel numbers are directional only",
     tone: "warn"
   }, {
-    t: "Card utilisation at 49%. The Q4 plan would take it to 93%",
+    t: "Card utilization at 49%. The Q4 plan would take it to 93%",
     tone: "warn"
   }, {
     t: "Six of ten products still priced against a placeholder cost",
@@ -329,7 +329,7 @@ const D = {
     pct: 12.3,
     tone: "good",
     bench: "~40%",
-    d: "COGS, fulfilment, processing"
+    d: "COGS, fulfillment, processing"
   }, {
     line: "Marketing",
     v: 0,
@@ -924,7 +924,7 @@ const D = {
       st: "estimated"
     }],
     rates: [{
-      l: "Labour",
+      l: "Labor",
       v: "$25 / hr"
     }, {
       l: "Kitchen rent",
@@ -1086,7 +1086,7 @@ const D = {
     teams: [{
       lead: "Rebekka",
       team: "Marketing",
-      note: "Creator programme wound down. Seat being repointed.",
+      note: "Creator program wound down. Seat being repointed.",
       people: ["Content freelancer", "Designer (hiring)"]
     }, {
       lead: "Victor",
@@ -1317,7 +1317,7 @@ const D = {
     n: "Creator agent",
     s: "shelved",
     d: "Managed creator onboarding, link generation and payout calculation.",
-    impact: "Programme wound down"
+    impact: "Program wound down"
   }],
   dataHealth: [{
     n: "Mercury",
@@ -1409,7 +1409,7 @@ const D = {
 
 /* ==== ui.jsx ==== */
 function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
-// ui.jsx — primitives. Pure SVG charts, no chart library.
+// ui.jsx, primitives. Pure SVG charts, no chart library.
 const {
   useState,
   useEffect,
@@ -2479,7 +2479,7 @@ function Ico({
 
 /* ==== pages-1.jsx ==== */
 function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
-// pages-1.jsx — Boardroom, Goals, Org, Project Board, Money pages
+// pages-1.jsx, Boardroom, Goals, Org, Project Board, Money pages
 
 /* ============================== BOARDROOM ============================== */
 function Boardroom({
@@ -2706,7 +2706,7 @@ function Goals({
   }, /*#__PURE__*/React.createElement(PageHead, {
     title: "Goals and targets",
     sub: "Where every number sits against where it should sit.",
-    meta: "The grey marker on each bar is the industry benchmark, not your target."
+    meta: "The gray marker on each bar is the industry benchmark, not your target."
   }), /*#__PURE__*/React.createElement(G, {
     c: 4,
     style: {
@@ -2754,7 +2754,7 @@ function Org() {
   return /*#__PURE__*/React.createElement("div", {
     className: "page-in"
   }, /*#__PURE__*/React.createElement(PageHead, {
-    title: "Organisation",
+    title: "Organization",
     sub: "Who does what, and who it routes through.",
     meta: "Three full time, plus contractors and two open seats."
   }), /*#__PURE__*/React.createElement("div", {
@@ -3102,7 +3102,7 @@ function Cash() {
     label: "Card headroom",
     value: "$23,619",
     tone: "info",
-    sub: "49% utilised",
+    sub: "49% utilized",
     delta: 4623
   })), v === "buckets" && /*#__PURE__*/React.createElement(G, {
     c: 5,
@@ -3498,7 +3498,7 @@ function Debt() {
     tone: "warn",
     sub: "Oct 1 \xB7 from debt bucket"
   }), /*#__PURE__*/React.createElement(KPI, {
-    label: "Card utilisation",
+    label: "Card utilization",
     value: "49%",
     tone: "warn",
     sub: "$23,081 of $46,700"
@@ -3740,7 +3740,7 @@ function Rails() {
 
 /* ==== pages-2.jsx ==== */
 function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
-// pages-2.jsx — Revenue, Products, Subscriptions, Wholesale, Attribution, Ads,
+// pages-2.jsx, Revenue, Products, Subscriptions, Wholesale, Attribution, Ads,
 // Social, Inventory, Production, Suppliers, Agents, Vault, Drive, Data Health
 
 /* ============================== REVENUE ============================== */
@@ -4931,7 +4931,7 @@ function Agents() {
     label: "Shelved",
     value: "1",
     tone: "mute",
-    sub: "creator programme wound down"
+    sub: "creator program wound down"
   }), /*#__PURE__*/React.createElement(KPI, {
     label: "Estimated load removed",
     value: "~22 hrs / wk",
@@ -5247,7 +5247,7 @@ function DataHealth() {
 }
 
 /* ==== app.jsx ==== */
-// app.jsx — shell: sidebar, top bar, live ticker, sub-tabs, routing
+// app.jsx, shell: sidebar, top bar, live ticker, sub-tabs, routing
 
 const NAV = [{
   g: "Home",
@@ -5476,7 +5476,7 @@ function App() {
       letterSpacing: "0.05em",
       marginTop: 5
     }
-  }, "COMMAND CENTRE")), /*#__PURE__*/React.createElement("nav", {
+  }, "COMMAND CENTER")), /*#__PURE__*/React.createElement("nav", {
     style: {
       flex: 1,
       padding: "10px 0",

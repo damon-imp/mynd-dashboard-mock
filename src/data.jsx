@@ -1,4 +1,4 @@
-// data.jsx — MOCK. Anchored to real MYND figures where they exist so DB recognises
+// data.jsx, MOCK. Anchored to real MYND figures where they exist so DB recognizes
 // his own business. Everything else is shaped to demonstrate the surface.
 
 const D = {
@@ -43,7 +43,7 @@ const D = {
     { l:"Shipments out",    v:"11" },
     { l:"Declines today",   v:"3", tone:"warn" },
     { l:"Support tickets",  v:"6" },
-    { l:"Subs cancelled",   v:"2", tone:"bad" },
+    { l:"Subs canceled",   v:"2", tone:"bad" },
   ],
   toDate: [
     { l:"Revenue YTD",      v:"$486,220" },
@@ -58,7 +58,7 @@ const D = {
     { t:"Dubai Chocolate runs out in 8 days against a 21 day lead time", tone:"bad" },
     { t:"Micro Caps has been at zero stock for 34 days", tone:"bad" },
     { t:"Three data sources still unconnected, so channel numbers are directional only", tone:"warn" },
-    { t:"Card utilisation at 49%. The Q4 plan would take it to 93%", tone:"warn" },
+    { t:"Card utilization at 49%. The Q4 plan would take it to 93%", tone:"warn" },
     { t:"Six of ten products still priced against a placeholder cost", tone:"warn" },
     { t:"Kitchen has logged 0 of 30 production runs", tone:"warn" },
   ],
@@ -88,7 +88,7 @@ const D = {
   ],
   pl: [
     { line:"Revenue",          v:46814, pct:100,  tone:"ink",  bench:"" },
-    { line:"Cost of delivery", v:5760,  pct:12.3, tone:"good", bench:"~40%", d:"COGS, fulfilment, processing" },
+    { line:"Cost of delivery", v:5760,  pct:12.3, tone:"good", bench:"~40%", d:"COGS, fulfillment, processing" },
     { line:"Marketing",        v:0,     pct:0,    tone:"warn", bench:"25-30%", d:"Ad spend paused" },
     { line:"OPEX",             v:14050, pct:30.0, tone:"bad",  bench:"~15%", d:"Fixed operating cost" },
     { line:"Profit",           v:15197, pct:32.5, tone:"good", bench:"15-20%", d:"Before debt service" },
@@ -199,7 +199,7 @@ const D = {
       { d:"Jul 03", product:"Matcha Chocolate", input:"38 lb", output:"860 bars", yield:88.2, cost:7.25, st:"estimated" },
     ],
     rates: [
-      { l:"Labour", v:"$25 / hr" },{ l:"Kitchen rent", v:"$2,200 / mo" },
+      { l:"Labor", v:"$25 / hr" },{ l:"Kitchen rent", v:"$2,200 / mo" },
       { l:"Active ingredient", v:"$300 / lb" },{ l:"Delivery", v:"$150 / run" },
     ],
   },
@@ -235,7 +235,7 @@ const D = {
       { n:"Sales rep", r:"Clinic channel", team:"Wholesale", count:1 },
     ],
     teams: [
-      { lead:"Rebekka", team:"Marketing", note:"Creator programme wound down. Seat being repointed.", people:["Content freelancer","Designer (hiring)"] },
+      { lead:"Rebekka", team:"Marketing", note:"Creator program wound down. Seat being repointed.", people:["Content freelancer","Designer (hiring)"] },
       { lead:"Victor", team:"Technology", note:"Direct contractor from Sep 1. Instructions route through DB.", people:["Greg (OpFix)","Everett (OpFix)"] },
       { lead:"Jose", team:"Kitchen", note:"LA facility. Chocolate production.", people:["Kitchen hand","Packer"] },
       { lead:"Sales rep", team:"Wholesale", note:"Commission only. Cold outbound to clinics.", people:["Admin (hiring)"] },
@@ -297,7 +297,7 @@ const D = {
     { n:"Content agent", s:"planned", d:"Drafts product copy, email sequences and social posts against the brand voice and the claims policy.", impact:"Replaces a freelancer" },
     { n:"Inventory agent", s:"planned", d:"Watches days of cover per product and raises a purchase order before anything crosses its lead time.", impact:"Ends stockouts" },
     { n:"Reconciliation agent", s:"planned", d:"Matches processor settlements to bank deposits daily and flags anything that does not tie.", impact:"Removes manual close work" },
-    { n:"Creator agent", s:"shelved", d:"Managed creator onboarding, link generation and payout calculation.", impact:"Programme wound down" },
+    { n:"Creator agent", s:"shelved", d:"Managed creator onboarding, link generation and payout calculation.", impact:"Program wound down" },
   ],
   dataHealth: [
     { n:"Mercury",        s:"live",    d:"Operating account and buckets" },

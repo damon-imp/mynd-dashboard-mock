@@ -1,4 +1,4 @@
-// pages-1.jsx — Boardroom, Goals, Org, Project Board, Money pages
+// pages-1.jsx, Boardroom, Goals, Org, Project Board, Money pages
 
 /* ============================== BOARDROOM ============================== */
 function Boardroom({ go, period }) {
@@ -101,7 +101,7 @@ function Goals({ period }) {
   return (
     <div className="page-in">
       <PageHead title="Goals and targets" sub="Where every number sits against where it should sit."
-        meta="The grey marker on each bar is the industry benchmark, not your target." />
+        meta="The gray marker on each bar is the industry benchmark, not your target." />
       <G c={4} style={{ marginBottom:24 }}>
         <KPI label="Goals on target" value={`${hit} of ${D.goals.length}`} tone={hit>4?"good":"warn"} sub="at or above 90%" />
         <KPI label="Furthest behind" value="Cycle-3 retention" tone="bad" sub="11% against a 45% target" />
@@ -121,7 +121,7 @@ function Goals({ period }) {
 function Org() {
   return (
     <div className="page-in">
-      <PageHead title="Organisation" sub="Who does what, and who it routes through."
+      <PageHead title="Organization" sub="Who does what, and who it routes through."
         meta="Three full time, plus contractors and two open seats." />
       <div style={{ textAlign:"center", marginBottom:26 }}>
         <div className="sec-label" style={{ justifyContent:"center" }}>Founder</div>
@@ -254,7 +254,7 @@ function Cash() {
         <KPI label="Cash on hand" value="$40,347" tone="ink" sub="two banks" delta={-37.2} help="Mercury plus BlueBanc." />
         <KPI label="Operating floor" value="$22,500" tone="accent" sub="1.25 months of cost" help="The number operating never drops below." />
         <KPI label="Free above floor" value="$17,847" tone="good" sub="what buckets can take" />
-        <KPI label="Card headroom" value="$23,619" tone="info" sub="49% utilised" delta={4623} />
+        <KPI label="Card headroom" value="$23,619" tone="info" sub="49% utilized" delta={4623} />
       </G>
 
       {v==="buckets" && (
@@ -393,7 +393,7 @@ function Debt() {
       <G c={4} style={{ marginBottom:24 }}>
         <KPI label="Total owed" value="$251,525" tone="ink" delta={-11.6} sub="down $33K in 30 days" />
         <KPI label="Next payment" value="$9,481" tone="warn" sub="Oct 1 · from debt bucket" />
-        <KPI label="Card utilisation" value="49%" tone="warn" sub="$23,081 of $46,700" />
+        <KPI label="Card utilization" value="49%" tone="warn" sub="$23,081 of $46,700" />
         <KPI label="Payments remaining" value="8 of 9" tone="ink" sub="through May 2027" />
       </G>
       <G c={2} name="2h" gap={16} style={{ gridTemplateColumns:"1fr 1.3fr" }}>

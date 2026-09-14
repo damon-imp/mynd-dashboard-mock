@@ -1,4 +1,4 @@
-// app.jsx — shell: sidebar, top bar, live ticker, sub-tabs, routing
+// app.jsx, shell: sidebar, top bar, live ticker, sub-tabs, routing
 
 const NAV = [
   { g:"Home", icon:"home", items:[{ id:"boardroom", l:"Boardroom" }] },
@@ -104,7 +104,7 @@ function App() {
       <aside className="side">
         <div style={{ padding:"16px 16px 14px", borderBottom:"1px solid var(--rule)" }}>
           <img src="assets/mynd-logo.svg" alt="MYND" style={{ height:17, filter:"var(--logo-filter)" }} />
-          <div style={{ fontSize:10, color:"var(--ink-mute)", letterSpacing:"0.05em", marginTop:5 }}>COMMAND CENTRE</div>
+          <div style={{ fontSize:10, color:"var(--ink-mute)", letterSpacing:"0.05em", marginTop:5 }}>COMMAND CENTER</div>
         </div>
         <nav style={{ flex:1, padding:"10px 0", overflowY:"auto" }}>
           {NAV.map(g=>{

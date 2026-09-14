@@ -1,4 +1,4 @@
-# MYND Command Centre
+# MYND Command Center
 
 A working mock of the operating dashboard. Twenty-two pages, all navigable, all
 interactive. Nothing is wired to live data yet, which is the point: this is what
@@ -10,7 +10,7 @@ Open `index.html`. No build step, no server, no CDN.
 
 ## What it is
 
-A command centre, not a report. The first thing DB sees is his business at a
+A command center, not a report. The first thing DB sees is his business at a
 glance: unit economics, the funnel, what happened today, what's happened to date.
 Action and watch items sit at the bottom where they belong.
 
@@ -45,7 +45,7 @@ Action and watch items sit at the bottom where they belong.
 
 ## The data
 
-Mock, but anchored to real MYND figures wherever they exist so DB recognises his
+Mock, but anchored to real MYND figures wherever they exist so DB recognizes his
 own business and the conversation stays on shape rather than numbers.
 
 Real: $46,814 revenue · $40,347 cash · $23,081 on the card · $14,050 fixed costs
@@ -71,7 +71,7 @@ base.css              tokens, both themes, responsive layer
 assets/               MYND wordmark
 vendor/               React 18 UMD + compiled bundle
 src/                  readable JSX, edit these
-  data.jsx            every number in one object — this is the data contract
+  data.jsx            every number in one object, this is the data contract
   ui.jsx              primitives and charts
   pages-1.jsx         Boardroom, Goals, Scorecards, Board, Org, Money
   pages-2.jsx         Revenue, Marketing, Ops, Agents, Vault, Data Health

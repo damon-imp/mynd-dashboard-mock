@@ -1,4 +1,4 @@
-// pages-2.jsx — Revenue, Products, Subscriptions, Wholesale, Attribution, Ads,
+// pages-2.jsx, Revenue, Products, Subscriptions, Wholesale, Attribution, Ads,
 // Social, Inventory, Production, Suppliers, Agents, Vault, Drive, Data Health
 
 /* ============================== REVENUE ============================== */
@@ -426,7 +426,7 @@ function Agents() {
       <G c={4} style={{ marginBottom:24 }}>
         <KPI label="Agents planned" value="4" tone="violet" />
         <KPI label="Live" value="0" tone="mute" />
-        <KPI label="Shelved" value="1" tone="mute" sub="creator programme wound down" />
+        <KPI label="Shelved" value="1" tone="mute" sub="creator program wound down" />
         <KPI label="Estimated load removed" value="~22 hrs / wk" tone="good" sub="once all four run" />
       </G>
       <G c={2} name="2" gap={14}>

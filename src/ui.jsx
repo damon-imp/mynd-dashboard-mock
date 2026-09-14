@@ -1,4 +1,4 @@
-// ui.jsx — primitives. Pure SVG charts, no chart library.
+// ui.jsx, primitives. Pure SVG charts, no chart library.
 const { useState, useEffect, useRef, useMemo } = React;
 
 const fmt = {
