@@ -7,8 +7,8 @@ function Boardroom({ go, period }) {
       <PageHead title="Boardroom" sub={`The whole business in one view · ${period}`}
         meta="Live across cash, revenue, margin, subscriptions, inventory and the team." />
 
-      <SecLabel icon="dollar" help="The seven numbers that describe whether this business is working.">Unit economics · {period}</SecLabel>
-      <G c={7} name="7" style={{ marginBottom: 26 }}>
+      <SecLabel icon="dollar" help="The eight numbers that describe whether this business is working.">Unit economics · {period}</SecLabel>
+      <G c={4} name="4" style={{ marginBottom: 26 }}>
         {D.unit.map(u => <KPI key={u.k} {...u} onClick={() =>
           go(u.k==="cash"||u.k==="debt" ? "cash" : u.k==="cm"||u.k==="burn" ? "pl" :
              u.k==="appr" ? "rails" : "revenue")} />)}
@@ -42,9 +42,9 @@ function Boardroom({ go, period }) {
           </G>
         </Card>
         <Card pad={20}>
-          <SecLabel icon="chart" right="since acquisition">To date</SecLabel>
+          <SecLabel icon="chart" right="September, through the 17th">This month</SecLabel>
           <G c={3} gap={14}>
-            {D.toDate.map(t => (
+            {D.thisMonth.map(t => (
               <div key={t.l}>
                 <div style={{ fontSize:10, fontWeight:700, letterSpacing:"0.06em", textTransform:"none",
                               color:"var(--ink-mute)", marginBottom:3 }}>{t.l}</div>
@@ -57,11 +57,7 @@ function Boardroom({ go, period }) {
 
       <G c={2} name="2h" gap={16} style={{ gridTemplateColumns:"1.5fr 1fr", marginBottom: 26 }}>
         <Card pad={20}>
-          <SecLabel icon="rev" right="nine months">Revenue trend</SecLabel>
-          <BarChart data={D.revMonthly.map((r,i)=>({...r, tone: i===D.revMonthly.length-1?"accent":"info"}))} h={168} />
-          <p style={{ fontSize:11.5, color:"var(--ink-mute)", marginTop:12 }}>
-            Down a third since November. Revenue per shipment fell from $195 to $121 with volume flat.
-          </p>
+          <DistributionsTrend h={168} />
         </Card>
         <Card pad={20}>
           <SecLabel icon="money" right="Mercury + BlueBanc">Cash position</SecLabel>
@@ -93,6 +89,21 @@ function Boardroom({ go, period }) {
       </Card>
     </div>
   );
+}
+
+/* owner distributions by month, used on the Boardroom and Financials */
+function DistributionsTrend({ h = 150 }) {
+  const d = D.distributions, ytd = d.reduce((a, r) => a + r.v, 0);
+  const paid = d.filter(r => r.v > 0).length;
+  return (<>
+    <SecLabel icon="money" right={`${fmt.usd(ytd)} this year`}
+      help="What you've taken out of the business as owner, by month. Before the Sep 15 cut-over these were draws taken whenever cash allowed. From the cut-over, the Owner profit bucket takes 15% of every sweep.">Distributions trend</SecLabel>
+    <BarChart data={d.map((r, i) => ({ ...r, tone: i === d.length - 1 ? "accent" : r.v ? "violet" : "info" }))} h={h} />
+    <p style={{ fontSize:11.5, color:"var(--ink-mute)", marginTop:12 }}>
+      {paid} of {d.length} months paid anything, and no two the same. September is month to date. From the cut-over the Owner
+      profit bucket fills on every sweep, so this line should steady.
+    </p>
+  </>);
 }
 
 /* ============================== GOALS ============================== */
@@ -321,17 +332,17 @@ function Cash() {
 function PL() {
   return (
     <div className="page-in">
-      <PageHead title="Profit and loss" sub="The whole P&L in four lines, against where a healthy DTC business sits."
-        meta="Cost of delivery, marketing, OPEX, profit. Nothing else needs to be on this page." />
+      <PageHead title="Profit and loss" sub="The whole P&L on one page, against where a healthy DTC business sits."
+        meta="Revenue less cost of delivery and marketing is contribution margin. Less fixed operating cost is operating profit. Debt service and distributions come after." />
       <Card pad={0} style={{ marginBottom:20 }}>
         <div className="scroll-x"><table className="tbl">
           <thead><tr><th>Line</th><th style={{textAlign:"right"}}>Amount</th>
             <th style={{textAlign:"right"}}>% of revenue</th><th>Against benchmark</th>
             <th>Benchmark</th><th>What's in it</th></tr></thead>
           <tbody>{D.pl.map(r=>(
-            <tr key={r.line}>
-              <td style={{ fontWeight:600 }}>{r.line}</td>
-              <td className="num" style={{ textAlign:"right" }}>{fmt.usd(r.v)}</td>
+            <tr key={r.line} style={{ background:r.sub?"var(--surface-3)":undefined }}>
+              <td style={{ fontWeight:r.sub?700:500 }}>{r.line}</td>
+              <td className="num" style={{ textAlign:"right", fontWeight:r.sub?700:400 }}>{fmt.usd(r.v)}</td>
               <td className="num" style={{ textAlign:"right", fontWeight:600, color:T(r.tone) }}>{r.pct?fmt.pct(r.pct):"-"}</td>
               <td style={{ width:150 }}>{r.bench && <Bar pct={Math.min(r.pct*2,100)} tone={r.tone} />}</td>
               <td style={{ color:"var(--ink-mute)", fontSize:12 }}>{r.bench||"-"}</td>
@@ -344,11 +355,8 @@ function PL() {
         $7,000 a month and it's the largest single lever left on the cost side.
       </Note>
       <div style={{ height:24 }} />
-      <G c={2} name="2" gap={16}>
-        <Card pad={20}>
-          <SecLabel icon="rev">Contribution margin</SecLabel>
-          <Line data={[{m:"Mar",v:21400},{m:"Apr",v:19800},{m:"May",v:17900},{m:"Jun",v:16200},{m:"Jul",v:14840},{m:"Aug",v:28600},{m:"Sep",v:31200}]} tone="good" vf={fmt.k} h={175}/>
-        </Card>
+      <CMDaily />
+      <G c={1} gap={16}>
         <Card pad={20}>
           <SecLabel icon="chart">Fixed cost, monthly</SecLabel>
           <BarChart data={[{m:"Jun",v:28860,tone:"bad"},{m:"Jul",v:28860,tone:"bad"},{m:"Aug",v:21400,tone:"warn"},{m:"Sep",v:14050,tone:"good"},{m:"Oct",v:11050,tone:"good",dim:true}]} h={175}/>
@@ -356,6 +364,51 @@ function PL() {
         </Card>
       </G>
     </div>
+  );
+}
+
+/* daily contribution margin, follows the period selector */
+function CMDaily() {
+  const all = D.cmDaily;
+  const rows = (PERIOD.label === "MTD" ? all.filter(r => r.m === 9) : all.slice(-Math.min(PERIOD.days, all.length))).slice().reverse();
+  const t = rows.reduce((a, r) => ({ rev:a.rev + r.rev, cod:a.cod + r.cod, mkt:a.mkt + r.mkt }), { rev:0, cod:0, mkt:0 });
+  const cm = (r) => r.rev - r.cod - r.mkt;
+  let run = 0;
+  const cum = {}; all.forEach(r => { run = (r.d === "Sep 1" ? 0 : run) + cm(r); cum[r.d] = run; });
+  const short = PERIOD.days > all.length;
+  return (
+    <Card pad={0} style={{ marginBottom:20 }}>
+      <div style={{ padding:"18px 18px 4px" }}>
+        <SecLabel icon="rev" right={`${rows.length} ${rows.length === 1 ? "day" : "days"}${short ? `, all ${all.length} on record` : ""} · newest first`}
+          help="Revenue less cost of delivery and marketing, every day. Fixed costs are left out on purpose, so this is the number each day's sales actually earned.">Contribution margin, daily</SecLabel>
+      </div>
+      <div className="scroll-x" style={{ maxHeight:420, overflowY:"auto" }}><table className="tbl">
+        <thead><tr><th>Date</th><th style={{textAlign:"right"}}>Revenue</th><th style={{textAlign:"right"}}>Cost of delivery</th>
+          <th style={{textAlign:"right"}}>Marketing</th><th style={{textAlign:"right"}}>Contribution margin</th>
+          <th style={{textAlign:"right"}}>Margin</th><th style={{textAlign:"right"}}>Month to date</th></tr></thead>
+        <tbody>
+          <tr style={{ background:"var(--surface-3)" }}>
+            <td style={{ fontWeight:700 }}>Total</td>
+            <td className="num" style={{ textAlign:"right", fontWeight:700 }}>{fmt.usd(t.rev)}</td>
+            <td className="num" style={{ textAlign:"right", fontWeight:700 }}>-{fmt.usd(t.cod)}</td>
+            <td className="num" style={{ textAlign:"right", fontWeight:700 }}>{t.mkt ? "-" + fmt.usd(t.mkt) : "$0"}</td>
+            <td className="num" style={{ textAlign:"right", fontWeight:700, color:"var(--good)" }}>{fmt.usd(t.rev - t.cod - t.mkt)}</td>
+            <td className="num" style={{ textAlign:"right", fontWeight:700 }}>{fmt.pct((t.rev - t.cod - t.mkt) / t.rev * 100)}</td>
+            <td />
+          </tr>
+          {rows.map(r => (
+          <tr key={r.d}>
+            <td><span style={{ fontWeight:600 }}>{r.d}</span> <span style={{ fontSize:10.5, color:r.w==="Sat"||r.w==="Sun"?"var(--accent)":"var(--ink-mute)" }}>{r.w}</span></td>
+            <td className="num" style={{ textAlign:"right" }}>{fmt.usd(r.rev)}</td>
+            <td className="num" style={{ textAlign:"right", color:"var(--ink-soft)" }}>-{fmt.usd(r.cod)}</td>
+            <td className="num" style={{ textAlign:"right", color:"var(--ink-mute)" }}>{r.mkt ? "-" + fmt.usd(r.mkt) : "$0"}</td>
+            <td className="num" style={{ textAlign:"right", fontWeight:600, color:"var(--good)" }}>{fmt.usd(cm(r))}</td>
+            <td className="num" style={{ textAlign:"right", color:"var(--ink-soft)" }}>{fmt.pct(cm(r) / r.rev * 100)}</td>
+            <td className="num" style={{ textAlign:"right", color:"var(--ink-soft)" }}>{fmt.usd(cum[r.d])}</td>
+          </tr>))}
+        </tbody>
+      </table></div>
+    </Card>
   );
 }
 

@@ -40,16 +40,37 @@ function Revenue() {
 /* ============================== SUBSCRIPTIONS ============================== */
 function Subs() {
   const s = D.subs;
+  const cell = { textAlign:"right" };
   return (
     <div className="page-in">
-      <PageHead title="Subscriptions" sub="Four numbers. Who rebills, and who stops."
-        meta="Kept deliberately simple. This one gets scoped properly on a call before it grows." />
-      <G c={4} style={{ marginBottom:24 }}>
-        <KPI label="Active subscribers" value="1,842" tone="ink" delta={-3.2} sub="end of period" />
-        <KPI label="Rebill rate" value="74%" tone="good" delta={21.3} sub="recovering from 27.3%" />
-        <KPI label="Attach rate" value="13.4%" tone="warn" delta={0.4} sub="of paid orders" />
-        <KPI label="Cycle-3 retention" value="10.98%" tone="bad" delta={-1.1} sub="nine in ten gone" />
+      <PageHead title="Subscriptions" sub="Eight numbers. How many you have, how many start, how many stop, and who stays."
+        meta="Last 30 days against the 30 before. Active at the end equals active at the start, plus new, less cancellations." />
+      <G c={4} style={{ marginBottom:14 }}>
+        {s.kpi.slice(0,4).map(k => <KPI key={k.label} {...k} />)}
       </G>
+      <G c={4} style={{ marginBottom:24 }}>
+        {s.kpi.slice(4).map(k => <KPI key={k.label} {...k} />)}
+      </G>
+      <Card pad={0} style={{ marginBottom:20 }}>
+        <div style={{ padding:"18px 18px 4px" }}><SecLabel icon="rev" right="six months">Month by month</SecLabel></div>
+        <div className="scroll-x"><table className="tbl">
+          <thead><tr><th>Month</th><th style={cell}>Active</th><th style={cell}>New</th><th style={cell}>Cancellations</th>
+            <th style={cell}>Churn</th><th style={cell}>Net new</th><th style={cell}>M1</th><th style={cell}>M2</th><th style={cell}>M3</th><th style={cell}>Rebill</th></tr></thead>
+          <tbody>{s.months.map((r,i) => { const last = i === s.months.length - 1; return (
+            <tr key={r.m} style={{ fontWeight:last?600:400 }}>
+              <td style={{ fontWeight:600 }}>{r.m}</td>
+              <td className="num" style={cell}>{fmt.n(r.active)}</td>
+              <td className="num" style={cell}>{r.neu}</td>
+              <td className="num" style={cell}>{r.cancel}</td>
+              <td className="num" style={cell}>{fmt.pct(r.churn)}</td>
+              <td className="num" style={{ ...cell, color:r.net < 0 ? "var(--bad)" : "var(--good)" }}>{r.net > 0 ? "+" : ""}{r.net}</td>
+              <td className="num" style={cell}>{r.m1}%</td>
+              <td className="num" style={cell}>{r.m2}%</td>
+              <td className="num" style={{ ...cell, color:"var(--bad)" }}>{fmt.pct(r.m3)}</td>
+              <td className="num" style={cell}>{r.rebill}%</td>
+            </tr>); })}</tbody>
+        </table></div>
+      </Card>
       <Card pad={20} style={{ marginBottom:20 }}>
         <SecLabel icon="pulse" right="eight months">Rebill rate</SecLabel>
         <Line data={s.rebill} tone="good" target={90} tLabel="90% target" vf={v=>v+"%"} yMin={0} yMax={110} h={190}/>
@@ -59,8 +80,8 @@ function Subs() {
         </p>
       </Card>
       <Note tone="info" icon="i">
-        Cohort tables, offer testing and churn reasons all belong here eventually. They get added once you
-        have decided what you would actually act on, not before.
+        Net new has been negative every month on the page. Retention after the first rebill is where most of it goes, so M1 is
+        the number to watch first. Offer testing and cancellation reasons get added once you've decided what you'd act on.
       </Note>
     </div>
   );

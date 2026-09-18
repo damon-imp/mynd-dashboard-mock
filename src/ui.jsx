@@ -76,7 +76,7 @@ function Spark({ data, tone = "accent", h = 30, fill = true }) {
   );
 }
 
-function KPI({ label, value, sub, delta, tone = "ink", help, spark, sparkTone, onClick, badge }) {
+function KPI({ label, value, sub, delta, deltaUnit = "%", invert, tone = "ink", help, spark, sparkTone, onClick, badge }) {
   return (
     <div className={"kpi" + (onClick ? " kpi-click" : "")} onClick={onClick}>
       <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", gap:6 }}>
@@ -91,8 +91,8 @@ function KPI({ label, value, sub, delta, tone = "ink", help, spark, sparkTone, o
         <span style={{ fontFamily:"var(--display)", fontSize:23, fontWeight:600,
                        letterSpacing:"-0.025em", color:T(tone), lineHeight:1.05 }}>{value}</span>
         {delta != null && delta !== 0 && (
-          <span className="mono" style={{ fontSize:10.5, fontWeight:650, color: delta > 0 ? "var(--good)":"var(--bad)" }}>
-            {delta > 0 ? "\u2197" : "\u2198"}{Math.abs(delta)}%
+          <span className="mono" style={{ fontSize:10.5, fontWeight:650, color: (delta > 0) !== !!invert ? "var(--good)":"var(--bad)" }}>
+            {delta > 0 ? "\u2197" : "\u2198"}{Math.abs(delta)}{deltaUnit}
           </span>
         )}
       </div>
@@ -191,8 +191,9 @@ function Line({ data, h = 170, tone = "good", vf = (v)=>v, target, tLabel, yMin,
           {target!=null && <line x1="0" y1={Y(target)} x2="100" y2={Y(target)} stroke="var(--warn)" strokeWidth="1" strokeDasharray="3 3" vectorEffect="non-scaling-stroke"/>}
           <polygon points={`0,100 ${pts} 100,100`} fill={`url(#${id})`} />
           <polyline points={pts} fill="none" stroke={T(tone)} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke"/>
-          {vals.map((v,i)=><circle key={i} cx={X(i)} cy={Y(v)} r="2.2" fill="var(--surface)" stroke={T(tone)} strokeWidth="1.6" vectorEffect="non-scaling-stroke"/>)}
         </svg>
+        {vals.map((v,i)=><span key={i} style={{ position:"absolute", left:X(i)+"%", top:Y(v)+"%", width:7, height:7,
+          borderRadius:99, transform:"translate(-50%,-50%)", background:"var(--surface)", border:`1.6px solid ${T(tone)}` }} />)}
         {target!=null && tLabel && <span style={{ position:"absolute", right:0, top:Y(target)+"%",
           transform:"translateY(-130%)", fontSize:9.5, color:"var(--warn)", fontWeight:600 }}>{tLabel}</span>}
       </div>

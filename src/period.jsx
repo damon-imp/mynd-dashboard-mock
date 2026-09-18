@@ -38,13 +38,27 @@ function applyPeriod(label, customDays) {
   D.unit.forEach(u => {
     if (u.k === "rev") { u.value = pMoney(u.value, f); u.label = "Revenue · " + short; }
     if (u.k === "cm")  { u.value = pMoney(u.value, f); }
-    if (u.k === "burn"){ u.value = pMoney(u.value, f); u.label = "Result · " + short;
-                         u.sub = "30 day result " + PERIOD_BASE.D.unit.find(x=>x.k==="burn").value; }
+    if (u.k === "burn"){ u.value = pMoney(u.value, f); u.label = "Operating profit · " + short;
+                         u.sub = "30 day " + PERIOD_BASE.D.unit.find(x=>x.k==="burn").value; }
   });
   D.funnel.forEach(r => { r.v = pRound(r.v * f); if (r.note === "30 days") r.note = PERIOD.label; });
 
-  // Money
+  // Money. Up to 30 days, revenue, cost of delivery and marketing come from the daily
+  // contribution table so the P&L, the tiles and the daily rows agree to the dollar.
   D.pl.forEach(r => { r.v = pRound(r.v * f); });
+  if (days <= D.cmDaily.length) {
+    const rows = label === "MTD" ? D.cmDaily.filter(r => r.m === 9) : D.cmDaily.slice(-days);
+    const rev = rows.reduce((a, r) => a + r.rev, 0), cod = rows.reduce((a, r) => a + r.cod, 0), mkt = rows.reduce((a, r) => a + r.mkt, 0);
+    const opex = pRound(PERIOD_BASE.D.pl.find(r => r.line === "OPEX").v * rows.length / 30);
+    const cm = rev - cod - mkt, op = cm - opex;
+    const set = { "Revenue":rev, "Cost of delivery":cod, "Marketing":mkt, "Contribution margin":cm, "OPEX":opex, "Operating profit":op };
+    D.pl.forEach(r => { r.v = set[r.line]; r.pct = rev ? +(r.v / rev * 100).toFixed(1) : 0; if (r.line === "Revenue") r.pct = 100; });
+    D.unit.forEach(u => {
+      if (u.k === "rev") u.value = fmt.usd(rev);
+      if (u.k === "cm")  { u.value = fmt.usd(cm); u.sub = fmt.pct(cm / rev * 100) + " of revenue"; }
+      if (u.k === "burn") u.value = (op >= 0 ? "+" : "-") + fmt.usd(Math.abs(op));
+    });
+  }
   D.rails.forEach(r => { r.g30 = r.gross; ["gross","fees","net"].forEach(k => { r[k] = pRound(r[k] * f); }); });
 
   // Revenue

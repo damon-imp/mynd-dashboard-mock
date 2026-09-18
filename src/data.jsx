@@ -13,16 +13,16 @@ const D = {
     { i: "rev",    l: "Rebill rate", v: "74%", tone: "good" },
     { i: "clock",  l: "Next buyout", v: "$9,481 · Oct 1" },
     { i: "truck",  l: "Shipments today", v: "11" },
-    { i: "dollar", l: "MTD revenue", v: "$14,920" },
+    { i: "dollar", l: "MTD revenue", v: "$26,528" },
     { i: "pulse",  l: "Chargebacks 30d", v: "0.42%", tone: "good" },
   ],
 
   // ---------------------------------------------------------------- BOARDROOM
   unit: [
     { k:"rev",   label:"Revenue · 30d",   value:"$46,814", delta:-4.1, sub:"all four rails", tone:"ink", help:"Gross across every processor, matched to the bank.", spark:[64267,58900,55400,51200,49800,47300,45100,43900,46814] },
-    { k:"cm",    label:"Contribution margin", value:"$31,200", delta:8.4, sub:"67% of revenue", tone:"good", help:"Net sales less product cost, variable expense and ad spend. The number the business should orbit daily.", spark:[21400,19800,17900,16200,14840,28600,31200] },
+    { k:"cm",    label:"Contribution margin", value:"$29,247", delta:8.4, sub:"62.5% of revenue", tone:"good", help:"Revenue less cost of delivery and marketing. Fixed costs excluded. The number the business should orbit daily.", spark:[21400,19800,17900,16200,14840,28600,31200] },
     { k:"cash",  label:"Available cash",  value:"$40,347", delta:-37.2, sub:"floor $22,500", tone:"warn", help:"Across Mercury and BlueBanc. Free cash is what sits above the operating floor." },
-    { k:"burn",  label:"Monthly result",  value:"+$15,197", delta:3826, sub:"was +$387 in July", tone:"good", help:"Revenue less fixed and variable cost, before debt service." },
+    { k:"burn",  label:"Operating profit · 30d", value:"+$15,197", delta:3826, sub:"was +$387 in July", tone:"good", help:"Revenue less cost of delivery, marketing and fixed operating cost. Before debt service and owner distributions. Operating profit, not net profit." },
     { k:"amer",  label:"aMER",            value:"1.92x", delta:3.1, sub:"new cust rev / spend", tone:"good", help:"Acquisition MER. New customer revenue divided by ad spend. Blended and unattributed." },
     { k:"ncac",  label:"Cost per new customer", value:"$36.42", delta:-4.2, sub:"blended nCAC", tone:"warn", help:"Ad spend divided by new customer orders." },
     { k:"appr",  label:"Approval rate",   value:"94.75%", delta:0, sub:"target 98%", tone:"warn", help:"Three points below target is about $18,000 a year." },
@@ -46,13 +46,13 @@ const D = {
     { l:"Support tickets",  v:"6" },
     { l:"Subs canceled",   v:"2", tone:"bad" },
   ],
-  toDate: [
-    { l:"Revenue YTD",      v:"$486,220" },
-    { l:"Orders YTD",       v:"2,614" },
-    { l:"Active subs",      v:"1,842" },
-    { l:"Debt paid down",   v:"$33,000", tone:"good" },
-    { l:"Cost cut, monthly",v:"$14,810", tone:"good" },
-    { l:"Units shipped",    v:"9,480" },
+  thisMonth: [
+    { l:"Revenue",          v:"$26,528" },
+    { l:"Operating profit", v:"$8,630", tone:"good" },
+    { l:"Orders",           v:"126" },
+    { l:"New subscribers",  v:"17" },
+    { l:"Debt paid",        v:"$11,556", tone:"good" },
+    { l:"Distributions",    v:"$0" },
   ],
 
   attention: [
@@ -89,10 +89,11 @@ const D = {
   ],
   pl: [
     { line:"Revenue",          v:46814, pct:100,  tone:"ink",  bench:"" },
-    { line:"Cost of delivery", v:5760,  pct:12.3, tone:"good", bench:"~40%", d:"COGS, fulfillment, processing" },
+    { line:"Cost of delivery", v:17567, pct:37.5, tone:"good", bench:"~40%", d:"Product cost, fulfillment, processing" },
     { line:"Marketing",        v:0,     pct:0,    tone:"warn", bench:"25-30%", d:"Ad spend paused" },
+    { line:"Contribution margin", v:29247, pct:62.5, tone:"good", bench:"", d:"Revenue less cost of delivery and marketing", sub:true },
     { line:"OPEX",             v:14050, pct:30.0, tone:"bad",  bench:"~15%", d:"Fixed operating cost" },
-    { line:"Profit",           v:15197, pct:32.5, tone:"good", bench:"15-20%", d:"Before debt service" },
+    { line:"Operating profit", v:15197, pct:32.5, tone:"good", bench:"15-20%", d:"Contribution margin less OPEX. Before debt service and distributions", sub:true },
   ],
   debt: [
     { n:"Buyout note", v:148444, note:"8 of 9 payments through May 2027", tone:"bad" },
@@ -113,6 +114,45 @@ const D = {
     { n:"Retired rail", gross:0,   fees:0,   res:500, net:0,     pct:0,    appr:0,    cb:0,    cap:0,     tone:"mute" },
   ],
 
+  // Daily contribution margin, Aug 19 to Sep 17. Sums tie to the P&L: 30 days = $46,814 revenue,
+  // $17,567 cost of delivery. September to date = $26,528. Sep 17 is today, matching revenue today.
+  cmDaily: [
+    { d:"Aug 19", w:"Wed", m:8, rev:1620, cod:608, mkt:0 },
+    { d:"Aug 20", w:"Thu", m:8, rev:1650, cod:634, mkt:0 },
+    { d:"Aug 21", w:"Fri", m:8, rev:1487, cod:540, mkt:0 },
+    { d:"Aug 22", w:"Sat", m:8, rev:1351, cod:523, mkt:0 },
+    { d:"Aug 23", w:"Sun", m:8, rev:1522, cod:575, mkt:0 },
+    { d:"Aug 24", w:"Mon", m:8, rev:1732, cod:631, mkt:0 },
+    { d:"Aug 25", w:"Tue", m:8, rev:1614, cod:624, mkt:0 },
+    { d:"Aug 26", w:"Wed", m:8, rev:1561, cod:578, mkt:0 },
+    { d:"Aug 27", w:"Thu", m:8, rev:1638, cod:606, mkt:0 },
+    { d:"Aug 28", w:"Fri", m:8, rev:1546, cod:598, mkt:0 },
+    { d:"Aug 29", w:"Sat", m:8, rev:1348, cod:492, mkt:0 },
+    { d:"Aug 30", w:"Sun", m:8, rev:1465, cod:552, mkt:0 },
+    { d:"Aug 31", w:"Mon", m:8, rev:1752, cod:670, mkt:0 },
+    { d:"Sep 1", w:"Tue", m:9, rev:1650, cod:599, mkt:0 },
+    { d:"Sep 2", w:"Wed", m:9, rev:1684, cod:646, mkt:0 },
+    { d:"Sep 3", w:"Thu", m:9, rev:1503, cod:565, mkt:0 },
+    { d:"Sep 4", w:"Fri", m:9, rev:1398, cod:511, mkt:0 },
+    { d:"Sep 5", w:"Sat", m:9, rev:1444, cod:559, mkt:0 },
+    { d:"Sep 6", w:"Sun", m:9, rev:1518, cod:560, mkt:0 },
+    { d:"Sep 7", w:"Mon", m:9, rev:1552, cod:577, mkt:0 },
+    { d:"Sep 8", w:"Tue", m:9, rev:1590, cod:613, mkt:0 },
+    { d:"Sep 9", w:"Wed", m:9, rev:1671, cod:608, mkt:0 },
+    { d:"Sep 10", w:"Thu", m:9, rev:1563, cod:592, mkt:0 },
+    { d:"Sep 11", w:"Fri", m:9, rev:1395, cod:531, mkt:0 },
+    { d:"Sep 12", w:"Sat", m:9, rev:1389, cod:505, mkt:0 },
+    { d:"Sep 13", w:"Sun", m:9, rev:1536, cod:591, mkt:0 },
+    { d:"Sep 14", w:"Mon", m:9, rev:1610, cod:602, mkt:0 },
+    { d:"Sep 15", w:"Tue", m:9, rev:1555, cod:571, mkt:0 },
+    { d:"Sep 16", w:"Wed", m:9, rev:1623, cod:628, mkt:0 },
+    { d:"Sep 17", w:"Thu", m:9, rev:1847, cod:678, mkt:0 },
+  ],
+  // Owner distributions by month. Irregular draws before the Sep 15 cut-over.
+  distributions: [
+    { m:"Jan", v:4000 },{ m:"Feb", v:3500 },{ m:"Mar", v:6000 },{ m:"Apr", v:2500 },{ m:"May", v:0 },
+    { m:"Jun", v:3000 },{ m:"Jul", v:0 },{ m:"Aug", v:1500 },{ m:"Sep", v:0 },
+  ],
   // ---------------------------------------------------------------- REVENUE
   revMonthly: [
     { m:"Nov", v:64267 },{ m:"Dec", v:58900 },{ m:"Jan", v:55400 },{ m:"Feb", v:51200 },
@@ -138,23 +178,26 @@ const D = {
     { sku:"Micro Caps",               cat:"Capsules",  price:null, cost:10.00, basis:"placeholder", margin:null, units:0, rev:0, trend:[0,0,0,0,0] },
   ],
   subs: {
+    // Last 30 days against the 30 before. Active end = active start + new - cancellations.
     kpi: [
-      { label:"Active subscribers", value:"1,842", sub:"end of period", tone:"ink", delta:-3.2 },
-      { label:"Rebill rate", value:"74%", sub:"recovering from 27.3%", tone:"good", delta:21.3 },
-      { label:"Attach rate", value:"13.4%", sub:"of paid orders", tone:"warn", delta:0.4 },
-      { label:"Cycle-3 retention", value:"10.98%", sub:"nine in ten gone", tone:"bad", delta:-1.1 },
-      { label:"Retry recovery", value:"0 / 10", sub:"attempts 2 and 3", tone:"bad" },
-      { label:"Churn, monthly", value:"8.6%", sub:"of active base", tone:"bad", delta:-0.8 },
+      { label:"Total active subs",  value:"1,842", delta:-3.2, tone:"warn", sub:"was 1,903 last month" },
+      { label:"New subs started",   value:"30",    delta:7.1,  tone:"good", sub:"was 28" },
+      { label:"Cancellations",      value:"91",    delta:8.3,  invert:true, tone:"bad", sub:"churn 4.8%, was 4.3%" },
+      { label:"Net new subs",       value:"-61",   delta:-5, deltaUnit:"", tone:"bad", sub:"was -56. New less cancellations" },
+      { label:"M1 retention",       value:"42%",   delta:2, deltaUnit:" pts", tone:"warn", sub:"still active after the first rebill" },
+      { label:"M2 retention",       value:"21%",   delta:-1, deltaUnit:" pts", tone:"warn", sub:"after the second" },
+      { label:"M3 retention",       value:"11.0%", delta:-0.4, deltaUnit:" pts", tone:"bad", sub:"after the third" },
+      { label:"Rebill rate",        value:"74%",   delta:13, deltaUnit:" pts", tone:"good", sub:"was 61%" },
+    ],
+    months: [
+      { m:"Apr", active:2186, neu:44, cancel:148, churn:6.5, net:-104, m1:38, m2:24, m3:14.0, rebill:71 },
+      { m:"May", active:2097, neu:39, cancel:128, churn:5.9, net:-89,  m1:36, m2:23, m3:13.0, rebill:48 },
+      { m:"Jun", active:2012, neu:35, cancel:120, churn:5.7, net:-85,  m1:35, m2:21, m3:12.0, rebill:33 },
+      { m:"Jul", active:1959, neu:31, cancel:84,  churn:4.2, net:-53,  m1:39, m2:20, m3:11.6, rebill:27.3 },
+      { m:"Aug", active:1903, neu:28, cancel:84,  churn:4.3, net:-56,  m1:40, m2:22, m3:11.4, rebill:61 },
+      { m:"Last 30 days", active:1842, neu:30, cancel:91, churn:4.8, net:-61, m1:42, m2:21, m3:11.0, rebill:74 },
     ],
     rebill: [{m:"Feb",v:100},{m:"Mar",v:96},{m:"Apr",v:71},{m:"May",v:48},{m:"Jun",v:33},{m:"Jul",v:27.3},{m:"Aug",v:61},{m:"Sep",v:74}],
-    cohorts: [
-      { c:"Mar 2026", n:318, m1:100, m3:21, m6:12, m12:null },
-      { c:"Apr 2026", n:287, m1:100, m3:18, m6:11, m12:null },
-      { c:"May 2026", n:341, m1:100, m3:14, m6:null, m12:null },
-      { c:"Jun 2026", n:296, m1:100, m3:11, m6:null, m12:null },
-      { c:"Jul 2026", n:264, m1:100, m3:null, m6:null, m12:null },
-      { c:"Aug 2026", n:302, m1:100, m3:null, m6:null, m12:null },
-    ],
   },
 
   // ---------------------------------------------------------------- MARKETING

@@ -49,7 +49,7 @@ const D = {
   }, {
     i: "dollar",
     l: "MTD revenue",
-    v: "$14,920"
+    v: "$26,528"
   }, {
     i: "pulse",
     l: "Chargebacks 30d",
@@ -69,11 +69,11 @@ const D = {
   }, {
     k: "cm",
     label: "Contribution margin",
-    value: "$31,200",
+    value: "$29,247",
     delta: 8.4,
-    sub: "67% of revenue",
+    sub: "62.5% of revenue",
     tone: "good",
-    help: "Net sales less product cost, variable expense and ad spend. The number the business should orbit daily.",
+    help: "Revenue less cost of delivery and marketing. Fixed costs excluded. The number the business should orbit daily.",
     spark: [21400, 19800, 17900, 16200, 14840, 28600, 31200]
   }, {
     k: "cash",
@@ -85,12 +85,12 @@ const D = {
     help: "Across Mercury and BlueBanc. Free cash is what sits above the operating floor."
   }, {
     k: "burn",
-    label: "Monthly result",
+    label: "Operating profit · 30d",
     value: "+$15,197",
     delta: 3826,
     sub: "was +$387 in July",
     tone: "good",
-    help: "Revenue less fixed and variable cost, before debt service."
+    help: "Revenue less cost of delivery, marketing and fixed operating cost. Before debt service and owner distributions. Operating profit, not net profit."
   }, {
     k: "amer",
     label: "aMER",
@@ -176,26 +176,26 @@ const D = {
     v: "2",
     tone: "bad"
   }],
-  toDate: [{
-    l: "Revenue YTD",
-    v: "$486,220"
+  thisMonth: [{
+    l: "Revenue",
+    v: "$26,528"
   }, {
-    l: "Orders YTD",
-    v: "2,614"
-  }, {
-    l: "Active subs",
-    v: "1,842"
-  }, {
-    l: "Debt paid down",
-    v: "$33,000",
+    l: "Operating profit",
+    v: "$8,630",
     tone: "good"
   }, {
-    l: "Cost cut, monthly",
-    v: "$14,810",
+    l: "Orders",
+    v: "126"
+  }, {
+    l: "New subscribers",
+    v: "17"
+  }, {
+    l: "Debt paid",
+    v: "$11,556",
     tone: "good"
   }, {
-    l: "Units shipped",
-    v: "9,480"
+    l: "Distributions",
+    v: "$0"
   }],
   attention: [{
     t: "Dubai Chocolate runs out in 8 days against a 21 day lead time",
@@ -333,11 +333,11 @@ const D = {
     bench: ""
   }, {
     line: "Cost of delivery",
-    v: 5760,
-    pct: 12.3,
+    v: 17567,
+    pct: 37.5,
     tone: "good",
     bench: "~40%",
-    d: "COGS, fulfillment, processing"
+    d: "Product cost, fulfillment, processing"
   }, {
     line: "Marketing",
     v: 0,
@@ -346,6 +346,14 @@ const D = {
     bench: "25-30%",
     d: "Ad spend paused"
   }, {
+    line: "Contribution margin",
+    v: 29247,
+    pct: 62.5,
+    tone: "good",
+    bench: "",
+    d: "Revenue less cost of delivery and marketing",
+    sub: true
+  }, {
     line: "OPEX",
     v: 14050,
     pct: 30.0,
@@ -353,12 +361,13 @@ const D = {
     bench: "~15%",
     d: "Fixed operating cost"
   }, {
-    line: "Profit",
+    line: "Operating profit",
     v: 15197,
     pct: 32.5,
     tone: "good",
     bench: "15-20%",
-    d: "Before debt service"
+    d: "Contribution margin less OPEX. Before debt service and distributions",
+    sub: true
   }],
   debt: [{
     n: "Buyout note",
@@ -457,6 +466,248 @@ const D = {
     cb: 0,
     cap: 0,
     tone: "mute"
+  }],
+  // Daily contribution margin, Aug 19 to Sep 17. Sums tie to the P&L: 30 days = $46,814 revenue,
+  // $17,567 cost of delivery. September to date = $26,528. Sep 17 is today, matching revenue today.
+  cmDaily: [{
+    d: "Aug 19",
+    w: "Wed",
+    m: 8,
+    rev: 1620,
+    cod: 608,
+    mkt: 0
+  }, {
+    d: "Aug 20",
+    w: "Thu",
+    m: 8,
+    rev: 1650,
+    cod: 634,
+    mkt: 0
+  }, {
+    d: "Aug 21",
+    w: "Fri",
+    m: 8,
+    rev: 1487,
+    cod: 540,
+    mkt: 0
+  }, {
+    d: "Aug 22",
+    w: "Sat",
+    m: 8,
+    rev: 1351,
+    cod: 523,
+    mkt: 0
+  }, {
+    d: "Aug 23",
+    w: "Sun",
+    m: 8,
+    rev: 1522,
+    cod: 575,
+    mkt: 0
+  }, {
+    d: "Aug 24",
+    w: "Mon",
+    m: 8,
+    rev: 1732,
+    cod: 631,
+    mkt: 0
+  }, {
+    d: "Aug 25",
+    w: "Tue",
+    m: 8,
+    rev: 1614,
+    cod: 624,
+    mkt: 0
+  }, {
+    d: "Aug 26",
+    w: "Wed",
+    m: 8,
+    rev: 1561,
+    cod: 578,
+    mkt: 0
+  }, {
+    d: "Aug 27",
+    w: "Thu",
+    m: 8,
+    rev: 1638,
+    cod: 606,
+    mkt: 0
+  }, {
+    d: "Aug 28",
+    w: "Fri",
+    m: 8,
+    rev: 1546,
+    cod: 598,
+    mkt: 0
+  }, {
+    d: "Aug 29",
+    w: "Sat",
+    m: 8,
+    rev: 1348,
+    cod: 492,
+    mkt: 0
+  }, {
+    d: "Aug 30",
+    w: "Sun",
+    m: 8,
+    rev: 1465,
+    cod: 552,
+    mkt: 0
+  }, {
+    d: "Aug 31",
+    w: "Mon",
+    m: 8,
+    rev: 1752,
+    cod: 670,
+    mkt: 0
+  }, {
+    d: "Sep 1",
+    w: "Tue",
+    m: 9,
+    rev: 1650,
+    cod: 599,
+    mkt: 0
+  }, {
+    d: "Sep 2",
+    w: "Wed",
+    m: 9,
+    rev: 1684,
+    cod: 646,
+    mkt: 0
+  }, {
+    d: "Sep 3",
+    w: "Thu",
+    m: 9,
+    rev: 1503,
+    cod: 565,
+    mkt: 0
+  }, {
+    d: "Sep 4",
+    w: "Fri",
+    m: 9,
+    rev: 1398,
+    cod: 511,
+    mkt: 0
+  }, {
+    d: "Sep 5",
+    w: "Sat",
+    m: 9,
+    rev: 1444,
+    cod: 559,
+    mkt: 0
+  }, {
+    d: "Sep 6",
+    w: "Sun",
+    m: 9,
+    rev: 1518,
+    cod: 560,
+    mkt: 0
+  }, {
+    d: "Sep 7",
+    w: "Mon",
+    m: 9,
+    rev: 1552,
+    cod: 577,
+    mkt: 0
+  }, {
+    d: "Sep 8",
+    w: "Tue",
+    m: 9,
+    rev: 1590,
+    cod: 613,
+    mkt: 0
+  }, {
+    d: "Sep 9",
+    w: "Wed",
+    m: 9,
+    rev: 1671,
+    cod: 608,
+    mkt: 0
+  }, {
+    d: "Sep 10",
+    w: "Thu",
+    m: 9,
+    rev: 1563,
+    cod: 592,
+    mkt: 0
+  }, {
+    d: "Sep 11",
+    w: "Fri",
+    m: 9,
+    rev: 1395,
+    cod: 531,
+    mkt: 0
+  }, {
+    d: "Sep 12",
+    w: "Sat",
+    m: 9,
+    rev: 1389,
+    cod: 505,
+    mkt: 0
+  }, {
+    d: "Sep 13",
+    w: "Sun",
+    m: 9,
+    rev: 1536,
+    cod: 591,
+    mkt: 0
+  }, {
+    d: "Sep 14",
+    w: "Mon",
+    m: 9,
+    rev: 1610,
+    cod: 602,
+    mkt: 0
+  }, {
+    d: "Sep 15",
+    w: "Tue",
+    m: 9,
+    rev: 1555,
+    cod: 571,
+    mkt: 0
+  }, {
+    d: "Sep 16",
+    w: "Wed",
+    m: 9,
+    rev: 1623,
+    cod: 628,
+    mkt: 0
+  }, {
+    d: "Sep 17",
+    w: "Thu",
+    m: 9,
+    rev: 1847,
+    cod: 678,
+    mkt: 0
+  }],
+  // Owner distributions by month. Irregular draws before the Sep 15 cut-over.
+  distributions: [{
+    m: "Jan",
+    v: 4000
+  }, {
+    m: "Feb",
+    v: 3500
+  }, {
+    m: "Mar",
+    v: 6000
+  }, {
+    m: "Apr",
+    v: 2500
+  }, {
+    m: "May",
+    v: 0
+  }, {
+    m: "Jun",
+    v: 3000
+  }, {
+    m: "Jul",
+    v: 0
+  }, {
+    m: "Aug",
+    v: 1500
+  }, {
+    m: "Sep",
+    v: 0
   }],
   // ---------------------------------------------------------------- REVENUE
   revMonthly: [{
@@ -605,41 +856,128 @@ const D = {
     trend: [0, 0, 0, 0, 0]
   }],
   subs: {
+    // Last 30 days against the 30 before. Active end = active start + new - cancellations.
     kpi: [{
-      label: "Active subscribers",
+      label: "Total active subs",
       value: "1,842",
-      sub: "end of period",
-      tone: "ink",
-      delta: -3.2
+      delta: -3.2,
+      tone: "warn",
+      sub: "was 1,903 last month"
+    }, {
+      label: "New subs started",
+      value: "30",
+      delta: 7.1,
+      tone: "good",
+      sub: "was 28"
+    }, {
+      label: "Cancellations",
+      value: "91",
+      delta: 8.3,
+      invert: true,
+      tone: "bad",
+      sub: "churn 4.8%, was 4.3%"
+    }, {
+      label: "Net new subs",
+      value: "-61",
+      delta: -5,
+      deltaUnit: "",
+      tone: "bad",
+      sub: "was -56. New less cancellations"
+    }, {
+      label: "M1 retention",
+      value: "42%",
+      delta: 2,
+      deltaUnit: " pts",
+      tone: "warn",
+      sub: "still active after the first rebill"
+    }, {
+      label: "M2 retention",
+      value: "21%",
+      delta: -1,
+      deltaUnit: " pts",
+      tone: "warn",
+      sub: "after the second"
+    }, {
+      label: "M3 retention",
+      value: "11.0%",
+      delta: -0.4,
+      deltaUnit: " pts",
+      tone: "bad",
+      sub: "after the third"
     }, {
       label: "Rebill rate",
       value: "74%",
-      sub: "recovering from 27.3%",
+      delta: 13,
+      deltaUnit: " pts",
       tone: "good",
-      delta: 21.3
+      sub: "was 61%"
+    }],
+    months: [{
+      m: "Apr",
+      active: 2186,
+      neu: 44,
+      cancel: 148,
+      churn: 6.5,
+      net: -104,
+      m1: 38,
+      m2: 24,
+      m3: 14.0,
+      rebill: 71
     }, {
-      label: "Attach rate",
-      value: "13.4%",
-      sub: "of paid orders",
-      tone: "warn",
-      delta: 0.4
+      m: "May",
+      active: 2097,
+      neu: 39,
+      cancel: 128,
+      churn: 5.9,
+      net: -89,
+      m1: 36,
+      m2: 23,
+      m3: 13.0,
+      rebill: 48
     }, {
-      label: "Cycle-3 retention",
-      value: "10.98%",
-      sub: "nine in ten gone",
-      tone: "bad",
-      delta: -1.1
+      m: "Jun",
+      active: 2012,
+      neu: 35,
+      cancel: 120,
+      churn: 5.7,
+      net: -85,
+      m1: 35,
+      m2: 21,
+      m3: 12.0,
+      rebill: 33
     }, {
-      label: "Retry recovery",
-      value: "0 / 10",
-      sub: "attempts 2 and 3",
-      tone: "bad"
+      m: "Jul",
+      active: 1959,
+      neu: 31,
+      cancel: 84,
+      churn: 4.2,
+      net: -53,
+      m1: 39,
+      m2: 20,
+      m3: 11.6,
+      rebill: 27.3
     }, {
-      label: "Churn, monthly",
-      value: "8.6%",
-      sub: "of active base",
-      tone: "bad",
-      delta: -0.8
+      m: "Aug",
+      active: 1903,
+      neu: 28,
+      cancel: 84,
+      churn: 4.3,
+      net: -56,
+      m1: 40,
+      m2: 22,
+      m3: 11.4,
+      rebill: 61
+    }, {
+      m: "Last 30 days",
+      active: 1842,
+      neu: 30,
+      cancel: 91,
+      churn: 4.8,
+      net: -61,
+      m1: 42,
+      m2: 21,
+      m3: 11.0,
+      rebill: 74
     }],
     rebill: [{
       m: "Feb",
@@ -665,49 +1003,6 @@ const D = {
     }, {
       m: "Sep",
       v: 74
-    }],
-    cohorts: [{
-      c: "Mar 2026",
-      n: 318,
-      m1: 100,
-      m3: 21,
-      m6: 12,
-      m12: null
-    }, {
-      c: "Apr 2026",
-      n: 287,
-      m1: 100,
-      m3: 18,
-      m6: 11,
-      m12: null
-    }, {
-      c: "May 2026",
-      n: 341,
-      m1: 100,
-      m3: 14,
-      m6: null,
-      m12: null
-    }, {
-      c: "Jun 2026",
-      n: 296,
-      m1: 100,
-      m3: 11,
-      m6: null,
-      m12: null
-    }, {
-      c: "Jul 2026",
-      n: 264,
-      m1: 100,
-      m3: null,
-      m6: null,
-      m12: null
-    }, {
-      c: "Aug 2026",
-      n: 302,
-      m1: 100,
-      m3: null,
-      m6: null,
-      m12: null
     }]
   },
   // ---------------------------------------------------------------- MARKETING
@@ -3776,8 +4071,8 @@ function applyPeriod(label, customDays) {
     }
     if (u.k === "burn") {
       u.value = pMoney(u.value, f);
-      u.label = "Result · " + short;
-      u.sub = "30 day result " + PERIOD_BASE.D.unit.find(x => x.k === "burn").value;
+      u.label = "Operating profit · " + short;
+      u.sub = "30 day " + PERIOD_BASE.D.unit.find(x => x.k === "burn").value;
     }
   });
   D.funnel.forEach(r => {
@@ -3785,10 +4080,41 @@ function applyPeriod(label, customDays) {
     if (r.note === "30 days") r.note = PERIOD.label;
   });
 
-  // Money
+  // Money. Up to 30 days, revenue, cost of delivery and marketing come from the daily
+  // contribution table so the P&L, the tiles and the daily rows agree to the dollar.
   D.pl.forEach(r => {
     r.v = pRound(r.v * f);
   });
+  if (days <= D.cmDaily.length) {
+    const rows = label === "MTD" ? D.cmDaily.filter(r => r.m === 9) : D.cmDaily.slice(-days);
+    const rev = rows.reduce((a, r) => a + r.rev, 0),
+      cod = rows.reduce((a, r) => a + r.cod, 0),
+      mkt = rows.reduce((a, r) => a + r.mkt, 0);
+    const opex = pRound(PERIOD_BASE.D.pl.find(r => r.line === "OPEX").v * rows.length / 30);
+    const cm = rev - cod - mkt,
+      op = cm - opex;
+    const set = {
+      "Revenue": rev,
+      "Cost of delivery": cod,
+      "Marketing": mkt,
+      "Contribution margin": cm,
+      "OPEX": opex,
+      "Operating profit": op
+    };
+    D.pl.forEach(r => {
+      r.v = set[r.line];
+      r.pct = rev ? +(r.v / rev * 100).toFixed(1) : 0;
+      if (r.line === "Revenue") r.pct = 100;
+    });
+    D.unit.forEach(u => {
+      if (u.k === "rev") u.value = fmt.usd(rev);
+      if (u.k === "cm") {
+        u.value = fmt.usd(cm);
+        u.sub = fmt.pct(cm / rev * 100) + " of revenue";
+      }
+      if (u.k === "burn") u.value = (op >= 0 ? "+" : "-") + fmt.usd(Math.abs(op));
+    });
+  }
   D.rails.forEach(r => {
     r.g30 = r.gross;
     ["gross", "fees", "net"].forEach(k => {
@@ -4121,6 +4447,8 @@ function KPI({
   value,
   sub,
   delta,
+  deltaUnit = "%",
+  invert,
   tone = "ink",
   help,
   spark,
@@ -4175,9 +4503,9 @@ function KPI({
     style: {
       fontSize: 10.5,
       fontWeight: 650,
-      color: delta > 0 ? "var(--good)" : "var(--bad)"
+      color: delta > 0 !== !!invert ? "var(--good)" : "var(--bad)"
     }
-  }, delta > 0 ? "\u2197" : "\u2198", Math.abs(delta), "%")), sub && /*#__PURE__*/React.createElement("span", {
+  }, delta > 0 ? "\u2197" : "\u2198", Math.abs(delta), deltaUnit)), sub && /*#__PURE__*/React.createElement("span", {
     style: {
       fontSize: 11,
       color: "var(--ink-mute)"
@@ -4473,16 +4801,20 @@ function Line({
     strokeLinecap: "round",
     strokeLinejoin: "round",
     vectorEffect: "non-scaling-stroke"
-  }), vals.map((v, i) => /*#__PURE__*/React.createElement("circle", {
+  })), vals.map((v, i) => /*#__PURE__*/React.createElement("span", {
     key: i,
-    cx: X(i),
-    cy: Y(v),
-    r: "2.2",
-    fill: "var(--surface)",
-    stroke: T(tone),
-    strokeWidth: "1.6",
-    vectorEffect: "non-scaling-stroke"
-  }))), target != null && tLabel && /*#__PURE__*/React.createElement("span", {
+    style: {
+      position: "absolute",
+      left: X(i) + "%",
+      top: Y(v) + "%",
+      width: 7,
+      height: 7,
+      borderRadius: 99,
+      transform: "translate(-50%,-50%)",
+      background: "var(--surface)",
+      border: `1.6px solid ${T(tone)}`
+    }
+  })), target != null && tLabel && /*#__PURE__*/React.createElement("span", {
     style: {
       position: "absolute",
       right: 0,
@@ -4996,10 +5328,10 @@ function Boardroom({
     meta: "Live across cash, revenue, margin, subscriptions, inventory and the team."
   }), /*#__PURE__*/React.createElement(SecLabel, {
     icon: "dollar",
-    help: "The seven numbers that describe whether this business is working."
+    help: "The eight numbers that describe whether this business is working."
   }, "Unit economics · ", period), /*#__PURE__*/React.createElement(G, {
-    c: 7,
-    name: "7",
+    c: 4,
+    name: "4",
     style: {
       marginBottom: 26
     }
@@ -5075,11 +5407,11 @@ function Boardroom({
     pad: 20
   }, /*#__PURE__*/React.createElement(SecLabel, {
     icon: "chart",
-    right: "since acquisition"
-  }, "To date"), /*#__PURE__*/React.createElement(G, {
+    right: "September, through the 17th"
+  }, "This month"), /*#__PURE__*/React.createElement(G, {
     c: 3,
     gap: 14
-  }, D.toDate.map(t => /*#__PURE__*/React.createElement("div", {
+  }, D.thisMonth.map(t => /*#__PURE__*/React.createElement("div", {
     key: t.l
   }, /*#__PURE__*/React.createElement("div", {
     style: {
@@ -5107,22 +5439,9 @@ function Boardroom({
     }
   }, /*#__PURE__*/React.createElement(Card, {
     pad: 20
-  }, /*#__PURE__*/React.createElement(SecLabel, {
-    icon: "rev",
-    right: "nine months"
-  }, "Revenue trend"), /*#__PURE__*/React.createElement(BarChart, {
-    data: D.revMonthly.map((r, i) => ({
-      ...r,
-      tone: i === D.revMonthly.length - 1 ? "accent" : "info"
-    })),
+  }, /*#__PURE__*/React.createElement(DistributionsTrend, {
     h: 168
-  }), /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: 11.5,
-      color: "var(--ink-mute)",
-      marginTop: 12
-    }
-  }, "Down a third since November. Revenue per shipment fell from $195 to $121 with volume flat.")), /*#__PURE__*/React.createElement(Card, {
+  })), /*#__PURE__*/React.createElement(Card, {
     pad: 20
   }, /*#__PURE__*/React.createElement(SecLabel, {
     icon: "money",
@@ -5196,6 +5515,32 @@ function Boardroom({
       color: "var(--ink-soft)"
     }
   }, a.t)))));
+}
+
+/* owner distributions by month, used on the Boardroom and Financials */
+function DistributionsTrend({
+  h = 150
+}) {
+  const d = D.distributions,
+    ytd = d.reduce((a, r) => a + r.v, 0);
+  const paid = d.filter(r => r.v > 0).length;
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(SecLabel, {
+    icon: "money",
+    right: `${fmt.usd(ytd)} this year`,
+    help: "What you've taken out of the business as owner, by month. Before the Sep 15 cut-over these were draws taken whenever cash allowed. From the cut-over, the Owner profit bucket takes 15% of every sweep."
+  }, "Distributions trend"), /*#__PURE__*/React.createElement(BarChart, {
+    data: d.map((r, i) => ({
+      ...r,
+      tone: i === d.length - 1 ? "accent" : r.v ? "violet" : "info"
+    })),
+    h: h
+  }), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: 11.5,
+      color: "var(--ink-mute)",
+      marginTop: 12
+    }
+  }, paid, " of ", d.length, " months paid anything, and no two the same. September is month to date. From the cut-over the Owner profit bucket fills on every sweep, so this line should steady."));
 }
 
 /* ============================== GOALS ============================== */
@@ -5762,8 +6107,8 @@ function PL() {
     className: "page-in"
   }, /*#__PURE__*/React.createElement(PageHead, {
     title: "Profit and loss",
-    sub: "The whole P&L in four lines, against where a healthy DTC business sits.",
-    meta: "Cost of delivery, marketing, OPEX, profit. Nothing else needs to be on this page."
+    sub: "The whole P&L on one page, against where a healthy DTC business sits.",
+    meta: "Revenue less cost of delivery and marketing is contribution margin. Less fixed operating cost is operating profit. Debt service and distributions come after."
   }), /*#__PURE__*/React.createElement(Card, {
     pad: 0,
     style: {
@@ -5782,15 +6127,19 @@ function PL() {
       textAlign: "right"
     }
   }, "% of revenue"), /*#__PURE__*/React.createElement("th", null, "Against benchmark"), /*#__PURE__*/React.createElement("th", null, "Benchmark"), /*#__PURE__*/React.createElement("th", null, "What's in it"))), /*#__PURE__*/React.createElement("tbody", null, D.pl.map(r => /*#__PURE__*/React.createElement("tr", {
-    key: r.line
+    key: r.line,
+    style: {
+      background: r.sub ? "var(--surface-3)" : undefined
+    }
   }, /*#__PURE__*/React.createElement("td", {
     style: {
-      fontWeight: 600
+      fontWeight: r.sub ? 700 : 500
     }
   }, r.line), /*#__PURE__*/React.createElement("td", {
     className: "num",
     style: {
-      textAlign: "right"
+      textAlign: "right",
+      fontWeight: r.sub ? 700 : 400
     }
   }, fmt.usd(r.v)), /*#__PURE__*/React.createElement("td", {
     className: "num",
@@ -5823,41 +6172,10 @@ function PL() {
     style: {
       height: 24
     }
-  }), /*#__PURE__*/React.createElement(G, {
-    c: 2,
-    name: "2",
+  }), /*#__PURE__*/React.createElement(CMDaily, null), /*#__PURE__*/React.createElement(G, {
+    c: 1,
     gap: 16
   }, /*#__PURE__*/React.createElement(Card, {
-    pad: 20
-  }, /*#__PURE__*/React.createElement(SecLabel, {
-    icon: "rev"
-  }, "Contribution margin"), /*#__PURE__*/React.createElement(Line, {
-    data: [{
-      m: "Mar",
-      v: 21400
-    }, {
-      m: "Apr",
-      v: 19800
-    }, {
-      m: "May",
-      v: 17900
-    }, {
-      m: "Jun",
-      v: 16200
-    }, {
-      m: "Jul",
-      v: 14840
-    }, {
-      m: "Aug",
-      v: 28600
-    }, {
-      m: "Sep",
-      v: 31200
-    }],
-    tone: "good",
-    vf: fmt.k,
-    h: 175
-  })), /*#__PURE__*/React.createElement(Card, {
     pad: 20
   }, /*#__PURE__*/React.createElement(SecLabel, {
     icon: "chart"
@@ -5892,6 +6210,161 @@ function PL() {
       marginTop: 11
     }
   }, "October is projected once email moves."))));
+}
+
+/* daily contribution margin, follows the period selector */
+function CMDaily() {
+  const all = D.cmDaily;
+  const rows = (PERIOD.label === "MTD" ? all.filter(r => r.m === 9) : all.slice(-Math.min(PERIOD.days, all.length))).slice().reverse();
+  const t = rows.reduce((a, r) => ({
+    rev: a.rev + r.rev,
+    cod: a.cod + r.cod,
+    mkt: a.mkt + r.mkt
+  }), {
+    rev: 0,
+    cod: 0,
+    mkt: 0
+  });
+  const cm = r => r.rev - r.cod - r.mkt;
+  let run = 0;
+  const cum = {};
+  all.forEach(r => {
+    run = (r.d === "Sep 1" ? 0 : run) + cm(r);
+    cum[r.d] = run;
+  });
+  const short = PERIOD.days > all.length;
+  return /*#__PURE__*/React.createElement(Card, {
+    pad: 0,
+    style: {
+      marginBottom: 20
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: "18px 18px 4px"
+    }
+  }, /*#__PURE__*/React.createElement(SecLabel, {
+    icon: "rev",
+    right: `${rows.length} ${rows.length === 1 ? "day" : "days"}${short ? `, all ${all.length} on record` : ""} · newest first`,
+    help: "Revenue less cost of delivery and marketing, every day. Fixed costs are left out on purpose, so this is the number each day's sales actually earned."
+  }, "Contribution margin, daily")), /*#__PURE__*/React.createElement("div", {
+    className: "scroll-x",
+    style: {
+      maxHeight: 420,
+      overflowY: "auto"
+    }
+  }, /*#__PURE__*/React.createElement("table", {
+    className: "tbl"
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Date"), /*#__PURE__*/React.createElement("th", {
+    style: {
+      textAlign: "right"
+    }
+  }, "Revenue"), /*#__PURE__*/React.createElement("th", {
+    style: {
+      textAlign: "right"
+    }
+  }, "Cost of delivery"), /*#__PURE__*/React.createElement("th", {
+    style: {
+      textAlign: "right"
+    }
+  }, "Marketing"), /*#__PURE__*/React.createElement("th", {
+    style: {
+      textAlign: "right"
+    }
+  }, "Contribution margin"), /*#__PURE__*/React.createElement("th", {
+    style: {
+      textAlign: "right"
+    }
+  }, "Margin"), /*#__PURE__*/React.createElement("th", {
+    style: {
+      textAlign: "right"
+    }
+  }, "Month to date"))), /*#__PURE__*/React.createElement("tbody", null, /*#__PURE__*/React.createElement("tr", {
+    style: {
+      background: "var(--surface-3)"
+    }
+  }, /*#__PURE__*/React.createElement("td", {
+    style: {
+      fontWeight: 700
+    }
+  }, "Total"), /*#__PURE__*/React.createElement("td", {
+    className: "num",
+    style: {
+      textAlign: "right",
+      fontWeight: 700
+    }
+  }, fmt.usd(t.rev)), /*#__PURE__*/React.createElement("td", {
+    className: "num",
+    style: {
+      textAlign: "right",
+      fontWeight: 700
+    }
+  }, "-", fmt.usd(t.cod)), /*#__PURE__*/React.createElement("td", {
+    className: "num",
+    style: {
+      textAlign: "right",
+      fontWeight: 700
+    }
+  }, t.mkt ? "-" + fmt.usd(t.mkt) : "$0"), /*#__PURE__*/React.createElement("td", {
+    className: "num",
+    style: {
+      textAlign: "right",
+      fontWeight: 700,
+      color: "var(--good)"
+    }
+  }, fmt.usd(t.rev - t.cod - t.mkt)), /*#__PURE__*/React.createElement("td", {
+    className: "num",
+    style: {
+      textAlign: "right",
+      fontWeight: 700
+    }
+  }, fmt.pct((t.rev - t.cod - t.mkt) / t.rev * 100)), /*#__PURE__*/React.createElement("td", null)), rows.map(r => /*#__PURE__*/React.createElement("tr", {
+    key: r.d
+  }, /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontWeight: 600
+    }
+  }, r.d), " ", /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 10.5,
+      color: r.w === "Sat" || r.w === "Sun" ? "var(--accent)" : "var(--ink-mute)"
+    }
+  }, r.w)), /*#__PURE__*/React.createElement("td", {
+    className: "num",
+    style: {
+      textAlign: "right"
+    }
+  }, fmt.usd(r.rev)), /*#__PURE__*/React.createElement("td", {
+    className: "num",
+    style: {
+      textAlign: "right",
+      color: "var(--ink-soft)"
+    }
+  }, "-", fmt.usd(r.cod)), /*#__PURE__*/React.createElement("td", {
+    className: "num",
+    style: {
+      textAlign: "right",
+      color: "var(--ink-mute)"
+    }
+  }, r.mkt ? "-" + fmt.usd(r.mkt) : "$0"), /*#__PURE__*/React.createElement("td", {
+    className: "num",
+    style: {
+      textAlign: "right",
+      fontWeight: 600,
+      color: "var(--good)"
+    }
+  }, fmt.usd(cm(r))), /*#__PURE__*/React.createElement("td", {
+    className: "num",
+    style: {
+      textAlign: "right",
+      color: "var(--ink-soft)"
+    }
+  }, fmt.pct(cm(r) / r.rev * 100)), /*#__PURE__*/React.createElement("td", {
+    className: "num",
+    style: {
+      textAlign: "right",
+      color: "var(--ink-soft)"
+    }
+  }, fmt.usd(cum[r.d]))))))));
 }
 
 /* ============================== DEBT ============================== */
@@ -6258,42 +6731,111 @@ function Revenue() {
 /* ============================== SUBSCRIPTIONS ============================== */
 function Subs() {
   const s = D.subs;
+  const cell = {
+    textAlign: "right"
+  };
   return /*#__PURE__*/React.createElement("div", {
     className: "page-in"
   }, /*#__PURE__*/React.createElement(PageHead, {
     title: "Subscriptions",
-    sub: "Four numbers. Who rebills, and who stops.",
-    meta: "Kept deliberately simple. This one gets scoped properly on a call before it grows."
+    sub: "Eight numbers. How many you have, how many start, how many stop, and who stays.",
+    meta: "Last 30 days against the 30 before. Active at the end equals active at the start, plus new, less cancellations."
   }), /*#__PURE__*/React.createElement(G, {
+    c: 4,
+    style: {
+      marginBottom: 14
+    }
+  }, s.kpi.slice(0, 4).map(k => /*#__PURE__*/React.createElement(KPI, {
+    key: k.label,
+    ...k
+  }))), /*#__PURE__*/React.createElement(G, {
     c: 4,
     style: {
       marginBottom: 24
     }
-  }, /*#__PURE__*/React.createElement(KPI, {
-    label: "Active subscribers",
-    value: "1,842",
-    tone: "ink",
-    delta: -3.2,
-    sub: "end of period"
-  }), /*#__PURE__*/React.createElement(KPI, {
-    label: "Rebill rate",
-    value: "74%",
-    tone: "good",
-    delta: 21.3,
-    sub: "recovering from 27.3%"
-  }), /*#__PURE__*/React.createElement(KPI, {
-    label: "Attach rate",
-    value: "13.4%",
-    tone: "warn",
-    delta: 0.4,
-    sub: "of paid orders"
-  }), /*#__PURE__*/React.createElement(KPI, {
-    label: "Cycle-3 retention",
-    value: "10.98%",
-    tone: "bad",
-    delta: -1.1,
-    sub: "nine in ten gone"
-  })), /*#__PURE__*/React.createElement(Card, {
+  }, s.kpi.slice(4).map(k => /*#__PURE__*/React.createElement(KPI, {
+    key: k.label,
+    ...k
+  }))), /*#__PURE__*/React.createElement(Card, {
+    pad: 0,
+    style: {
+      marginBottom: 20
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: "18px 18px 4px"
+    }
+  }, /*#__PURE__*/React.createElement(SecLabel, {
+    icon: "rev",
+    right: "six months"
+  }, "Month by month")), /*#__PURE__*/React.createElement("div", {
+    className: "scroll-x"
+  }, /*#__PURE__*/React.createElement("table", {
+    className: "tbl"
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Month"), /*#__PURE__*/React.createElement("th", {
+    style: cell
+  }, "Active"), /*#__PURE__*/React.createElement("th", {
+    style: cell
+  }, "New"), /*#__PURE__*/React.createElement("th", {
+    style: cell
+  }, "Cancellations"), /*#__PURE__*/React.createElement("th", {
+    style: cell
+  }, "Churn"), /*#__PURE__*/React.createElement("th", {
+    style: cell
+  }, "Net new"), /*#__PURE__*/React.createElement("th", {
+    style: cell
+  }, "M1"), /*#__PURE__*/React.createElement("th", {
+    style: cell
+  }, "M2"), /*#__PURE__*/React.createElement("th", {
+    style: cell
+  }, "M3"), /*#__PURE__*/React.createElement("th", {
+    style: cell
+  }, "Rebill"))), /*#__PURE__*/React.createElement("tbody", null, s.months.map((r, i) => {
+    const last = i === s.months.length - 1;
+    return /*#__PURE__*/React.createElement("tr", {
+      key: r.m,
+      style: {
+        fontWeight: last ? 600 : 400
+      }
+    }, /*#__PURE__*/React.createElement("td", {
+      style: {
+        fontWeight: 600
+      }
+    }, r.m), /*#__PURE__*/React.createElement("td", {
+      className: "num",
+      style: cell
+    }, fmt.n(r.active)), /*#__PURE__*/React.createElement("td", {
+      className: "num",
+      style: cell
+    }, r.neu), /*#__PURE__*/React.createElement("td", {
+      className: "num",
+      style: cell
+    }, r.cancel), /*#__PURE__*/React.createElement("td", {
+      className: "num",
+      style: cell
+    }, fmt.pct(r.churn)), /*#__PURE__*/React.createElement("td", {
+      className: "num",
+      style: {
+        ...cell,
+        color: r.net < 0 ? "var(--bad)" : "var(--good)"
+      }
+    }, r.net > 0 ? "+" : "", r.net), /*#__PURE__*/React.createElement("td", {
+      className: "num",
+      style: cell
+    }, r.m1, "%"), /*#__PURE__*/React.createElement("td", {
+      className: "num",
+      style: cell
+    }, r.m2, "%"), /*#__PURE__*/React.createElement("td", {
+      className: "num",
+      style: {
+        ...cell,
+        color: "var(--bad)"
+      }
+    }, fmt.pct(r.m3)), /*#__PURE__*/React.createElement("td", {
+      className: "num",
+      style: cell
+    }, r.rebill, "%"));
+  }))))), /*#__PURE__*/React.createElement(Card, {
     pad: 20,
     style: {
       marginBottom: 20
@@ -6319,7 +6861,7 @@ function Subs() {
   }, "Fell to 27.3% when subscriber payment credentials broke. Restored and recovering. The retry rebuild closes the rest.")), /*#__PURE__*/React.createElement(Note, {
     tone: "info",
     icon: "i"
-  }, "Cohort tables, offer testing and churn reasons all belong here eventually. They get added once you have decided what you would actually act on, not before."));
+  }, "Net new has been negative every month on the page. Retention after the first rebill is where most of it goes, so M1 is the number to watch first. Offer testing and cancellation reasons get added once you've decided what you'd act on."));
 }
 
 /* ============================== WHOLESALE ============================== */
@@ -9391,10 +9933,10 @@ function BoardFinancials({
     sub: cm.sub,
     onClick: () => go("pl")
   }), /*#__PURE__*/React.createElement(KPI, {
-    label: "Profit",
-    value: fmt.usd(pl["Profit"].v),
+    label: "Operating profit",
+    value: fmt.usd(pl["Operating profit"].v),
     tone: "good",
-    sub: "before debt service",
+    sub: "before debt service and distributions",
     onClick: () => go("pl")
   }), /*#__PURE__*/React.createElement(KPI, {
     label: "Available cash",
@@ -9430,7 +9972,7 @@ function BoardFinancials({
   }, /*#__PURE__*/React.createElement("span", {
     style: {
       fontSize: 12.5,
-      fontWeight: r.line === "Profit" ? 600 : 400
+      fontWeight: r.sub ? 600 : 400
     }
   }, r.line), /*#__PURE__*/React.createElement("span", {
     className: "mono",
@@ -9455,7 +9997,13 @@ function BoardFinancials({
     }
   }, "Benchmark ", r.bench)))), /*#__PURE__*/React.createElement(Card, {
     pad: 20
-  }, /*#__PURE__*/React.createElement(SecLabel, {
+  }, /*#__PURE__*/React.createElement(DistributionsTrend, {
+    h: 130
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      height: 18
+    }
+  }), /*#__PURE__*/React.createElement(SecLabel, {
     icon: "rev",
     right: "nine months"
   }, "Revenue by month"), /*#__PURE__*/React.createElement(BarChart, {

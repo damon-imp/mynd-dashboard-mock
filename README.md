@@ -157,6 +157,16 @@ Seats were scored on one number. Now every seat is scored on every metric it's h
 - **Score Log.** One row per metric, grouped by seat, with every entry colored by its status that week. Live entries save in the browser and export to CSV. The storage key moved to v2.
 - **Org Chart.** Each card shows the primary number plus a dot per metric and how many are holding.
 
+## Seventh pass, DB's second round
+
+- **Result is now Operating profit.** Revenue less cost of delivery, marketing and fixed operating cost, before debt service and owner distributions. The P&L now adds up top to bottom: revenue, cost of delivery, marketing, contribution margin, OPEX, operating profit. Cost of delivery moved to $17,567 (37.5%) and contribution margin to $29,247 (62.5%) so every line ties.
+- **This month replaces To date** on the Boardroom: revenue, operating profit, orders, new subscribers, debt paid and distributions, September through the 17th.
+- **Distributions trend** replaces Revenue trend on the Boardroom, and sits above Revenue and Cash on the Financials tab.
+- **Contribution margin, daily** on the P&L. One row per day with revenue, cost of delivery, marketing, margin, margin % and month to date, newest first. It follows the period selector, and up to 30 days the P&L lines and the Boardroom tiles now come from the same daily rows, so they agree to the dollar.
+- **Subscriptions** rebuilt on DB's eight numbers: total active, new started, cancellations with churn, net new, M1, M2 and M3 retention, and rebill rate, each against last month. A six-month table underneath shows the same eight month by month, and they reconcile: active at the end equals active at the start, plus new, less cancellations.
+- **Unit economics** laid out four across, so all eight tiles fit.
+- **Line charts** draw round points at any width.
+
 ## Known gaps
 
 - Agents are scoped, not built. Outside the current engagement

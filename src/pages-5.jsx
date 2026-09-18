@@ -14,7 +14,7 @@ function BoardFinancials({ go }) {
       <G c={4} style={{ marginBottom:24 }}>
         <KPI label={D.unit[0].label} value={fmt.usd(pl["Revenue"].v)} tone="ink" onClick={()=>go("pl")} />
         <KPI label="Contribution margin" value={cm.value} tone="good" sub={cm.sub} onClick={()=>go("pl")} />
-        <KPI label="Profit" value={fmt.usd(pl["Profit"].v)} tone="good" sub="before debt service" onClick={()=>go("pl")} />
+        <KPI label="Operating profit" value={fmt.usd(pl["Operating profit"].v)} tone="good" sub="before debt service and distributions" onClick={()=>go("pl")} />
         <KPI label="Available cash" value="$40,347" tone="warn" sub="floor $22,500" onClick={()=>go("cash")} />
       </G>
       <G c={2} name="2h" gap={16} style={{ gridTemplateColumns:"1fr 1.2fr", marginBottom:24 }}>
@@ -23,7 +23,7 @@ function BoardFinancials({ go }) {
           {D.pl.map(r => (
             <div key={r.line} style={{ marginBottom:13 }}>
               <div style={{ display:"flex", justifyContent:"space-between", marginBottom:4, gap:10 }}>
-                <span style={{ fontSize:12.5, fontWeight:r.line==="Profit"?600:400 }}>{r.line}</span>
+                <span style={{ fontSize:12.5, fontWeight:r.sub?600:400 }}>{r.line}</span>
                 <span className="mono" style={{ fontSize:13, fontWeight:600, color:T(r.tone) }}>
                   {fmt.usd(r.v)} <span style={{ color:"var(--ink-mute)", fontWeight:400 }}>· {fmt.pct(r.pct)}</span></span>
               </div>
@@ -32,6 +32,8 @@ function BoardFinancials({ go }) {
             </div>))}
         </Card>
         <Card pad={20}>
+          <DistributionsTrend h={130} />
+          <div style={{ height:18 }} />
           <SecLabel icon="rev" right="nine months">Revenue by month</SecLabel>
           <BarChart data={D.revMonthly.map((r,i)=>({ ...r, tone:i===D.revMonthly.length-1?"accent":"info" }))} h={150} />
           <div style={{ height:18 }} />
