@@ -227,29 +227,6 @@ const D = {
   ],
 
   // ---------------------------------------------------------------- TEAM
-  org: {
-    exec: [{ n:"Damon B.", r:"Founder / CEO", tag:"CEO" }],
-    leads: [
-      { n:"Rebekka", r:"Content lead", team:"Marketing", count:2 },
-      { n:"Victor", r:"Developer", team:"Technology", count:1 },
-      { n:"Jose", r:"Production", team:"Kitchen", count:2 },
-      { n:"Sales rep", r:"Clinic channel", team:"Wholesale", count:1 },
-    ],
-    teams: [
-      { lead:"Rebekka", team:"Marketing", note:"Creator program wound down. Seat being repointed.", people:["Content freelancer","Designer (hiring)"] },
-      { lead:"Victor", team:"Technology", note:"Direct contractor from Sep 1. Instructions route through DB.", people:["Greg (OpFix)","Everett (OpFix)"] },
-      { lead:"Jose", team:"Kitchen", note:"LA facility. Chocolate production.", people:["Kitchen hand","Packer"] },
-      { lead:"Sales rep", team:"Wholesale", note:"Commission only. Cold outbound to clinics.", people:["Admin (hiring)"] },
-    ],
-  },
-  scorecards: [
-    { n:"Damon B.", r:"Founder", metric:"Decisions routed through him weekly", now:"14", target:"< 5", st:"bad" },
-    { n:"Victor",   r:"Developer", metric:"Fix items closed and verified", now:"11 / 21", target:"21", st:"good" },
-    { n:"Rebekka",  r:"Content lead", metric:"Being repointed", now:"-", target:"TBD", st:"mute" },
-    { n:"Jose",     r:"Production", metric:"Runs logged with all fields", now:"0 / 30", target:"30", st:"bad" },
-    { n:"Sales rep",r:"Clinic channel", metric:"Clinic accounts opened", now:"0", target:"6", st:"bad" },
-    { n:"Support",  r:"Customer support", metric:"First response time", now:"-", target:"< 4h", st:"mute" },
-  ],
   tasks: {
     cols: [
       { k:"blocked", l:"Blocked", tone:"bad", items:[
@@ -284,6 +261,7 @@ const D = {
     { n:"Entity and formation", c:9, tone:"bad", note:"Restricted" },
     { n:"Insurance", c:3, tone:"info", note:"Product liability, general" },
     { n:"Trademark and IP", c:5, tone:"violet", note:"Filed and pending" },
+    { n:"Role documents", c:11, tone:"accent", note:"Nine role documents, metrics by role, role scorecards" },
     { n:"Lab reports and COAs", c:28, tone:"good", note:"Per batch, public facing" },
   ],
   drive: [
@@ -291,6 +269,9 @@ const D = {
     { n:"Kitchen ledger", t:"Spreadsheet", d:"Aug 27", size:"180 KB" },
     { n:"Tech stack and vendors", t:"Spreadsheet", d:"Sep 2", size:"340 KB" },
     { n:"Build plan", t:"Document", d:"Aug 26", size:"1.1 MB" },
+    { n:"Role scorecards", t:"Document", d:"Sep 18", size:"88 KB" },
+    { n:"Metrics by role", t:"Document", d:"Sep 18", size:"112 KB" },
+    { n:"Metrics tracker", t:"Spreadsheet", d:"Sep 18", size:"64 KB" },
     { n:"Roles and responsibilities", t:"Document", d:"Sep 2", size:"96 KB" },
     { n:"Brand assets", t:"Folder", d:"Jul 14", size:"142 MB" },
   ],

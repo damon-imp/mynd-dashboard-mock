@@ -1,6 +1,6 @@
 # MYND Command Center
 
-A working mock of the operating dashboard. 29 pages, all navigable, all
+A working mock of the operating dashboard. 30 pages, all navigable, all
 interactive. Nothing is wired to live data yet, which is the point: this is what
 you walk DB through to agree the surface before it gets built against real sources.
 
@@ -75,6 +75,7 @@ src/                  readable JSX, edit these
   data2.jsx           marketing, LTV, retention, customer-centric ops
   data3.jsx           live block, daily tracker, cohort LTV
   data4.jsx           sub-tab views: forecast, transactions, reorders, movements, insights, sync
+  data5.jsx           seats, scorecards, sample score history, transfers
   period.jsx          period selector engine, mock only
   ui.jsx              primitives and charts
   pages-1.jsx         Boardroom, Goals, Scorecards, Org, Money
@@ -82,6 +83,7 @@ src/                  readable JSX, edit these
   pages-3.jsx         Marketing Performance, CAC Ceiling, Retention, Customer Experience, Cost Trend, Fulfillment, Phase2
   pages-4.jsx         Today So Far, Daily Tracker, Cohort LTV
   pages-5.jsx         sub-tab views
+  pages-6.jsx         Role Scorecards, Score Log, Org Chart, and the score store
   app.jsx             shell, nav, ticker, palette, routing
 ```
 
@@ -131,6 +133,19 @@ Data model taken from DB's growth intelligence deck. Layout ours.
 - **Print stylesheet.** Prints the current page and tab, light theme, letter landscape. Sidebar, ticker, tab bar and selector drop out. Cards and table rows don't split across pages.
 - **Build pinned.** `build.mjs` pins Babel's classic JSX runtime. Babel 8 defaults to automatic, emits `import` statements, and the bundle renders blank.
 - **Voice sweep.** No em dashes, no uppercase label transforms, contractions throughout.
+
+## Fifth pass, the team layer
+
+Folded from the role documents, Metrics by role, Role scorecards and the Metrics tracker, all v1.0, September 18.
+
+- **Role Scorecards rebuilt.** Nine seats, one primary number each, with latest, prior, status, a trend line, target, cadence and how measurable it is today. Click a card for the full trend, the supporting numbers and what the seat manages and doesn't. The one that matters most, decisions routed through the owner, sits on top.
+- **Viewing as.** Pick a seat and the page shows only that person's card. That's the everyone-sees-their-own rule, ahead of real role-based access.
+- **Score Log added.** One number per seat per week, Sep 21 through Mar 15, the same columns as the tracker. In Live log mode the cells take entries, save in the browser, and export to CSV. An empty week reads Not measured, never zero.
+- **Status matches the tracker.** A fixed target compares against the target. A direction compares against the prior entry, which is the last week with a number in it, so monthly and per-run seats compare run to run. The tracker's Prior formula was fixed to the same rule.
+- **Org Chart rebuilt.** Owner, COO, the assistant reporting to the owner, the seats reporting to the owner, and the ones owned by or moving to the COO. Each card carries its role in one line and its live number, and clicks through to the scorecard. What stays with the owner and what moves off him sit underneath, with each function's place in the three-step transfer.
+- **Sample history or live log.** A switch on all three pages. Sample shows twelve modeled weeks so the trends read. Live starts empty.
+- **Owner decisions on the ticker**, read from the log.
+- **Vault** carries the role documents, and the drive lists the scorecards, metrics by role and the tracker.
 
 ## Known gaps
 

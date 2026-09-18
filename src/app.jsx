@@ -5,6 +5,7 @@ const NAV = [
   { g:"Exec", icon:"exec", items:[
     { id:"goals", l:"Goals & Targets" },
     { id:"scorecards", l:"Role Scorecards" },
+    { id:"scorelog", l:"Score Log" },
     { id:"org", l:"Org Chart" },
     { id:"board", l:"Project Board", p2:true },
   ]},
@@ -54,6 +55,7 @@ const PAGE_GROUP = {};
 NAV.forEach(g => g.items.forEach(i => { PAGE_GROUP[i.id] = g.g; }));
 
 function App() {
+  useScore();
   const [theme, setTheme] = useState("dark");
   const [page, setPage] = useState(() => {
     const h = (location.hash||"").replace("#","");
@@ -105,7 +107,7 @@ function App() {
 
   const P = {
     boardroom:<Boardroom go={setPage} period={period}/>, goals:<Goals period={period}/>,
-    scorecards:<Scorecards/>, board:<Board/>, org:<Org/>,
+    scorecards:<TeamScorecards go={setPage}/>, scorelog:<ScoreLog/>, org:<TeamOrg go={setPage}/>,
     cash:<Cash/>, pl:<PL/>, debt:<Debt/>, rails:<Rails/>,
     revenue:<Revenue/>, retention:<Retention/>, subs:<Subs/>, wholesale:<Wholesale/>,
     today:<Today/>, daily:<Daily/>, cohort:<Cohort/>,
@@ -216,7 +218,7 @@ function App() {
                 <span className="ticker-item" style={{ color:"var(--good)", fontWeight:600 }}>
                   <span className="dot" style={{ background:"var(--good)" }}/>Live
                 </span>
-                {D.ticker.map((t,i)=>(
+                {[...D.ticker.slice(0,3), ownerTicker(), ...D.ticker.slice(3)].map((t,i)=>(
                   <span key={i} className="ticker-item">
                     <Ico n={t.i} s={12}/>{t.l}
                     <b className="mono" style={{ color:T(t.tone||"ink"), fontWeight:650 }}>{t.v}</b>

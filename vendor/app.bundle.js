@@ -1064,98 +1064,6 @@ const D = {
     note: "Nothing about how this runs is written down"
   }],
   // ---------------------------------------------------------------- TEAM
-  org: {
-    exec: [{
-      n: "Damon B.",
-      r: "Founder / CEO",
-      tag: "CEO"
-    }],
-    leads: [{
-      n: "Rebekka",
-      r: "Content lead",
-      team: "Marketing",
-      count: 2
-    }, {
-      n: "Victor",
-      r: "Developer",
-      team: "Technology",
-      count: 1
-    }, {
-      n: "Jose",
-      r: "Production",
-      team: "Kitchen",
-      count: 2
-    }, {
-      n: "Sales rep",
-      r: "Clinic channel",
-      team: "Wholesale",
-      count: 1
-    }],
-    teams: [{
-      lead: "Rebekka",
-      team: "Marketing",
-      note: "Creator program wound down. Seat being repointed.",
-      people: ["Content freelancer", "Designer (hiring)"]
-    }, {
-      lead: "Victor",
-      team: "Technology",
-      note: "Direct contractor from Sep 1. Instructions route through DB.",
-      people: ["Greg (OpFix)", "Everett (OpFix)"]
-    }, {
-      lead: "Jose",
-      team: "Kitchen",
-      note: "LA facility. Chocolate production.",
-      people: ["Kitchen hand", "Packer"]
-    }, {
-      lead: "Sales rep",
-      team: "Wholesale",
-      note: "Commission only. Cold outbound to clinics.",
-      people: ["Admin (hiring)"]
-    }]
-  },
-  scorecards: [{
-    n: "Damon B.",
-    r: "Founder",
-    metric: "Decisions routed through him weekly",
-    now: "14",
-    target: "< 5",
-    st: "bad"
-  }, {
-    n: "Victor",
-    r: "Developer",
-    metric: "Fix items closed and verified",
-    now: "11 / 21",
-    target: "21",
-    st: "good"
-  }, {
-    n: "Rebekka",
-    r: "Content lead",
-    metric: "Being repointed",
-    now: "-",
-    target: "TBD",
-    st: "mute"
-  }, {
-    n: "Jose",
-    r: "Production",
-    metric: "Runs logged with all fields",
-    now: "0 / 30",
-    target: "30",
-    st: "bad"
-  }, {
-    n: "Sales rep",
-    r: "Clinic channel",
-    metric: "Clinic accounts opened",
-    now: "0",
-    target: "6",
-    st: "bad"
-  }, {
-    n: "Support",
-    r: "Customer support",
-    metric: "First response time",
-    now: "-",
-    target: "< 4h",
-    st: "mute"
-  }],
   tasks: {
     cols: [{
       k: "blocked",
@@ -1270,6 +1178,11 @@ const D = {
     tone: "violet",
     note: "Filed and pending"
   }, {
+    n: "Role documents",
+    c: 11,
+    tone: "accent",
+    note: "Nine role documents, metrics by role, role scorecards"
+  }, {
     n: "Lab reports and COAs",
     c: 28,
     tone: "good",
@@ -1295,6 +1208,21 @@ const D = {
     t: "Document",
     d: "Aug 26",
     size: "1.1 MB"
+  }, {
+    n: "Role scorecards",
+    t: "Document",
+    d: "Sep 18",
+    size: "88 KB"
+  }, {
+    n: "Metrics by role",
+    t: "Document",
+    d: "Sep 18",
+    size: "112 KB"
+  }, {
+    n: "Metrics tracker",
+    t: "Spreadsheet",
+    d: "Sep 18",
+    size: "64 KB"
   }, {
     n: "Roles and responsibilities",
     t: "Document",
@@ -3191,6 +3119,453 @@ const D4 = {
   }]
 };
 
+/* ==== data5.jsx ==== */
+// data5.jsx, the team layer. Seats, scorecards and the weekly score log.
+// Folded from the MYND role documents, Metrics by role, Role scorecards and
+// the Metrics tracker, all v1.0, September 18, 2026.
+// Primary numbers, targets, cadence, sources and status logic match the
+// tracker. Sample history is modeled to show the surface.
+
+const WEEKS = ["Sep 21", "Sep 28", "Oct 5", "Oct 12", "Oct 19", "Oct 26", "Nov 2", "Nov 9", "Nov 16", "Nov 23", "Nov 30", "Dec 7", "Dec 14", "Dec 21", "Dec 28", "Jan 4", "Jan 11", "Jan 18", "Jan 25", "Feb 1", "Feb 8", "Feb 15", "Feb 22", "Mar 1", "Mar 8", "Mar 15"];
+
+// target.kind: "max" (at or under), "min" (at or over), "up" (rising, compared with the prior entry)
+// unit: "n" count, "h" hours, "pct" percent, "usd" dollars, "rate" units per dollar
+const SEATS = [{
+  id: "founder",
+  seat: "Founder and Owner",
+  short: "Founder",
+  who: "DB",
+  reports: null,
+  line: "Set direction, hold the relationships only an owner can hold, and get out of the way of everything else.",
+  manages: "Direction, money movement, processors, outside advisors",
+  not: "The day to day. That's the COO.",
+  number: "Decisions routed through him each week",
+  unit: "n",
+  target: {
+    kind: "max",
+    v: 5,
+    text: "Under 5"
+  },
+  cadence: "Weekly",
+  source: "Decision log",
+  measure: "Measurable",
+  need: "Decision log, already running",
+  doc: "09 Founder and Owner",
+  supporting: [{
+    n: "Functions transferred and holding",
+    target: "Rising",
+    cadence: "Monthly",
+    source: "Transfer log",
+    sample: "3",
+    tone: "good"
+  }, {
+    n: "Share of week on growth",
+    target: "Rising from 10%",
+    cadence: "Monthly",
+    source: "Self report",
+    sample: "18%",
+    tone: "good"
+  }]
+}, {
+  id: "coo",
+  seat: "Chief Operating Officer",
+  short: "COO",
+  who: "Camila",
+  reports: "founder",
+  line: "Run the day to day so the business works without the owner in the middle of every task.",
+  manages: "Suppliers and manufacturers, the warehouse, day to day coordination",
+  not: "Recipes, code or brand direction.",
+  number: "Operational decisions closed without the owner",
+  unit: "n",
+  target: {
+    kind: "up",
+    text: "Rising. Baseline at 30 days"
+  },
+  cadence: "Weekly",
+  source: "Decision log",
+  measure: "Needs 30 days",
+  need: "History before a target means anything",
+  doc: "01 Chief Operating Officer",
+  supporting: [{
+    n: "Products under lead time",
+    target: "Zero",
+    cadence: "Weekly",
+    source: "Inventory system",
+    sample: "2",
+    tone: "bad"
+  }, {
+    n: "Reorders placed inside lead time",
+    target: "100%",
+    cadence: "Monthly",
+    source: "Purchase log",
+    sample: "75%",
+    tone: "warn"
+  }, {
+    n: "Liabilities paid late",
+    target: "Zero",
+    cadence: "Monthly",
+    source: "Accounting",
+    sample: "0",
+    tone: "good"
+  }]
+}, {
+  id: "content",
+  seat: "Content and Brand Lead",
+  short: "Content and Brand",
+  who: "Rebekka",
+  reports: "founder",
+  line: "Own the brand and make the outside teams work as one.",
+  manages: "The email and SMS agency, the creator VA, brand review",
+  not: "What gets built or when. Paid advertising.",
+  number: "Revenue from organic social",
+  unit: "usd",
+  target: {
+    kind: "up",
+    text: "Profitable"
+  },
+  cadence: "Monthly",
+  source: "Attribution, once rebuilt",
+  measure: "Needs attribution",
+  need: "Channel revenue, blocked until attribution is rebuilt",
+  doc: "02 Content and Brand Lead",
+  supporting: [{
+    n: "Published without brand review",
+    target: "Zero",
+    cadence: "Weekly",
+    source: "Publishing log",
+    sample: "1",
+    tone: "warn"
+  }, {
+    n: "Site and email mismatches",
+    target: "Zero",
+    cadence: "Monthly",
+    source: "Incident note",
+    sample: "0",
+    tone: "good"
+  }, {
+    n: "Creator VA system documented",
+    target: "Yes",
+    cadence: "Monthly",
+    source: "The document",
+    sample: "No",
+    tone: "bad"
+  }]
+}, {
+  id: "dev",
+  seat: "Developer",
+  short: "Developer",
+  who: "Victor",
+  reports: "founder",
+  line: "Ship the features that let customers do more for themselves and let the business earn more per customer.",
+  manages: "The codebase and the three repositories",
+  not: "Brand, copy or what the offer is. Takes work only from the owner.",
+  number: "Roadmap items shipped each week",
+  unit: "n",
+  target: {
+    kind: "up",
+    text: "Per roadmap"
+  },
+  cadence: "Weekly",
+  source: "Roadmap",
+  measure: "Needs roadmap",
+  need: "A written roadmap to ship against",
+  doc: "03 Developer",
+  supporting: [{
+    n: "Customer-blocking bugs open over a day",
+    target: "Zero",
+    cadence: "Daily",
+    source: "Issue list",
+    sample: "0",
+    tone: "good"
+  }, {
+    n: "Handover document current",
+    target: "Yes",
+    cadence: "Monthly",
+    source: "The document",
+    sample: "No",
+    tone: "bad"
+  }]
+}, {
+  id: "support",
+  seat: "Customer Support",
+  short: "Support",
+  who: "S.J.",
+  reports: "founder",
+  moving: "coo",
+  line: "Get customer problems resolved fast, and make sure nothing sits waiting.",
+  manages: "The support inbox and every open customer issue",
+  not: "Refund policy, pricing or anything that changes the offer.",
+  number: "Time to resolve, median hours",
+  unit: "h",
+  target: {
+    kind: "max",
+    v: 24,
+    text: "Under 24 hours"
+  },
+  cadence: "Weekly",
+  source: "Support tool",
+  measure: "Needs build",
+  need: "Resolution timestamps out of the support tool",
+  doc: "04 Customer Support",
+  supporting: [{
+    n: "Time to first reply",
+    target: "Under 1 business day",
+    cadence: "Weekly",
+    source: "Support tool",
+    sample: "14 hrs",
+    tone: "good"
+  }, {
+    n: "Issues open past a day",
+    target: "Zero",
+    cadence: "Daily",
+    source: "Support tool",
+    sample: "2",
+    tone: "warn"
+  }, {
+    n: "Repeat questions turned into written answers",
+    target: "Rising",
+    cadence: "Monthly",
+    source: "Site content",
+    sample: "6",
+    tone: "good"
+  }]
+}, {
+  id: "wholesale",
+  seat: "Wholesale and Clinic Sales",
+  short: "Wholesale",
+  who: "Clinic channel",
+  reports: "founder",
+  line: "Open and hold wholesale accounts, so revenue stops depending only on direct consumers.",
+  manages: "The wholesale pipeline and every account in it",
+  not: "Pricing, terms, or placing orders with the warehouse.",
+  number: "Outbound activity per day",
+  unit: "n",
+  target: {
+    kind: "min",
+    v: 10,
+    text: "10 or more a day"
+  },
+  cadence: "Daily",
+  source: "Activity log",
+  measure: "Measurable",
+  need: "Activity log, already running",
+  doc: "05 Wholesale and Clinic Sales",
+  supporting: [{
+    n: "Inbound answered same day",
+    target: "100%",
+    cadence: "Weekly",
+    source: "Inbox",
+    sample: "80%",
+    tone: "warn"
+  }, {
+    n: "Accounts opened",
+    target: "Rising",
+    cadence: "Monthly",
+    source: "Order records",
+    sample: "2",
+    tone: "good"
+  }, {
+    n: "Accounts reordering on pattern",
+    target: "Rising",
+    cadence: "Monthly",
+    source: "Order records",
+    sample: "50%",
+    tone: "warn"
+  }]
+}, {
+  id: "kitchen",
+  seat: "Kitchen and Production",
+  short: "Kitchen",
+  who: "Jose",
+  reports: "founder",
+  moving: "coo",
+  line: "Make the product, on schedule, at a cost the business can measure.",
+  manages: "The kitchen, the production schedule, ingredient ordering for a run",
+  not: "What gets made or how much. That comes from the reorder plan.",
+  number: "Output per dollar",
+  unit: "rate",
+  target: {
+    kind: "up",
+    text: "Measured, then rising"
+  },
+  cadence: "Per run",
+  source: "Run log",
+  measure: "Needs three runs",
+  need: "Logged runs per product",
+  doc: "06 Kitchen and Production",
+  supporting: [{
+    n: "Runs logged with all three fields",
+    target: "100%",
+    cadence: "Monthly",
+    source: "Run log",
+    sample: "83%",
+    tone: "warn"
+  }, {
+    n: "Runs completed on schedule",
+    target: "100%",
+    cadence: "Monthly",
+    source: "Production schedule",
+    sample: "100%",
+    tone: "good"
+  }, {
+    n: "Products with a measured cost",
+    target: "All of them",
+    cadence: "Monthly",
+    source: "Run log",
+    sample: "3 of 10",
+    tone: "warn"
+  }]
+}, {
+  id: "warehouse",
+  seat: "Fulfillment and the Warehouse",
+  short: "Warehouse",
+  who: "Owned by the COO",
+  reports: "coo",
+  relationship: true,
+  line: "The warehouse ships what customers order, accurately and on time, and the numbers prove it.",
+  manages: "A relationship, not a person. The COO owns it. The owner handles anything financial.",
+  not: "Customer communication or what gets reordered.",
+  number: "Order accuracy",
+  unit: "pct",
+  target: {
+    kind: "min",
+    v: 99.5,
+    text: "99.5% or better"
+  },
+  cadence: "Monthly",
+  source: "Warehouse system",
+  measure: "Needs access",
+  need: "Order and inventory accuracy from their system",
+  doc: "07 Fulfillment and the Warehouse",
+  supporting: [{
+    n: "Inventory accuracy",
+    target: "98 to 99%",
+    cadence: "Monthly",
+    source: "Warehouse system",
+    sample: "98.4%",
+    tone: "good"
+  }, {
+    n: "Freight as a share of revenue",
+    target: "Flat or falling",
+    cadence: "Monthly",
+    source: "Warehouse invoices",
+    sample: "11.2%",
+    tone: "warn"
+  }, {
+    n: "Orders that never reached the platform",
+    target: "Zero",
+    cadence: "Monthly",
+    source: "Reconciliation",
+    sample: "6",
+    tone: "bad"
+  }]
+}, {
+  id: "ea",
+  seat: "Executive Assistant",
+  short: "Assistant",
+  who: "Assistant",
+  reports: "founder",
+  line: "Take the small work off the owner, then turn it into something that runs without either of you.",
+  manages: "The owner's inbox, vendor admin, whatever is being handed over",
+  not: "Banking, payments or spend decisions.",
+  number: "Tasks taken off the owner each week",
+  unit: "n",
+  target: {
+    kind: "up",
+    text: "Rising"
+  },
+  cadence: "Weekly",
+  source: "Transfer log",
+  measure: "Needs build",
+  need: "A simple count of what moved each week",
+  doc: "08 Executive Assistant",
+  supporting: [{
+    n: "Handed-over tasks with a written version",
+    target: "100%",
+    cadence: "Monthly",
+    source: "Task notes",
+    sample: "70%",
+    tone: "warn"
+  }, {
+    n: "Credential list current",
+    target: "Yes",
+    cadence: "Monthly",
+    source: "The list",
+    sample: "Yes",
+    tone: "good"
+  }]
+}];
+
+// Modeled twelve weeks. Gaps are real states: the measure wasn't built yet, or
+// the number is read monthly or per run.
+const _ = null;
+const SAMPLE_LOG = {
+  founder: [14, 14, 13, 12, 12, 11, 10, 9, 9, 8, 7, 7],
+  coo: [3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20],
+  content: [_, _, _, _, _, _, _, _, 1240, _, _, 1610],
+  dev: [_, _, 2, 3, 1, 3, 4, 3, 2, 4, 3, 4],
+  support: [_, _, 31, 28, 26, 22, 20, 19, 21, 18, 17, 16],
+  wholesale: [10, 9, 11, 12, 8, 10, 11, 12, 13, 12, 14, 13],
+  kitchen: [_, 0.52, _, 0.55, _, 0.54, _, 0.58, _, 0.61, _, 0.60],
+  warehouse: [_, _, _, _, _, 99.1, _, _, _, 99.6, _, _],
+  ea: [4, 6, 5, 7, 8, 8, 9, 11, 10, 12, 12, 13]
+};
+
+// What moves off the owner, in order, and where each one is in the three-step
+// transfer: watch him do it, do it with him watching, do it alone.
+const TRANSFERS = [{
+  f: "Reordering product",
+  stage: "First",
+  to: "COO",
+  step: 2
+}, {
+  f: "Tracking every consumable",
+  stage: "First",
+  to: "COO",
+  step: 1
+}, {
+  f: "Supplier coordination",
+  stage: "First",
+  to: "COO",
+  step: 1
+}, {
+  f: "Invoicing and paying liabilities",
+  stage: "Next",
+  to: "COO",
+  step: 0
+}, {
+  f: "Manufacturer runs and their problems",
+  stage: "Next",
+  to: "COO",
+  step: 0
+}, {
+  f: "Lab testing and what comes back",
+  stage: "Next",
+  to: "COO",
+  step: 0
+}, {
+  f: "Reorders and wholesale orders with the warehouse",
+  stage: "Next",
+  to: "COO",
+  step: 0
+}, {
+  f: "Wholesale inquiries from the site",
+  stage: "Next",
+  to: "Wholesale",
+  step: 0
+}, {
+  f: "Vendor communication",
+  stage: "Held",
+  to: "Owner, for control",
+  step: null
+}];
+const TRANSFER_STEPS = ["Not started", "Watched him do it", "Done with him watching", "Done alone, written"];
+const OWNER = {
+  only: ["Move money", "Pay the card", "Communicate with the payment processors and the broker", "Communicate with outside advisors"],
+  choice: ["Packaging and brand design", "Deal structure", "Setting up anything new, before it runs"],
+  quote: "Nothing really. Everything can be hired for."
+};
+
 /* ==== period.jsx ==== */
 // period.jsx, the period selector engine.
 // The mock stores flow figures at 30 days. This rescales them to the selected
@@ -4851,201 +5226,6 @@ function Goals({
       padding: "18px 0"
     }
   }, "All goals removed. Add the ones you actually want to run against.")));
-}
-
-/* ============================== ORG ============================== */
-function Org() {
-  return /*#__PURE__*/React.createElement("div", {
-    className: "page-in"
-  }, /*#__PURE__*/React.createElement(PageHead, {
-    title: "Organization",
-    sub: "Who does what, and who it routes through.",
-    meta: "Three full time, plus contractors and two open seats."
-  }), /*#__PURE__*/React.createElement("div", {
-    style: {
-      textAlign: "center",
-      marginBottom: 26
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "sec-label",
-    style: {
-      justifyContent: "center"
-    }
-  }, "Founder"), /*#__PURE__*/React.createElement(Card, {
-    pad: 18,
-    style: {
-      maxWidth: 280,
-      margin: "0 auto",
-      borderColor: "var(--accent)"
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      gap: 7
-    }
-  }, /*#__PURE__*/React.createElement(Avatar, {
-    name: "Damon B",
-    size: 40
-  }), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 15,
-      fontWeight: 600
-    }
-  }, "Damon B."), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 11.5,
-      color: "var(--accent)"
-    }
-  }, "Founder / CEO"), /*#__PURE__*/React.createElement(Badge, {
-    tone: "bad"
-  }, "Every decision routes here")))), /*#__PURE__*/React.createElement(SecLabel, {
-    icon: "team",
-    right: "4 teams"
-  }, "Teams and reporting"), /*#__PURE__*/React.createElement(G, {
-    c: 2,
-    name: "2",
-    gap: 14,
-    style: {
-      marginBottom: 20
-    }
-  }, D.org.teams.map(t => /*#__PURE__*/React.createElement(Card, {
-    key: t.team,
-    pad: 18,
-    hover: true,
-    style: {
-      borderLeft: "3px solid var(--accent)"
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "flex-start",
-      marginBottom: 9
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: "flex",
-      alignItems: "center",
-      gap: 10
-    }
-  }, /*#__PURE__*/React.createElement(Avatar, {
-    name: t.lead,
-    size: 32
-  }), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 14,
-      fontWeight: 600
-    }
-  }, t.lead), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 11,
-      color: "var(--accent)"
-    }
-  }, t.team))), /*#__PURE__*/React.createElement(Badge, {
-    tone: "mute"
-  }, t.people.length + 1, " people")), /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: 11.5,
-      color: "var(--ink-soft)",
-      marginBottom: 12
-    }
-  }, t.note), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: "flex",
-      flexWrap: "wrap",
-      gap: 7
-    }
-  }, t.people.map(p => /*#__PURE__*/React.createElement("span", {
-    key: p,
-    style: {
-      display: "inline-flex",
-      alignItems: "center",
-      gap: 6,
-      background: "var(--surface-3)",
-      border: "1px solid var(--rule)",
-      borderRadius: 99,
-      padding: "4px 10px 4px 4px",
-      fontSize: 11.5
-    }
-  }, /*#__PURE__*/React.createElement(Avatar, {
-    name: p,
-    size: 19,
-    tone: "mute"
-  }), p)))))), /*#__PURE__*/React.createElement(Note, {
-    tone: "warn",
-    icon: "!"
-  }, "Nothing about how this business runs is written down and no role carries a number yet. That is the single biggest structural risk here, bigger than any individual metric on this dashboard."));
-}
-
-/* ============================== SCORECARDS ============================== */
-function Scorecards() {
-  const tone = {
-    good: "good",
-    bad: "bad",
-    mute: "mute"
-  };
-  const lab = {
-    good: "On track",
-    bad: "At risk",
-    mute: "Not set"
-  };
-  return /*#__PURE__*/React.createElement("div", {
-    className: "page-in"
-  }, /*#__PURE__*/React.createElement(PageHead, {
-    title: "Role scorecards",
-    sub: "One number per seat, visible to the person being measured.",
-    meta: "A scorecard nobody can see is a report about them, not a tool for them."
-  }), /*#__PURE__*/React.createElement(Card, {
-    pad: 0
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "scroll-x"
-  }, /*#__PURE__*/React.createElement("table", {
-    className: "tbl"
-  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Who"), /*#__PURE__*/React.createElement("th", null, "Role"), /*#__PURE__*/React.createElement("th", null, "The one number"), /*#__PURE__*/React.createElement("th", {
-    style: {
-      textAlign: "right"
-    }
-  }, "Now"), /*#__PURE__*/React.createElement("th", {
-    style: {
-      textAlign: "right"
-    }
-  }, "Target"), /*#__PURE__*/React.createElement("th", null, "Status"))), /*#__PURE__*/React.createElement("tbody", null, D.scorecards.map(s => /*#__PURE__*/React.createElement("tr", {
-    key: s.n
-  }, /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: "flex",
-      alignItems: "center",
-      gap: 9
-    }
-  }, /*#__PURE__*/React.createElement(Avatar, {
-    name: s.n,
-    size: 26,
-    tone: s.st === "bad" ? "bad" : "accent"
-  }), /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontWeight: 600
-    }
-  }, s.n))), /*#__PURE__*/React.createElement("td", {
-    style: {
-      color: "var(--ink-soft)"
-    }
-  }, s.r), /*#__PURE__*/React.createElement("td", null, s.metric), /*#__PURE__*/React.createElement("td", {
-    className: "num",
-    style: {
-      textAlign: "right",
-      fontWeight: 600
-    }
-  }, s.now), /*#__PURE__*/React.createElement("td", {
-    className: "num",
-    style: {
-      textAlign: "right",
-      color: "var(--ink-soft)"
-    }
-  }, s.target), /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement(Badge, {
-    tone: tone[s.st]
-  }, lab[s.st])))))))));
 }
 
 /* ============================== PROJECT BOARD ============================== */
@@ -9927,6 +10107,1169 @@ const SUBVIEWS = {
   inventory: [null, InvReorders, InvMovements]
 };
 
+/* ==== pages-6.jsx ==== */
+// pages-6.jsx, the team layer. Role scorecards, the weekly score log and the
+// org chart, all reading one score store so a number logged once shows
+// everywhere it's used.
+
+/* ------------------------------------------------------------ score store */
+const SCORE_KEY = "mynd.scorelog.v1";
+const ScoreStore = {
+  mode: "sample",
+  live: {},
+  focus: null,
+  viewAs: "owner",
+  clears: 0,
+  subs: new Set()
+};
+try {
+  const raw = localStorage.getItem(SCORE_KEY);
+  if (raw) ScoreStore.live = JSON.parse(raw) || {};
+} catch (e) {}
+function scoreEmit() {
+  ScoreStore.subs.forEach(f => f());
+}
+function useScore() {
+  const [, force] = useState(0);
+  useEffect(() => {
+    const f = () => force(x => x + 1);
+    ScoreStore.subs.add(f);
+    return () => ScoreStore.subs.delete(f);
+  }, []);
+  return ScoreStore;
+}
+function scoreSet(k, v) {
+  ScoreStore[k] = v;
+  scoreEmit();
+}
+function scoreRow(id) {
+  const src = ScoreStore.mode === "sample" ? SAMPLE_LOG[id] || [] : ScoreStore.live[id] || [];
+  return WEEKS.map((w, i) => src[i] === undefined || src[i] === "" ? null : src[i]);
+}
+function scoreEnter(id, i, raw) {
+  const row = (ScoreStore.live[id] || []).slice();
+  const v = raw === "" ? null : Number(raw);
+  row[i] = raw === "" || isNaN(v) ? null : v;
+  ScoreStore.live = {
+    ...ScoreStore.live,
+    [id]: row
+  };
+  try {
+    localStorage.setItem(SCORE_KEY, JSON.stringify(ScoreStore.live));
+  } catch (e) {}
+  scoreEmit();
+}
+function scoreClear() {
+  ScoreStore.live = {};
+  ScoreStore.clears += 1;
+  try {
+    localStorage.removeItem(SCORE_KEY);
+  } catch (e) {}
+  scoreEmit();
+}
+
+/* ------------------------------------------------------------ status, same rules as the tracker */
+// Prior is the previous entry that holds a number, so monthly and per-run seats
+// compare run to run rather than to an empty week.
+function seatRead(s) {
+  const row = scoreRow(s.id);
+  const idx = row.map((v, i) => v == null ? -1 : i).filter(i => i >= 0);
+  const li = idx.length ? idx[idx.length - 1] : -1,
+    pi = idx.length > 1 ? idx[idx.length - 2] : -1;
+  const latest = li >= 0 ? row[li] : null,
+    prior = pi >= 0 ? row[pi] : null;
+  let st;
+  if (latest == null) st = "Not measured";else if (s.target.kind === "max") st = latest <= s.target.v ? "On target" : "Off target";else if (s.target.kind === "min") st = latest >= s.target.v ? "On target" : "Off target";else if (prior == null) st = "Baseline";else st = latest > prior ? "Improving" : latest === prior ? "Flat" : "Slipping";
+  const better = latest == null || prior == null || latest === prior ? null : s.target.kind === "max" ? latest < prior : latest > prior;
+  const dir = latest == null || prior == null || latest === prior ? 0 : latest > prior ? 1 : -1;
+  return {
+    row,
+    latest,
+    prior,
+    li,
+    st,
+    better,
+    dir,
+    entries: idx.length
+  };
+}
+const ST_TONE = {
+  "On target": "good",
+  "Improving": "good",
+  "Flat": "warn",
+  "Baseline": "info",
+  "Off target": "bad",
+  "Slipping": "bad",
+  "Not measured": "mute"
+};
+const MEASURE_TONE = {
+  "Measurable": "good",
+  "Needs 30 days": "info",
+  "Needs build": "warn",
+  "Needs access": "warn",
+  "Needs three runs": "warn",
+  "Needs roadmap": "bad",
+  "Needs attribution": "bad"
+};
+function fmtSeat(s, v) {
+  if (v == null) return "-";
+  if (s.unit === "usd") return fmt.usd(v);
+  if (s.unit === "pct") return Number(v).toFixed(1) + "%";
+  if (s.unit === "h") return (Number.isInteger(v) ? v : Number(v).toFixed(1)) + " hrs";
+  if (s.unit === "rate") return Number(v).toFixed(2) + " / $";
+  return Number.isInteger(v) ? String(v) : Number(v).toFixed(1);
+}
+const seatById = id => SEATS.find(s => s.id === id);
+
+/* ------------------------------------------------------------ trend chart with gaps */
+function Trend({
+  seat,
+  row,
+  h = 150,
+  compact
+}) {
+  const last = Math.max(11, row.reduce((m, v, i) => v != null ? i : m, -1));
+  const span = row.slice(0, last + 1);
+  const vals = span.filter(v => v != null);
+  if (!vals.length) {
+    return /*#__PURE__*/React.createElement("div", {
+      style: {
+        height: h,
+        display: "grid",
+        placeItems: "center",
+        border: "1px dashed var(--rule)",
+        borderRadius: "var(--r-md)",
+        color: "var(--ink-mute)",
+        fontSize: 11.5
+      }
+    }, "Not measured yet");
+  }
+  const tv = seat.target.v;
+  let lo = Math.min(...vals, tv ?? Infinity),
+    hi = Math.max(...vals, tv ?? -Infinity);
+  if (lo === hi) {
+    lo = lo - 1;
+    hi = hi + 1;
+  }
+  const pad = (hi - lo) * 0.15;
+  lo -= pad;
+  hi += pad;
+  const X = i => span.length === 1 ? 50 : i / (span.length - 1) * 100;
+  const Y = v => 100 - (v - lo) / (hi - lo) * 100;
+  const pts = span.map((v, i) => v == null ? null : [X(i), Y(v)]).filter(Boolean);
+  const r = seatRead(seat);
+  const tone = ST_TONE[r.st] === "mute" ? "accent" : ST_TONE[r.st];
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: "relative",
+      height: h
+    }
+  }, /*#__PURE__*/React.createElement("svg", {
+    viewBox: "0 0 100 100",
+    preserveAspectRatio: "none",
+    style: {
+      width: "100%",
+      height: "100%",
+      overflow: "visible"
+    }
+  }, !compact && [0, 25, 50, 75, 100].map(g => /*#__PURE__*/React.createElement("line", {
+    key: g,
+    x1: "0",
+    y1: g,
+    x2: "100",
+    y2: g,
+    stroke: "var(--rule-soft)",
+    strokeWidth: "0.4",
+    vectorEffect: "non-scaling-stroke"
+  })), tv != null && /*#__PURE__*/React.createElement("line", {
+    x1: "0",
+    y1: Y(tv),
+    x2: "100",
+    y2: Y(tv),
+    stroke: "var(--warn)",
+    strokeWidth: "1",
+    strokeDasharray: "3 3",
+    vectorEffect: "non-scaling-stroke"
+  }), /*#__PURE__*/React.createElement("polyline", {
+    points: pts.map(p => p.join(",")).join(" "),
+    fill: "none",
+    stroke: T(tone),
+    strokeWidth: compact ? 1.6 : 2,
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    vectorEffect: "non-scaling-stroke"
+  })), pts.map((p, i) => /*#__PURE__*/React.createElement("span", {
+    key: i,
+    style: {
+      position: "absolute",
+      left: p[0] + "%",
+      top: p[1] + "%",
+      width: compact ? 5 : 7,
+      height: compact ? 5 : 7,
+      borderRadius: 99,
+      transform: "translate(-50%,-50%)",
+      background: "var(--surface)",
+      border: `1.6px solid ${T(tone)}`
+    }
+  })), !compact && tv != null && /*#__PURE__*/React.createElement("span", {
+    style: {
+      position: "absolute",
+      right: 0,
+      top: Y(tv) + "%",
+      transform: "translateY(-130%)",
+      fontSize: 9.5,
+      color: "var(--warn)",
+      fontWeight: 600
+    }
+  }, "Target ", fmtSeat(seat, tv))), !compact && /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      marginTop: 7
+    }
+  }, span.map((v, i) => /*#__PURE__*/React.createElement("span", {
+    key: i,
+    style: {
+      flex: 1,
+      textAlign: "center",
+      fontSize: 9,
+      color: v == null ? "var(--ink-dim)" : "var(--ink-mute)"
+    }
+  }, i % 2 === 0 || span.length <= 8 ? WEEKS[i] : ""))));
+}
+function ModeSwitch() {
+  const S = useScore();
+  return /*#__PURE__*/React.createElement(Seg, {
+    options: [{
+      v: "sample",
+      l: "Sample history"
+    }, {
+      v: "live",
+      l: "Live log"
+    }],
+    value: S.mode,
+    onChange: v => scoreSet("mode", v)
+  });
+}
+function ModeNote() {
+  const S = useScore();
+  return S.mode === "sample" ? /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: 11,
+      color: "var(--ink-mute)",
+      margin: "-12px 0 18px"
+    }
+  }, "Sample history, twelve modeled weeks, shows how the scoring trends. Switch to Live log to enter real numbers.") : /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: 11,
+      color: "var(--ink-mute)",
+      margin: "-12px 0 18px"
+    }
+  }, "Live log. Numbers entered on the Score Log page. An empty week means not measured, not zero.");
+}
+
+/* ============================== ROLE SCORECARDS ============================== */
+function TeamScorecards({
+  go
+}) {
+  const S = useScore();
+  const reads = SEATS.map(s => ({
+    s,
+    r: seatRead(s)
+  }));
+  const count = f => reads.filter(x => f(x.r.st)).length;
+  const shown = S.viewAs === "owner" ? reads : reads.filter(x => x.s.id === S.viewAs || S.viewAs === "coo" && x.s.id === "warehouse");
+  const focus = S.focus && shown.find(x => x.s.id === S.focus);
+  const f = seatRead(seatById("founder"));
+  return /*#__PURE__*/React.createElement("div", {
+    className: "page-in"
+  }, /*#__PURE__*/React.createElement(PageHead, {
+    title: "Role scorecards",
+    sub: "One number per seat. Everyone sees their own card. The owner sees all of them.",
+    right: /*#__PURE__*/React.createElement("span", {
+      style: {
+        display: "inline-flex",
+        gap: 10,
+        alignItems: "center",
+        flexWrap: "wrap"
+      }
+    }, /*#__PURE__*/React.createElement("select", {
+      value: S.viewAs,
+      onChange: e => {
+        scoreSet("viewAs", e.target.value);
+        scoreSet("focus", null);
+      },
+      "aria-label": "Viewing as",
+      style: {
+        background: "var(--surface-3)",
+        color: "var(--ink)",
+        border: "1px solid var(--rule)",
+        borderRadius: "var(--r-sm)",
+        padding: "6px 9px",
+        fontSize: 12
+      }
+    }, /*#__PURE__*/React.createElement("option", {
+      value: "owner"
+    }, "Viewing as the owner, all seats"), SEATS.filter(s => !s.relationship && s.id !== "founder").map(s => /*#__PURE__*/React.createElement("option", {
+      key: s.id,
+      value: s.id
+    }, "Viewing as ", s.who, ", ", s.short))), /*#__PURE__*/React.createElement(ModeSwitch, null))
+  }), /*#__PURE__*/React.createElement(ModeNote, null), S.viewAs === "owner" && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(G, {
+    c: 4,
+    style: {
+      marginBottom: 20
+    }
+  }, /*#__PURE__*/React.createElement(KPI, {
+    label: "On target or improving",
+    value: String(count(st => st === "On target" || st === "Improving")),
+    tone: "good",
+    sub: "of 9 seats"
+  }), /*#__PURE__*/React.createElement(KPI, {
+    label: "Off target or slipping",
+    value: String(count(st => st === "Off target" || st === "Slipping")),
+    tone: "bad",
+    sub: "look upstream first"
+  }), /*#__PURE__*/React.createElement(KPI, {
+    label: "Baseline or flat",
+    value: String(count(st => st === "Baseline" || st === "Flat")),
+    tone: "warn",
+    sub: "one entry, or no move"
+  }), /*#__PURE__*/React.createElement(KPI, {
+    label: "Not measured",
+    value: String(count(st => st === "Not measured")),
+    tone: "mute",
+    sub: "measure still being built"
+  })), /*#__PURE__*/React.createElement(Card, {
+    pad: 22,
+    style: {
+      marginBottom: 22,
+      borderLeft: "3px solid var(--accent)"
+    }
+  }, /*#__PURE__*/React.createElement(G, {
+    c: 2,
+    name: "2h",
+    gap: 22,
+    style: {
+      gridTemplateColumns: "1fr 1.4fr",
+      alignItems: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "sec-label"
+  }, "The one that matters most"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "baseline",
+      gap: 10,
+      flexWrap: "wrap",
+      margin: "6px 0 8px"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "mono",
+    style: {
+      fontSize: 32,
+      fontWeight: 600,
+      color: T(ST_TONE[f.st] === "mute" ? "ink" : ST_TONE[f.st])
+    }
+  }, fmtSeat(seatById("founder"), f.latest)), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 12.5,
+      color: "var(--ink-soft)"
+    }
+  }, "decisions routed through the owner this week. Target under 5.")), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: 12,
+      color: "var(--ink-mute)",
+      lineHeight: 1.55
+    }
+  }, "Every other number on these cards improves as this one falls, because most of them are held back by waiting on him.")), /*#__PURE__*/React.createElement(Trend, {
+    seat: seatById("founder"),
+    row: f.row,
+    h: 120
+  })))), /*#__PURE__*/React.createElement(G, {
+    c: 3,
+    name: "3",
+    gap: 16,
+    style: {
+      marginBottom: 22
+    }
+  }, shown.map(({
+    s,
+    r
+  }) => {
+    const on = S.focus === s.id;
+    return /*#__PURE__*/React.createElement(Card, {
+      key: s.id,
+      pad: 18,
+      hover: true,
+      onClick: () => scoreSet("focus", on ? null : s.id),
+      style: {
+        cursor: "pointer",
+        borderColor: on ? "var(--accent)" : undefined,
+        display: "flex",
+        flexDirection: "column",
+        gap: 10
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "flex-start",
+        gap: 10
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        alignItems: "center",
+        gap: 9,
+        minWidth: 0
+      }
+    }, /*#__PURE__*/React.createElement(Avatar, {
+      name: s.who,
+      size: 28,
+      tone: ST_TONE[r.st] === "bad" ? "bad" : "accent"
+    }), /*#__PURE__*/React.createElement("div", {
+      style: {
+        minWidth: 0
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 13.5,
+        fontWeight: 600
+      }
+    }, s.seat), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 11,
+        color: "var(--ink-mute)"
+      }
+    }, s.who))), /*#__PURE__*/React.createElement(Badge, {
+      tone: ST_TONE[r.st]
+    }, r.st)), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 11.5,
+        color: "var(--ink-soft)"
+      }
+    }, s.number), /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        alignItems: "baseline",
+        gap: 9,
+        flexWrap: "wrap"
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "mono",
+      style: {
+        fontSize: 24,
+        fontWeight: 600,
+        color: r.latest == null ? "var(--ink-mute)" : T(ST_TONE[r.st])
+      }
+    }, fmtSeat(s, r.latest)), r.prior != null && /*#__PURE__*/React.createElement("span", {
+      className: "mono",
+      style: {
+        fontSize: 11,
+        color: r.better ? "var(--good)" : r.better === false ? "var(--bad)" : "var(--ink-mute)"
+      }
+    }, r.dir > 0 ? "\u25B2 " : r.dir < 0 ? "\u25BC " : "", "prior ", fmtSeat(s, r.prior))), /*#__PURE__*/React.createElement(Trend, {
+      seat: s,
+      row: r.row,
+      h: 44,
+      compact: true
+    }), /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        justifyContent: "space-between",
+        gap: 8,
+        flexWrap: "wrap",
+        fontSize: 10.5,
+        color: "var(--ink-mute)",
+        paddingTop: 8,
+        borderTop: "1px solid var(--rule-soft)"
+      }
+    }, /*#__PURE__*/React.createElement("span", null, "Target ", s.target.text, " · ", s.cadence), /*#__PURE__*/React.createElement(Badge, {
+      tone: MEASURE_TONE[s.measure]
+    }, s.measure)));
+  })), focus && /*#__PURE__*/React.createElement(SeatDetail, {
+    s: focus.s,
+    r: focus.r,
+    go: go
+  }), /*#__PURE__*/React.createElement(Note, {
+    tone: "info",
+    icon: "i"
+  }, "If a number is off, look at the supporting numbers before the person. Most of the time a primary number moves because something upstream of it changed, not because somebody stopped trying. Click any card for its trend and supporting numbers."));
+}
+function SeatDetail({
+  s,
+  r,
+  go
+}) {
+  const S = useScore();
+  return /*#__PURE__*/React.createElement(Card, {
+    pad: 22,
+    style: {
+      marginBottom: 22
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "flex-start",
+      gap: 14,
+      flexWrap: "wrap",
+      marginBottom: 16
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      minWidth: 0,
+      flex: "1 1 320px"
+    }
+  }, /*#__PURE__*/React.createElement("h3", {
+    style: {
+      fontSize: 17,
+      marginBottom: 5
+    }
+  }, s.seat, " · ", s.who), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: 12.5,
+      color: "var(--ink-soft)",
+      lineHeight: 1.55
+    }
+  }, s.line)), /*#__PURE__*/React.createElement("span", {
+    style: {
+      display: "flex",
+      gap: 8
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => go("scorelog"),
+    style: detailBtn
+  }, "Open the log"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => go("org"),
+    style: detailBtn
+  }, "See on the org chart"))), /*#__PURE__*/React.createElement(G, {
+    c: 2,
+    name: "2h",
+    gap: 22,
+    style: {
+      gridTemplateColumns: "1.5fr 1fr"
+    }
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(SecLabel, {
+    icon: "pulse",
+    right: `${r.entries} ${r.entries === 1 ? "entry" : "entries"} · read ${s.cadence.toLowerCase()}`
+  }, s.number), /*#__PURE__*/React.createElement(Trend, {
+    seat: s,
+    row: r.row,
+    h: 170
+  }), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: 11,
+      color: "var(--ink-mute)",
+      marginTop: 12
+    }
+  }, "From ", s.source.toLowerCase(), ". ", s.measure === "Measurable" ? "Readable today." : `Before this number means anything: ${s.need.charAt(0).toLowerCase() + s.need.slice(1)}.`)), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(SecLabel, {
+    icon: "target"
+  }, "Supporting numbers"), s.supporting.map(x => /*#__PURE__*/React.createElement("div", {
+    key: x.n,
+    style: {
+      display: "grid",
+      gridTemplateColumns: "1fr auto",
+      gap: 10,
+      padding: "9px 0",
+      borderBottom: "1px solid var(--rule-soft)"
+    }
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12.5,
+      fontWeight: 500
+    }
+  }, x.n), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 10.5,
+      color: "var(--ink-mute)"
+    }
+  }, "Target ", x.target, " · ", x.cadence, " · ", x.source)), S.mode === "sample" ? /*#__PURE__*/React.createElement("span", {
+    className: "mono",
+    style: {
+      fontSize: 13,
+      fontWeight: 600,
+      color: T(x.tone),
+      alignSelf: "center"
+    }
+  }, x.sample) : /*#__PURE__*/React.createElement(Badge, {
+    tone: "mute",
+    style: {
+      alignSelf: "center"
+    }
+  }, "Not measured"))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 14,
+      fontSize: 11.5,
+      color: "var(--ink-soft)",
+      lineHeight: 1.55
+    }
+  }, /*#__PURE__*/React.createElement("b", {
+    style: {
+      fontWeight: 600
+    }
+  }, "Manages."), " ", s.manages, /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("b", {
+    style: {
+      fontWeight: 600
+    }
+  }, "Doesn't."), " ", s.not, /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: "var(--ink-mute)"
+    }
+  }, "Role document: ", s.doc, ", in the Vault.")))));
+}
+const detailBtn = {
+  border: "1px solid var(--rule)",
+  background: "var(--surface-3)",
+  color: "var(--ink-soft)",
+  borderRadius: "var(--r-sm)",
+  padding: "6px 11px",
+  fontSize: 11.5,
+  fontWeight: 600,
+  cursor: "pointer"
+};
+
+/* ============================== SCORE LOG ============================== */
+function ScoreLog() {
+  const S = useScore();
+  const live = S.mode === "live";
+  const shownWeeks = live ? WEEKS.length : 12;
+  const exportCsv = () => {
+    const head = ["Seat", "Who", "The number", "Target", ...WEEKS, "Latest", "Prior", "Status"];
+    const lines = [head].concat(SEATS.map(s => {
+      const r = seatRead(s);
+      return [s.seat, s.who, s.number, s.target.text, ...r.row.map(v => v == null ? "" : v), r.latest ?? "", r.prior ?? "", r.st];
+    }));
+    const csv = lines.map(l => l.map(c => `"${String(c).replace(/"/g, '""')}"`).join(",")).join("\n");
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([csv], {
+      type: "text/csv"
+    }));
+    a.download = `mynd_score_log_${S.mode}.csv`;
+    a.click();
+  };
+  const cell = {
+    width: 62,
+    background: "var(--surface-3)",
+    border: "1px solid var(--rule)",
+    borderRadius: 6,
+    color: "var(--ink)",
+    padding: "5px 6px",
+    fontSize: 12,
+    textAlign: "right",
+    fontFamily: "var(--mono)"
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    className: "page-in"
+  }, /*#__PURE__*/React.createElement(PageHead, {
+    title: "Score log",
+    sub: "One number per seat per week. Status calculates on its own.",
+    right: /*#__PURE__*/React.createElement("span", {
+      style: {
+        display: "inline-flex",
+        gap: 10,
+        alignItems: "center",
+        flexWrap: "wrap"
+      }
+    }, /*#__PURE__*/React.createElement("button", {
+      onClick: exportCsv,
+      style: detailBtn
+    }, "Export CSV"), live && /*#__PURE__*/React.createElement("button", {
+      onClick: () => {
+        if (confirm("Clear every live entry?")) scoreClear();
+      },
+      style: detailBtn
+    }, "Clear live log"), /*#__PURE__*/React.createElement(ModeSwitch, null))
+  }), /*#__PURE__*/React.createElement(ModeNote, null), /*#__PURE__*/React.createElement(Card, {
+    pad: 0,
+    style: {
+      marginBottom: 20
+    },
+    key: S.mode + ":" + S.clears
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "scroll-x"
+  }, /*#__PURE__*/React.createElement("table", {
+    className: "tbl"
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", {
+    style: {
+      position: "sticky",
+      left: 0,
+      background: "var(--surface)",
+      zIndex: 1,
+      minWidth: 190
+    }
+  }, "Seat and number"), /*#__PURE__*/React.createElement("th", null, "Target"), WEEKS.slice(0, shownWeeks).map((w, i) => /*#__PURE__*/React.createElement("th", {
+    key: w,
+    style: {
+      textAlign: "right",
+      color: i === 0 ? "var(--accent)" : undefined
+    }
+  }, w)), /*#__PURE__*/React.createElement("th", {
+    style: {
+      textAlign: "right"
+    }
+  }, "Latest"), /*#__PURE__*/React.createElement("th", {
+    style: {
+      textAlign: "right"
+    }
+  }, "Prior"), /*#__PURE__*/React.createElement("th", null, "Status"))), /*#__PURE__*/React.createElement("tbody", null, SEATS.map(s => {
+    const r = seatRead(s);
+    return /*#__PURE__*/React.createElement("tr", {
+      key: s.id
+    }, /*#__PURE__*/React.createElement("td", {
+      style: {
+        position: "sticky",
+        left: 0,
+        background: "var(--surface)",
+        zIndex: 1
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontWeight: 600
+      }
+    }, s.short, " ", /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontWeight: 400,
+        color: "var(--ink-mute)"
+      }
+    }, "· ", s.who)), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 10.5,
+        color: "var(--ink-mute)"
+      }
+    }, s.number)), /*#__PURE__*/React.createElement("td", {
+      style: {
+        fontSize: 11.5,
+        color: "var(--ink-soft)",
+        whiteSpace: "nowrap"
+      }
+    }, s.target.text), r.row.slice(0, shownWeeks).map((v, i) => /*#__PURE__*/React.createElement("td", {
+      key: i,
+      className: "num",
+      style: {
+        textAlign: "right",
+        whiteSpace: "nowrap",
+        color: v == null ? "var(--ink-dim)" : "var(--ink)"
+      }
+    }, live ? /*#__PURE__*/React.createElement("input", {
+      type: "number",
+      step: "any",
+      defaultValue: v ?? "",
+      "aria-label": `${s.short} week of ${WEEKS[i]}`,
+      onBlur: e => {
+        const nv = e.target.value;
+        if (String(v ?? "") !== nv) scoreEnter(s.id, i, nv);
+      },
+      style: cell
+    }) : v == null ? "-" : fmtSeat(s, v))), /*#__PURE__*/React.createElement("td", {
+      className: "num",
+      style: {
+        textAlign: "right",
+        fontWeight: 600,
+        whiteSpace: "nowrap"
+      }
+    }, fmtSeat(s, r.latest)), /*#__PURE__*/React.createElement("td", {
+      className: "num",
+      style: {
+        textAlign: "right",
+        color: "var(--ink-mute)",
+        whiteSpace: "nowrap"
+      }
+    }, fmtSeat(s, r.prior)), /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement(Badge, {
+      tone: ST_TONE[r.st]
+    }, r.st)));
+  }))))), /*#__PURE__*/React.createElement(G, {
+    c: 2,
+    name: "2h",
+    gap: 16,
+    style: {
+      marginBottom: 20
+    }
+  }, /*#__PURE__*/React.createElement(Card, {
+    pad: 20
+  }, /*#__PURE__*/React.createElement(SecLabel, {
+    icon: "target"
+  }, "How status works"), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: 12.5,
+      color: "var(--ink-soft)",
+      lineHeight: 1.6
+    }
+  }, "Where a seat has a fixed target, status compares the latest number to that target. Where the target is a direction, it compares the latest number to the one before it. Monthly and per-run seats compare to their last entry, not to an empty week. Not measured means nothing has been entered yet, and that's a real state rather than a zero.")), /*#__PURE__*/React.createElement(Card, {
+    pad: 20
+  }, /*#__PURE__*/React.createElement(SecLabel, {
+    icon: "clock"
+  }, "Setting a target"), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: 12.5,
+      color: "var(--ink-soft)",
+      lineHeight: 1.6
+    }
+  }, "Five seats have a direction rather than a number, on purpose. Measure for thirty days, set the target against the baseline, and move it once it has held for two months. Order accuracy at 99.5% is the industry standard, so it applies from day one."))), /*#__PURE__*/React.createElement(SecLabel, {
+    icon: "pulse",
+    right: "read when a primary number moves"
+  }, "Supporting numbers"), /*#__PURE__*/React.createElement(Card, {
+    pad: 0
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "scroll-x"
+  }, /*#__PURE__*/React.createElement("table", {
+    className: "tbl"
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Seat"), /*#__PURE__*/React.createElement("th", null, "Supporting number"), /*#__PURE__*/React.createElement("th", null, "Target"), /*#__PURE__*/React.createElement("th", null, "Cadence"), /*#__PURE__*/React.createElement("th", null, "Source"), /*#__PURE__*/React.createElement("th", {
+    style: {
+      textAlign: "right"
+    }
+  }, "Latest"))), /*#__PURE__*/React.createElement("tbody", null, SEATS.flatMap(s => s.supporting.map((x, j) => /*#__PURE__*/React.createElement("tr", {
+    key: s.id + j
+  }, /*#__PURE__*/React.createElement("td", {
+    style: {
+      fontWeight: j === 0 ? 600 : 400,
+      color: j === 0 ? "var(--ink)" : "transparent"
+    }
+  }, s.short), /*#__PURE__*/React.createElement("td", null, x.n), /*#__PURE__*/React.createElement("td", {
+    style: {
+      color: "var(--ink-soft)",
+      fontSize: 12
+    }
+  }, x.target), /*#__PURE__*/React.createElement("td", {
+    style: {
+      color: "var(--ink-mute)",
+      fontSize: 12
+    }
+  }, x.cadence), /*#__PURE__*/React.createElement("td", {
+    style: {
+      color: "var(--ink-mute)",
+      fontSize: 12
+    }
+  }, x.source), /*#__PURE__*/React.createElement("td", {
+    className: "num",
+    style: {
+      textAlign: "right",
+      fontWeight: 600,
+      color: S.mode === "sample" ? T(x.tone) : "var(--ink-mute)"
+    }
+  }, S.mode === "sample" ? x.sample : "Not measured")))))))));
+}
+
+/* ============================== ORG CHART ============================== */
+function OrgCard({
+  s,
+  go,
+  dim
+}) {
+  const r = seatRead(s);
+  return /*#__PURE__*/React.createElement(Card, {
+    pad: 16,
+    hover: true,
+    onClick: () => {
+      scoreSet("viewAs", "owner");
+      scoreSet("focus", s.id);
+      go("scorecards");
+    },
+    style: {
+      cursor: "pointer",
+      display: "flex",
+      flexDirection: "column",
+      gap: 8,
+      borderStyle: s.relationship ? "dashed" : undefined
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: 9
+    }
+  }, /*#__PURE__*/React.createElement(Avatar, {
+    name: s.who,
+    size: 30,
+    tone: s.relationship ? "mute" : "accent"
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      minWidth: 0
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13.5,
+      fontWeight: 600
+    }
+  }, s.short), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: "var(--ink-mute)"
+    }
+  }, s.who))), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: 11.5,
+      color: "var(--ink-soft)",
+      lineHeight: 1.5
+    }
+  }, s.line), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      gap: 8,
+      paddingTop: 8,
+      borderTop: "1px solid var(--rule-soft)"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 10.5,
+      color: "var(--ink-mute)",
+      minWidth: 0
+    }
+  }, s.number), /*#__PURE__*/React.createElement("span", {
+    className: "mono",
+    style: {
+      fontSize: 13,
+      fontWeight: 600,
+      color: r.latest == null ? "var(--ink-mute)" : T(ST_TONE[r.st]),
+      whiteSpace: "nowrap"
+    }
+  }, fmtSeat(s, r.latest))), s.moving && /*#__PURE__*/React.createElement(Badge, {
+    tone: "info",
+    style: {
+      alignSelf: "flex-start"
+    }
+  }, "Moving to the COO"), s.relationship && /*#__PURE__*/React.createElement(Badge, {
+    tone: "mute",
+    style: {
+      alignSelf: "flex-start"
+    }
+  }, "A relationship, not a person"));
+}
+function TeamOrg({
+  go
+}) {
+  const S = useScore();
+  const owner = seatById("founder"),
+    coo = seatById("coo");
+  const direct = SEATS.filter(s => s.reports === "founder" && s.id !== "coo" && !s.moving);
+  const underCoo = SEATS.filter(s => s.reports === "coo");
+  const moving = SEATS.filter(s => s.moving === "coo");
+  const fr = seatRead(owner);
+  const steps = S.mode === "sample" ? TRANSFERS : TRANSFERS.map(t => ({
+    ...t,
+    step: t.step == null ? null : 0
+  }));
+  const vline = /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: 1,
+      height: 20,
+      background: "var(--rule)",
+      margin: "0 auto"
+    }
+  });
+  return /*#__PURE__*/React.createElement("div", {
+    className: "page-in"
+  }, /*#__PURE__*/React.createElement(PageHead, {
+    title: "Org chart",
+    sub: "Who does what, who it reports to, and the one number each seat is held to.",
+    meta: "Nine seats, each with a written role document. Click any seat for its scorecard.",
+    right: /*#__PURE__*/React.createElement(ModeSwitch, null)
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      maxWidth: 340,
+      margin: "0 auto"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "sec-label",
+    style: {
+      justifyContent: "center"
+    }
+  }, "Owner"), /*#__PURE__*/React.createElement(Card, {
+    pad: 18,
+    hover: true,
+    onClick: () => {
+      scoreSet("viewAs", "owner");
+      scoreSet("focus", "founder");
+      go("scorecards");
+    },
+    style: {
+      cursor: "pointer",
+      borderColor: "var(--accent)",
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      gap: 6
+    }
+  }, /*#__PURE__*/React.createElement(Avatar, {
+    name: D.meta.user,
+    size: 40
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 15,
+      fontWeight: 600
+    }
+  }, D.meta.user), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11.5,
+      color: "var(--accent)"
+    }
+  }, "Founder and Owner"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11.5,
+      color: "var(--ink-soft)"
+    }
+  }, owner.number, ": ", /*#__PURE__*/React.createElement("b", {
+    className: "mono",
+    style: {
+      color: T(ST_TONE[fr.st] === "mute" ? "ink" : ST_TONE[fr.st])
+    }
+  }, fmtSeat(owner, fr.latest)), ", target under 5")))), vline, /*#__PURE__*/React.createElement("div", {
+    style: {
+      maxWidth: 340,
+      margin: "0 auto"
+    }
+  }, /*#__PURE__*/React.createElement(OrgCard, {
+    s: coo,
+    go: go
+  })), /*#__PURE__*/React.createElement(SecLabel, {
+    icon: "team",
+    right: `${direct.length} seats`
+  }, "Reports to the owner"), /*#__PURE__*/React.createElement(G, {
+    c: 4,
+    name: "4",
+    gap: 14,
+    style: {
+      marginBottom: 22
+    }
+  }, direct.map(s => /*#__PURE__*/React.createElement(OrgCard, {
+    key: s.id,
+    s: s,
+    go: go
+  }))), /*#__PURE__*/React.createElement(SecLabel, {
+    icon: "team",
+    right: `${underCoo.length} owned · ${moving.length} reporting to the owner until they move`
+  }, "Owned by the COO, or moving to the COO"), /*#__PURE__*/React.createElement(G, {
+    c: 3,
+    name: "3",
+    gap: 14,
+    style: {
+      marginBottom: 26
+    }
+  }, underCoo.map(s => /*#__PURE__*/React.createElement(OrgCard, {
+    key: s.id,
+    s: s,
+    go: go
+  })), moving.map(s => /*#__PURE__*/React.createElement(OrgCard, {
+    key: s.id + "m",
+    s: s,
+    go: go
+  }))), /*#__PURE__*/React.createElement(G, {
+    c: 2,
+    name: "2h",
+    gap: 16,
+    style: {
+      gridTemplateColumns: "1fr 1.5fr",
+      marginBottom: 20
+    }
+  }, /*#__PURE__*/React.createElement(Card, {
+    pad: 20
+  }, /*#__PURE__*/React.createElement(SecLabel, {
+    icon: "lock"
+  }, "What stays with the owner"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: "var(--ink-mute)",
+      marginBottom: 6
+    }
+  }, "Only the owner"), OWNER.only.map(x => /*#__PURE__*/React.createElement("div", {
+    key: x,
+    style: {
+      fontSize: 12.5,
+      padding: "5px 0"
+    }
+  }, x)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: "var(--ink-mute)",
+      margin: "12px 0 6px"
+    }
+  }, "Kept by choice"), OWNER.choice.map(x => /*#__PURE__*/React.createElement("div", {
+    key: x,
+    style: {
+      fontSize: 12.5,
+      padding: "5px 0"
+    }
+  }, x)), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: 11.5,
+      color: "var(--ink-soft)",
+      marginTop: 12,
+      fontStyle: "italic"
+    }
+  }, "\"", OWNER.quote, "\"")), /*#__PURE__*/React.createElement(Card, {
+    pad: 0
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: "18px 18px 4px"
+    }
+  }, /*#__PURE__*/React.createElement(SecLabel, {
+    icon: "exec",
+    right: "watch, do with him watching, do alone"
+  }, "What moves off the owner")), /*#__PURE__*/React.createElement("div", {
+    className: "scroll-x"
+  }, /*#__PURE__*/React.createElement("table", {
+    className: "tbl"
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Function"), /*#__PURE__*/React.createElement("th", null, "Order"), /*#__PURE__*/React.createElement("th", null, "To"), /*#__PURE__*/React.createElement("th", {
+    style: {
+      minWidth: 170
+    }
+  }, "Transfer"))), /*#__PURE__*/React.createElement("tbody", null, steps.map(t => /*#__PURE__*/React.createElement("tr", {
+    key: t.f
+  }, /*#__PURE__*/React.createElement("td", {
+    style: {
+      fontWeight: 500
+    }
+  }, t.f), /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement(Badge, {
+    tone: t.stage === "First" ? "accent" : t.stage === "Next" ? "info" : "mute"
+  }, t.stage)), /*#__PURE__*/React.createElement("td", {
+    style: {
+      fontSize: 12,
+      color: "var(--ink-soft)"
+    }
+  }, t.to), /*#__PURE__*/React.createElement("td", null, t.step == null ? /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 11.5,
+      color: "var(--ink-mute)"
+    }
+  }, "Held for control, to revisit") : /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 3,
+      marginBottom: 4
+    }
+  }, [1, 2, 3].map(k => /*#__PURE__*/React.createElement("span", {
+    key: k,
+    style: {
+      flex: 1,
+      height: 5,
+      borderRadius: 99,
+      background: k <= t.step ? "var(--good)" : "var(--surface-3)"
+    }
+  }))), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 10.5,
+      color: "var(--ink-mute)"
+    }
+  }, TRANSFER_STEPS[t.step])))))))))), /*#__PURE__*/React.createElement(Note, {
+    tone: "info",
+    icon: "i"
+  }, "A function has transferred when the written version is good enough for a third person to run it. Not when the COO can do it. When somebody who isn't the COO could."));
+}
+function ownerTicker() {
+  const r = seatRead(seatById("founder"));
+  return {
+    i: "team",
+    l: "Owner decisions this week",
+    v: r.latest == null ? "not logged" : String(r.latest),
+    tone: r.latest == null ? "ink" : r.latest <= 5 ? "good" : "bad"
+  };
+}
+
 /* ==== app.jsx ==== */
 // app.jsx, shell: sidebar, top bar, live ticker, sub-tabs, routing
 
@@ -9946,6 +11289,9 @@ const NAV = [{
   }, {
     id: "scorecards",
     l: "Role Scorecards"
+  }, {
+    id: "scorelog",
+    l: "Score Log"
   }, {
     id: "org",
     l: "Org Chart"
@@ -10067,6 +11413,7 @@ NAV.forEach(g => g.items.forEach(i => {
   PAGE_GROUP[i.id] = g.g;
 }));
 function App() {
+  useScore();
   const [theme, setTheme] = useState("dark");
   const [page, setPage] = useState(() => {
     const h = (location.hash || "").replace("#", "");
@@ -10149,9 +11496,13 @@ function App() {
     goals: /*#__PURE__*/React.createElement(Goals, {
       period: period
     }),
-    scorecards: /*#__PURE__*/React.createElement(Scorecards, null),
-    board: /*#__PURE__*/React.createElement(Board, null),
-    org: /*#__PURE__*/React.createElement(Org, null),
+    scorecards: /*#__PURE__*/React.createElement(TeamScorecards, {
+      go: setPage
+    }),
+    scorelog: /*#__PURE__*/React.createElement(ScoreLog, null),
+    org: /*#__PURE__*/React.createElement(TeamOrg, {
+      go: setPage
+    }),
     cash: /*#__PURE__*/React.createElement(Cash, null),
     pl: /*#__PURE__*/React.createElement(PL, null),
     debt: /*#__PURE__*/React.createElement(Debt, null),
@@ -10477,7 +11828,7 @@ function App() {
     style: {
       background: "var(--good)"
     }
-  }), "Live"), D.ticker.map((t, i) => /*#__PURE__*/React.createElement("span", {
+  }), "Live"), [...D.ticker.slice(0, 3), ownerTicker(), ...D.ticker.slice(3)].map((t, i) => /*#__PURE__*/React.createElement("span", {
     key: i,
     className: "ticker-item"
   }, /*#__PURE__*/React.createElement(Ico, {
