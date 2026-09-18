@@ -281,7 +281,7 @@ function Inventory() {
                     ["Lead time", `${s.lead} days`],
                     ["Verdict", s.po>17847?"Needs sequencing or credit":s.po?"Fundable from free cash":"No action"]].map(([l,v])=>(
                     <div key={l}><div style={{ fontSize:9.5, fontWeight:700, letterSpacing:"0.06em",
-                      textTransform:"none", color:"var(--ink-mute)", marginBottom:4 }}>{l}</div>
+                      textTransform:"uppercase", color:"var(--ink-mute)", marginBottom:4 }}>{l}</div>
                       <div style={{ fontSize:13, fontWeight:500 }}>{v}</div></div>))}
                 </G></td></tr>}
             </React.Fragment>);
@@ -404,7 +404,7 @@ function Agents() {
             <p style={{ fontSize:12.5, color:"var(--ink-soft)", lineHeight:1.55, marginBottom:11 }}>{a.d}</p>
             <div style={{ paddingTop:11, borderTop:"1px solid var(--rule-soft)", display:"flex",
                           justifyContent:"space-between", alignItems:"center" }}>
-              <span style={{ fontSize:10, fontWeight:700, letterSpacing:"0.06em", textTransform:"none", color:"var(--ink-mute)" }}>Impact</span>
+              <span style={{ fontSize:10, fontWeight:700, letterSpacing:"0.06em", textTransform:"uppercase", color:"var(--ink-mute)" }}>Impact</span>
               <span style={{ fontSize:12, fontWeight:600, color:"var(--good)" }}>{a.impact}</span>
             </div>
           </Card>))}

@@ -5,9 +5,9 @@ function DefFooter() {
   return (
     <div style={{ display:"flex", justifyContent:"space-between", gap:16, flexWrap:"wrap",
       marginTop:22, paddingTop:14, borderTop:"1px solid var(--rule)" }}>
-      <span style={{ fontSize:10, letterSpacing:"0.05em", textTransform:"none", color:"var(--ink-dim)" }}>
+      <span style={{ fontSize:10, letterSpacing:"0.05em", textTransform:"uppercase", color:"var(--ink-dim)" }}>
         {D3.defs.netRev}</span>
-      <span style={{ fontSize:10, letterSpacing:"0.05em", textTransform:"none", color:"var(--ink-dim)" }}>
+      <span style={{ fontSize:10, letterSpacing:"0.05em", textTransform:"uppercase", color:"var(--ink-dim)" }}>
         {D3.defs.profit}</span>
     </div>
   );
@@ -23,7 +23,7 @@ function Today() {
       <div style={{ display:"flex", alignItems:"center", gap:9, marginBottom:9 }}>
         <span className="dot" style={{ background:"var(--good)" }}/>
         <span style={{ fontSize:10.5, fontWeight:700, letterSpacing:"0.09em",
-          textTransform:"none", color:"var(--good)" }}>Live</span>
+          textTransform:"uppercase", color:"var(--good)" }}>Live</span>
         <span style={{ fontSize:10.5, color:"var(--ink-mute)" }}>· order stream</span>
       </div>
       <PageHead title="Today so far"
@@ -76,7 +76,7 @@ function Today() {
             {l.metrics.map(m=>(
               <div key={m.label}>
                 <div style={{ display:"flex", alignItems:"center", gap:5, fontSize:9.5, fontWeight:700,
-                  letterSpacing:"0.06em", textTransform:"none", color:"var(--ink-mute)", marginBottom:4 }}>
+                  letterSpacing:"0.06em", textTransform:"uppercase", color:"var(--ink-mute)", marginBottom:4 }}>
                   {m.label}<Help text={m.help}/>
                 </div>
                 <div className="mono" style={{ fontSize:18, fontWeight:600 }}>{m.value}</div>
@@ -185,7 +185,7 @@ function Daily() {
                       {[["New customer revenue",fmt.usd(r.nc)],["Returning revenue",fmt.usd(r.$ret)],
                         ["Cost per new customer",fmt.usd(r.ncac,2)],["Contribution profit",fmt.usd(r.profit)]].map(([l,v])=>(
                         <div key={l}><div style={{ fontSize:9.5, fontWeight:700, letterSpacing:"0.06em",
-                          textTransform:"none", color:"var(--ink-mute)", marginBottom:4 }}>{l}</div>
+                          textTransform:"uppercase", color:"var(--ink-mute)", marginBottom:4 }}>{l}</div>
                           <div className="mono" style={{ fontSize:14, fontWeight:600 }}>{v}</div></div>))}
                     </G>
                   </td></tr>
@@ -223,7 +223,7 @@ function Daily() {
             </tr>
             {!chan && [["Forecast",d.forecast,"ink"],["Target",d.target,"mute"],["Required / day",d.reqDay,"accent"]].map(([lbl,o,tn])=>(
               <tr key={lbl} style={{ opacity: lbl==="Target"?0.7:1 }}>
-                <td style={{ fontWeight:700, color:T(tn), fontSize:11.5, textTransform:"none", letterSpacing:"0.05em" }}>{lbl}</td>
+                <td style={{ fontWeight:700, color:T(tn), fontSize:11.5, textTransform:"uppercase", letterSpacing:"0.05em" }}>{lbl}</td>
                 <td className="num" style={{textAlign:"right"}}>{o.spend?fmt.usd(o.spend):"-"}</td>
                 <td className="num" style={{textAlign:"right"}}>{o.ord?fmt.n(o.ord):"-"}</td>
                 <td className="num" style={{textAlign:"right"}}>{o.nc?fmt.usd(o.nc):"-"}</td>

@@ -167,6 +167,13 @@ Seats were scored on one number. Now every seat is scored on every metric it's h
 - **Unit economics** laid out four across, so all eight tiles fit.
 - **Line charts** draw round points at any width.
 
+## Eighth pass, type
+
+DB's call. Labels in caps, numbers in a monospace face, cleaner and less playful.
+
+- **Inter** for all text and titles, **IBM Plex Mono** for every number, KPI values included. Both vendored in `assets/fonts` with their licenses, so there's still no CDN.
+- **Caps labels.** KPI labels, section labels, table headers, nav groups, the Live marker and the sidebar subtitle render in caps through CSS. The source text stays sentence case, so switching back is one line in `base.css` and the uppercase styles in the JSX.
+
 ## Known gaps
 
 - Agents are scoped, not built. Outside the current engagement

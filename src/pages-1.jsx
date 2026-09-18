@@ -34,7 +34,7 @@ function Boardroom({ go, period }) {
           <G c={3} gap={14}>
             {D.today.map(t => (
               <div key={t.l}>
-                <div style={{ fontSize:10, fontWeight:700, letterSpacing:"0.06em", textTransform:"none",
+                <div style={{ fontSize:10, fontWeight:700, letterSpacing:"0.06em", textTransform:"uppercase",
                               color:"var(--ink-mute)", marginBottom:3 }}>{t.l}</div>
                 <div className="mono" style={{ fontSize:19, fontWeight:600, color:T(t.tone||"ink") }}>{t.v}</div>
               </div>
@@ -46,7 +46,7 @@ function Boardroom({ go, period }) {
           <G c={3} gap={14}>
             {D.thisMonth.map(t => (
               <div key={t.l}>
-                <div style={{ fontSize:10, fontWeight:700, letterSpacing:"0.06em", textTransform:"none",
+                <div style={{ fontSize:10, fontWeight:700, letterSpacing:"0.06em", textTransform:"uppercase",
                               color:"var(--ink-mute)", marginBottom:3 }}>{t.l}</div>
                 <div className="mono" style={{ fontSize:19, fontWeight:600, color:T(t.tone||"ink") }}>{t.v}</div>
               </div>
@@ -66,7 +66,7 @@ function Boardroom({ go, period }) {
             <div style={{ display:"flex", flexDirection:"column", gap:10, minWidth:0 }}>
               {[["Operating floor","$22,500","accent"],["Free above floor","$17,847","good"],["Card headroom","$23,619","info"]].map(([l,v,t])=>(
                 <div key={l}>
-                  <div style={{ fontSize:9.5, fontWeight:700, letterSpacing:"0.06em", textTransform:"none", color:"var(--ink-mute)" }}>{l}</div>
+                  <div style={{ fontSize:9.5, fontWeight:700, letterSpacing:"0.06em", textTransform:"uppercase", color:"var(--ink-mute)" }}>{l}</div>
                   <div className="mono" style={{ fontSize:15, fontWeight:600, color:T(t) }}>{v}</div>
                 </div>
               ))}
@@ -196,7 +196,7 @@ function Board() {
             <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between",
                           padding:"0 4px 10px" }}>
               <span style={{ display:"flex", alignItems:"center", gap:7, fontSize:11.5, fontWeight:700,
-                             letterSpacing:"0.05em", textTransform:"none", color:T(col.tone) }}>
+                             letterSpacing:"0.05em", textTransform:"uppercase", color:T(col.tone) }}>
                 <span className="dot" style={{ background:T(col.tone) }} />{col.l}
               </span>
               <span style={{ fontSize:11, color:"var(--ink-mute)" }}>{col.items.length}</span>
@@ -293,7 +293,7 @@ function Cash() {
             {D.buckets.map(b=>(
               <div key={b.n} style={{ padding:"13px 11px", background:"var(--surface-3)",
                 borderRadius:"var(--r-md)", border:"1px solid var(--rule)", textAlign:"center" }}>
-                <div style={{ fontSize:10, fontWeight:700, letterSpacing:"0.05em", textTransform:"none",
+                <div style={{ fontSize:10, fontWeight:700, letterSpacing:"0.05em", textTransform:"uppercase",
                               color:"var(--ink-mute)", marginBottom:5 }}>{b.n}</div>
                 <div className="mono" style={{ fontSize:16, fontWeight:600, color:T(b.tone) }}>{b.pct}%</div>
                 <div className="mono" style={{ fontSize:10.5, color:"var(--ink-mute)", marginTop:3 }}>{fmt.usd(b.target)}</div>

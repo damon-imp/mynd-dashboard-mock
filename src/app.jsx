@@ -131,7 +131,7 @@ function App() {
       <aside className="side">
         <div style={{ padding:"16px 16px 14px", borderBottom:"1px solid var(--rule)" }}>
           <img src="assets/mynd-logo.svg" alt="MYND" style={{ height:17, filter:"var(--logo-filter)" }} />
-          <div style={{ fontSize:10, color:"var(--ink-mute)", marginTop:5 }}>Command center</div>
+          <div style={{ fontSize:10, color:"var(--ink-mute)", marginTop:5 }} className="caps">Command center</div>
         </div>
         <nav style={{ flex:1, padding:"10px 0", overflowY:"auto" }}>
           {NAV.map(g=>{
@@ -215,7 +215,7 @@ function App() {
           <div className="ticker-track">
             {[0,1].map(dup=>(
               <div key={dup} style={{ display:"flex" }}>
-                <span className="ticker-item" style={{ color:"var(--good)", fontWeight:600 }}>
+                <span className="ticker-item caps" style={{ color:"var(--good)", fontWeight:600 }}>
                   <span className="dot" style={{ background:"var(--good)" }}/>Live
                 </span>
                 {[...D.ticker.slice(0,3), ownerTicker(), ...D.ticker.slice(3)].map((t,i)=>(

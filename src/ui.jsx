@@ -81,15 +81,14 @@ function KPI({ label, value, sub, delta, deltaUnit = "%", invert, tone = "ink", 
     <div className={"kpi" + (onClick ? " kpi-click" : "")} onClick={onClick}>
       <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", gap:6 }}>
         <span style={{ display:"flex", alignItems:"center", gap:6, fontSize:10, fontWeight:700,
-                       letterSpacing:"0.07em", textTransform:"none", color:"var(--ink-mute)",
+                       letterSpacing:"0.07em", textTransform:"uppercase", color:"var(--ink-mute)",
                        overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
           {label}<Help text={help} />
         </span>
         {badge}
       </div>
       <div style={{ display:"flex", alignItems:"baseline", gap:7, flexWrap:"wrap" }}>
-        <span style={{ fontFamily:"var(--display)", fontSize:23, fontWeight:600,
-                       letterSpacing:"-0.025em", color:T(tone), lineHeight:1.05 }}>{value}</span>
+        <span className="kpi-val" style={{ fontSize:23, fontWeight:600, color:T(tone), lineHeight:1.05 }}>{value}</span>
         {delta != null && delta !== 0 && (
           <span className="mono" style={{ fontSize:10.5, fontWeight:650, color: (delta > 0) !== !!invert ? "var(--good)":"var(--bad)" }}>
             {delta > 0 ? "\u2197" : "\u2198"}{Math.abs(delta)}{deltaUnit}
@@ -115,7 +114,7 @@ function FunnelRow({ label, value, share, pct, a = "accent", b = "good", split =
     <div style={{ marginBottom: 13 }}>
       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"baseline", marginBottom:5 }}>
         <span style={{ fontSize:10.5, fontWeight:700, letterSpacing:"0.07em",
-                       textTransform:"none", color:"var(--ink-mute)" }}>{label}</span>
+                       textTransform:"uppercase", color:"var(--ink-mute)" }}>{label}</span>
         <span><span className="mono" style={{ fontSize:14, fontWeight:600 }}>{fmt.n(value)}</span>
           {note && <span style={{ fontSize:10.5, color:"var(--ink-mute)", marginLeft:7 }}>{note}</span>}</span>
       </div>

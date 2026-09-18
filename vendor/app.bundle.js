@@ -4474,7 +4474,7 @@ function KPI({
       fontSize: 10,
       fontWeight: 700,
       letterSpacing: "0.07em",
-      textTransform: "none",
+      textTransform: "uppercase",
       color: "var(--ink-mute)",
       overflow: "hidden",
       textOverflow: "ellipsis",
@@ -4490,11 +4490,10 @@ function KPI({
       flexWrap: "wrap"
     }
   }, /*#__PURE__*/React.createElement("span", {
+    className: "kpi-val",
     style: {
-      fontFamily: "var(--display)",
       fontSize: 23,
       fontWeight: 600,
-      letterSpacing: "-0.025em",
       color: T(tone),
       lineHeight: 1.05
     }
@@ -4574,7 +4573,7 @@ function FunnelRow({
       fontSize: 10.5,
       fontWeight: 700,
       letterSpacing: "0.07em",
-      textTransform: "none",
+      textTransform: "uppercase",
       color: "var(--ink-mute)"
     }
   }, label), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("span", {
@@ -5392,7 +5391,7 @@ function Boardroom({
       fontSize: 10,
       fontWeight: 700,
       letterSpacing: "0.06em",
-      textTransform: "none",
+      textTransform: "uppercase",
       color: "var(--ink-mute)",
       marginBottom: 3
     }
@@ -5418,7 +5417,7 @@ function Boardroom({
       fontSize: 10,
       fontWeight: 700,
       letterSpacing: "0.06em",
-      textTransform: "none",
+      textTransform: "uppercase",
       color: "var(--ink-mute)",
       marginBottom: 3
     }
@@ -5474,7 +5473,7 @@ function Boardroom({
       fontSize: 9.5,
       fontWeight: 700,
       letterSpacing: "0.06em",
-      textTransform: "none",
+      textTransform: "uppercase",
       color: "var(--ink-mute)"
     }
   }, l), /*#__PURE__*/React.createElement("div", {
@@ -5748,7 +5747,7 @@ function Board() {
       fontSize: 11.5,
       fontWeight: 700,
       letterSpacing: "0.05em",
-      textTransform: "none",
+      textTransform: "uppercase",
       color: T(col.tone)
     }
   }, /*#__PURE__*/React.createElement("span", {
@@ -6027,7 +6026,7 @@ function Cash() {
       fontSize: 10,
       fontWeight: 700,
       letterSpacing: "0.05em",
-      textTransform: "none",
+      textTransform: "uppercase",
       color: "var(--ink-mute)",
       marginBottom: 5
     }
@@ -7431,7 +7430,7 @@ function Inventory() {
         fontSize: 9.5,
         fontWeight: 700,
         letterSpacing: "0.06em",
-        textTransform: "none",
+        textTransform: "uppercase",
         color: "var(--ink-mute)",
         marginBottom: 4
       }
@@ -7757,7 +7756,7 @@ function Agents() {
       fontSize: 10,
       fontWeight: 700,
       letterSpacing: "0.06em",
-      textTransform: "none",
+      textTransform: "uppercase",
       color: "var(--ink-mute)"
     }
   }, "Impact"), /*#__PURE__*/React.createElement("span", {
@@ -8829,14 +8828,14 @@ function DefFooter() {
     style: {
       fontSize: 10,
       letterSpacing: "0.05em",
-      textTransform: "none",
+      textTransform: "uppercase",
       color: "var(--ink-dim)"
     }
   }, D3.defs.netRev), /*#__PURE__*/React.createElement("span", {
     style: {
       fontSize: 10,
       letterSpacing: "0.05em",
-      textTransform: "none",
+      textTransform: "uppercase",
       color: "var(--ink-dim)"
     }
   }, D3.defs.profit));
@@ -8866,7 +8865,7 @@ function Today() {
       fontSize: 10.5,
       fontWeight: 700,
       letterSpacing: "0.09em",
-      textTransform: "none",
+      textTransform: "uppercase",
       color: "var(--good)"
     }
   }, "Live"), /*#__PURE__*/React.createElement("span", {
@@ -9026,7 +9025,7 @@ function Today() {
       fontSize: 9.5,
       fontWeight: 700,
       letterSpacing: "0.06em",
-      textTransform: "none",
+      textTransform: "uppercase",
       color: "var(--ink-mute)",
       marginBottom: 4
     }
@@ -9384,7 +9383,7 @@ function Daily() {
       fontSize: 9.5,
       fontWeight: 700,
       letterSpacing: "0.06em",
-      textTransform: "none",
+      textTransform: "uppercase",
       color: "var(--ink-mute)",
       marginBottom: 4
     }
@@ -9558,7 +9557,7 @@ function Daily() {
       fontWeight: 700,
       color: T(tn),
       fontSize: 11.5,
-      textTransform: "none",
+      textTransform: "uppercase",
       letterSpacing: "0.05em"
     }
   }, lbl), /*#__PURE__*/React.createElement("td", {
@@ -12522,7 +12521,8 @@ function App() {
       fontSize: 10,
       color: "var(--ink-mute)",
       marginTop: 5
-    }
+    },
+    className: "caps"
   }, "Command center")), /*#__PURE__*/React.createElement("nav", {
     style: {
       flex: 1,
@@ -12777,7 +12777,7 @@ function App() {
       display: "flex"
     }
   }, /*#__PURE__*/React.createElement("span", {
-    className: "ticker-item",
+    className: "ticker-item caps",
     style: {
       color: "var(--good)",
       fontWeight: 600
