@@ -75,7 +75,7 @@ src/                  readable JSX, edit these
   data2.jsx           marketing, LTV, retention, customer-centric ops
   data3.jsx           live block, daily tracker, cohort LTV
   data4.jsx           sub-tab views: forecast, transactions, reorders, movements, insights, sync
-  data5.jsx           seats, scorecards, sample score history, transfers
+  data5.jsx           seats, every metric, sample score history, transfers
   period.jsx          period selector engine, mock only
   ui.jsx              primitives and charts
   pages-1.jsx         Boardroom, Goals, Scorecards, Org, Money
@@ -146,6 +146,16 @@ Folded from the role documents, Metrics by role, Role scorecards and the Metrics
 - **Sample history or live log.** A switch on all three pages. Sample shows twelve modeled weeks so the trends read. Live starts empty.
 - **Owner decisions on the ticker**, read from the log.
 - **Vault** carries the role documents, and the drive lists the scorecards, metrics by role and the tracker.
+
+## Sixth pass, every metric scored
+
+Seats were scored on one number. Now every seat is scored on every metric it's held to, 33 in all, so a stalled seat shows which metric it stalled on.
+
+- **One spec, two outputs.** `data5.jsx` METRICS and the Metrics tracker come from the same list: name, primary or not, how it's scored, target, cadence and source. Scoring rules: at or under, at or over, rising, flat or falling, and yes (1 or 0).
+- **Every entry is scored.** A metric's status is worked out at every week it has a number, not just the latest, so a metric that stays off shows as a run.
+- **Role Scorecards.** Totals across all 33 metrics. Sticking points lists every metric that's off, longest run first, which is where failure modes show up. Seat health over time scores each seat week by week. Each seat card leads with its primary number and lists every other metric with a status dot. The seat detail has a trend for every metric and a status-by-week strip.
+- **Score Log.** One row per metric, grouped by seat, with every entry colored by its status that week. Live entries save in the browser and export to CSV. The storage key moved to v2.
+- **Org Chart.** Each card shows the primary number plus a dot per metric and how many are holding.
 
 ## Known gaps
 

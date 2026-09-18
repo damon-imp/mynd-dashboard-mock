@@ -3122,14 +3122,14 @@ const D4 = {
 /* ==== data5.jsx ==== */
 // data5.jsx, the team layer. Seats, scorecards and the weekly score log.
 // Folded from the MYND role documents, Metrics by role, Role scorecards and
-// the Metrics tracker, all v1.0, September 18, 2026.
-// Primary numbers, targets, cadence, sources and status logic match the
-// tracker. Sample history is modeled to show the surface.
+// the Metrics tracker, September 18, 2026. Every seat is scored on every
+// metric it's held to, not just the primary one. Targets, cadence, sources and
+// status logic match the Metrics tracker. Sample history is modeled.
 
 const WEEKS = ["Sep 21", "Sep 28", "Oct 5", "Oct 12", "Oct 19", "Oct 26", "Nov 2", "Nov 9", "Nov 16", "Nov 23", "Nov 30", "Dec 7", "Dec 14", "Dec 21", "Dec 28", "Jan 4", "Jan 11", "Jan 18", "Jan 25", "Feb 1", "Feb 8", "Feb 15", "Feb 22", "Mar 1", "Mar 8", "Mar 15"];
 
-// target.kind: "max" (at or under), "min" (at or over), "up" (rising, compared with the prior entry)
-// unit: "n" count, "h" hours, "pct" percent, "usd" dollars, "rate" units per dollar
+// Seat-level context. measure and need describe the primary number.
+// unit on metrics: "n" count, "h" hours, "pct" percent, "usd" dollars, "rate" units per dollar, "yes" 1 or 0
 const SEATS = [{
   id: "founder",
   seat: "Founder and Owner",
@@ -3139,33 +3139,9 @@ const SEATS = [{
   line: "Set direction, hold the relationships only an owner can hold, and get out of the way of everything else.",
   manages: "Direction, money movement, processors, outside advisors",
   not: "The day to day. That's the COO.",
-  number: "Decisions routed through him each week",
-  unit: "n",
-  target: {
-    kind: "max",
-    v: 5,
-    text: "Under 5"
-  },
-  cadence: "Weekly",
-  source: "Decision log",
   measure: "Measurable",
   need: "Decision log, already running",
-  doc: "09 Founder and Owner",
-  supporting: [{
-    n: "Functions transferred and holding",
-    target: "Rising",
-    cadence: "Monthly",
-    source: "Transfer log",
-    sample: "3",
-    tone: "good"
-  }, {
-    n: "Share of week on growth",
-    target: "Rising from 10%",
-    cadence: "Monthly",
-    source: "Self report",
-    sample: "18%",
-    tone: "good"
-  }]
+  doc: "09 Founder and Owner"
 }, {
   id: "coo",
   seat: "Chief Operating Officer",
@@ -3175,39 +3151,9 @@ const SEATS = [{
   line: "Run the day to day so the business works without the owner in the middle of every task.",
   manages: "Suppliers and manufacturers, the warehouse, day to day coordination",
   not: "Recipes, code or brand direction.",
-  number: "Operational decisions closed without the owner",
-  unit: "n",
-  target: {
-    kind: "up",
-    text: "Rising. Baseline at 30 days"
-  },
-  cadence: "Weekly",
-  source: "Decision log",
   measure: "Needs 30 days",
   need: "History before a target means anything",
-  doc: "01 Chief Operating Officer",
-  supporting: [{
-    n: "Products under lead time",
-    target: "Zero",
-    cadence: "Weekly",
-    source: "Inventory system",
-    sample: "2",
-    tone: "bad"
-  }, {
-    n: "Reorders placed inside lead time",
-    target: "100%",
-    cadence: "Monthly",
-    source: "Purchase log",
-    sample: "75%",
-    tone: "warn"
-  }, {
-    n: "Liabilities paid late",
-    target: "Zero",
-    cadence: "Monthly",
-    source: "Accounting",
-    sample: "0",
-    tone: "good"
-  }]
+  doc: "01 Chief Operating Officer"
 }, {
   id: "content",
   seat: "Content and Brand Lead",
@@ -3217,39 +3163,9 @@ const SEATS = [{
   line: "Own the brand and make the outside teams work as one.",
   manages: "The email and SMS agency, the creator VA, brand review",
   not: "What gets built or when. Paid advertising.",
-  number: "Revenue from organic social",
-  unit: "usd",
-  target: {
-    kind: "up",
-    text: "Profitable"
-  },
-  cadence: "Monthly",
-  source: "Attribution, once rebuilt",
   measure: "Needs attribution",
   need: "Channel revenue, blocked until attribution is rebuilt",
-  doc: "02 Content and Brand Lead",
-  supporting: [{
-    n: "Published without brand review",
-    target: "Zero",
-    cadence: "Weekly",
-    source: "Publishing log",
-    sample: "1",
-    tone: "warn"
-  }, {
-    n: "Site and email mismatches",
-    target: "Zero",
-    cadence: "Monthly",
-    source: "Incident note",
-    sample: "0",
-    tone: "good"
-  }, {
-    n: "Creator VA system documented",
-    target: "Yes",
-    cadence: "Monthly",
-    source: "The document",
-    sample: "No",
-    tone: "bad"
-  }]
+  doc: "02 Content and Brand Lead"
 }, {
   id: "dev",
   seat: "Developer",
@@ -3259,32 +3175,9 @@ const SEATS = [{
   line: "Ship the features that let customers do more for themselves and let the business earn more per customer.",
   manages: "The codebase and the three repositories",
   not: "Brand, copy or what the offer is. Takes work only from the owner.",
-  number: "Roadmap items shipped each week",
-  unit: "n",
-  target: {
-    kind: "up",
-    text: "Per roadmap"
-  },
-  cadence: "Weekly",
-  source: "Roadmap",
   measure: "Needs roadmap",
   need: "A written roadmap to ship against",
-  doc: "03 Developer",
-  supporting: [{
-    n: "Customer-blocking bugs open over a day",
-    target: "Zero",
-    cadence: "Daily",
-    source: "Issue list",
-    sample: "0",
-    tone: "good"
-  }, {
-    n: "Handover document current",
-    target: "Yes",
-    cadence: "Monthly",
-    source: "The document",
-    sample: "No",
-    tone: "bad"
-  }]
+  doc: "03 Developer"
 }, {
   id: "support",
   seat: "Customer Support",
@@ -3295,40 +3188,9 @@ const SEATS = [{
   line: "Get customer problems resolved fast, and make sure nothing sits waiting.",
   manages: "The support inbox and every open customer issue",
   not: "Refund policy, pricing or anything that changes the offer.",
-  number: "Time to resolve, median hours",
-  unit: "h",
-  target: {
-    kind: "max",
-    v: 24,
-    text: "Under 24 hours"
-  },
-  cadence: "Weekly",
-  source: "Support tool",
   measure: "Needs build",
   need: "Resolution timestamps out of the support tool",
-  doc: "04 Customer Support",
-  supporting: [{
-    n: "Time to first reply",
-    target: "Under 1 business day",
-    cadence: "Weekly",
-    source: "Support tool",
-    sample: "14 hrs",
-    tone: "good"
-  }, {
-    n: "Issues open past a day",
-    target: "Zero",
-    cadence: "Daily",
-    source: "Support tool",
-    sample: "2",
-    tone: "warn"
-  }, {
-    n: "Repeat questions turned into written answers",
-    target: "Rising",
-    cadence: "Monthly",
-    source: "Site content",
-    sample: "6",
-    tone: "good"
-  }]
+  doc: "04 Customer Support"
 }, {
   id: "wholesale",
   seat: "Wholesale and Clinic Sales",
@@ -3338,40 +3200,9 @@ const SEATS = [{
   line: "Open and hold wholesale accounts, so revenue stops depending only on direct consumers.",
   manages: "The wholesale pipeline and every account in it",
   not: "Pricing, terms, or placing orders with the warehouse.",
-  number: "Outbound activity per day",
-  unit: "n",
-  target: {
-    kind: "min",
-    v: 10,
-    text: "10 or more a day"
-  },
-  cadence: "Daily",
-  source: "Activity log",
   measure: "Measurable",
   need: "Activity log, already running",
-  doc: "05 Wholesale and Clinic Sales",
-  supporting: [{
-    n: "Inbound answered same day",
-    target: "100%",
-    cadence: "Weekly",
-    source: "Inbox",
-    sample: "80%",
-    tone: "warn"
-  }, {
-    n: "Accounts opened",
-    target: "Rising",
-    cadence: "Monthly",
-    source: "Order records",
-    sample: "2",
-    tone: "good"
-  }, {
-    n: "Accounts reordering on pattern",
-    target: "Rising",
-    cadence: "Monthly",
-    source: "Order records",
-    sample: "50%",
-    tone: "warn"
-  }]
+  doc: "05 Wholesale and Clinic Sales"
 }, {
   id: "kitchen",
   seat: "Kitchen and Production",
@@ -3382,39 +3213,9 @@ const SEATS = [{
   line: "Make the product, on schedule, at a cost the business can measure.",
   manages: "The kitchen, the production schedule, ingredient ordering for a run",
   not: "What gets made or how much. That comes from the reorder plan.",
-  number: "Output per dollar",
-  unit: "rate",
-  target: {
-    kind: "up",
-    text: "Measured, then rising"
-  },
-  cadence: "Per run",
-  source: "Run log",
   measure: "Needs three runs",
   need: "Logged runs per product",
-  doc: "06 Kitchen and Production",
-  supporting: [{
-    n: "Runs logged with all three fields",
-    target: "100%",
-    cadence: "Monthly",
-    source: "Run log",
-    sample: "83%",
-    tone: "warn"
-  }, {
-    n: "Runs completed on schedule",
-    target: "100%",
-    cadence: "Monthly",
-    source: "Production schedule",
-    sample: "100%",
-    tone: "good"
-  }, {
-    n: "Products with a measured cost",
-    target: "All of them",
-    cadence: "Monthly",
-    source: "Run log",
-    sample: "3 of 10",
-    tone: "warn"
-  }]
+  doc: "06 Kitchen and Production"
 }, {
   id: "warehouse",
   seat: "Fulfillment and the Warehouse",
@@ -3425,40 +3226,9 @@ const SEATS = [{
   line: "The warehouse ships what customers order, accurately and on time, and the numbers prove it.",
   manages: "A relationship, not a person. The COO owns it. The owner handles anything financial.",
   not: "Customer communication or what gets reordered.",
-  number: "Order accuracy",
-  unit: "pct",
-  target: {
-    kind: "min",
-    v: 99.5,
-    text: "99.5% or better"
-  },
-  cadence: "Monthly",
-  source: "Warehouse system",
   measure: "Needs access",
   need: "Order and inventory accuracy from their system",
-  doc: "07 Fulfillment and the Warehouse",
-  supporting: [{
-    n: "Inventory accuracy",
-    target: "98 to 99%",
-    cadence: "Monthly",
-    source: "Warehouse system",
-    sample: "98.4%",
-    tone: "good"
-  }, {
-    n: "Freight as a share of revenue",
-    target: "Flat or falling",
-    cadence: "Monthly",
-    source: "Warehouse invoices",
-    sample: "11.2%",
-    tone: "warn"
-  }, {
-    n: "Orders that never reached the platform",
-    target: "Zero",
-    cadence: "Monthly",
-    source: "Reconciliation",
-    sample: "6",
-    tone: "bad"
-  }]
+  doc: "07 Fulfillment and the Warehouse"
 }, {
   id: "ea",
   seat: "Executive Assistant",
@@ -3468,47 +3238,413 @@ const SEATS = [{
   line: "Take the small work off the owner, then turn it into something that runs without either of you.",
   manages: "The owner's inbox, vendor admin, whatever is being handed over",
   not: "Banking, payments or spend decisions.",
-  number: "Tasks taken off the owner each week",
-  unit: "n",
-  target: {
-    kind: "up",
-    text: "Rising"
-  },
-  cadence: "Weekly",
-  source: "Transfer log",
   measure: "Needs build",
   need: "A simple count of what moved each week",
-  doc: "08 Executive Assistant",
-  supporting: [{
-    n: "Handed-over tasks with a written version",
-    target: "100%",
-    cadence: "Monthly",
-    source: "Task notes",
-    sample: "70%",
-    tone: "warn"
-  }, {
-    n: "Credential list current",
-    target: "Yes",
-    cadence: "Monthly",
-    source: "The list",
-    sample: "Yes",
-    tone: "good"
-  }]
+  doc: "08 Executive Assistant"
 }];
 
-// Modeled twelve weeks. Gaps are real states: the measure wasn't built yet, or
-// the number is read monthly or per run.
-const _ = null;
+// Every metric each seat is held to. Generated from the same spec as the Metrics tracker.
+// kind: max (at or under), min (at or over), up (rising), down (flat or falling), yes (1 yes, 0 no)
+const METRICS = [{
+  seat: "founder",
+  id: "f_dec",
+  name: "Decisions routed through him each week",
+  primary: true,
+  kind: "max",
+  v: 5,
+  target: "Under 5",
+  unit: "n",
+  cadence: "Weekly",
+  source: "Decision log"
+}, {
+  seat: "founder",
+  id: "f_xfer",
+  name: "Functions transferred and holding",
+  primary: false,
+  kind: "up",
+  v: null,
+  target: "Rising",
+  unit: "n",
+  cadence: "Monthly",
+  source: "Transfer log"
+}, {
+  seat: "founder",
+  id: "f_growth",
+  name: "Share of week on growth",
+  primary: false,
+  kind: "up",
+  v: null,
+  target: "Rising from 10%",
+  unit: "pct",
+  cadence: "Monthly",
+  source: "Self report"
+}, {
+  seat: "coo",
+  id: "c_dec",
+  name: "Operational decisions closed without the owner",
+  primary: true,
+  kind: "up",
+  v: null,
+  target: "Rising. Baseline at 30 days",
+  unit: "n",
+  cadence: "Weekly",
+  source: "Decision log"
+}, {
+  seat: "coo",
+  id: "c_lead",
+  name: "Products under lead time",
+  primary: false,
+  kind: "max",
+  v: 0,
+  target: "Zero",
+  unit: "n",
+  cadence: "Weekly",
+  source: "Inventory system"
+}, {
+  seat: "coo",
+  id: "c_reorder",
+  name: "Reorders placed inside lead time",
+  primary: false,
+  kind: "min",
+  v: 100,
+  target: "100%",
+  unit: "pct",
+  cadence: "Monthly",
+  source: "Purchase log"
+}, {
+  seat: "coo",
+  id: "c_late",
+  name: "Liabilities paid late",
+  primary: false,
+  kind: "max",
+  v: 0,
+  target: "Zero",
+  unit: "n",
+  cadence: "Monthly",
+  source: "Accounting"
+}, {
+  seat: "content",
+  id: "b_rev",
+  name: "Revenue from organic social",
+  primary: true,
+  kind: "up",
+  v: null,
+  target: "Profitable",
+  unit: "usd",
+  cadence: "Monthly",
+  source: "Attribution, once rebuilt"
+}, {
+  seat: "content",
+  id: "b_review",
+  name: "Published without brand review",
+  primary: false,
+  kind: "max",
+  v: 0,
+  target: "Zero",
+  unit: "n",
+  cadence: "Weekly",
+  source: "Publishing log"
+}, {
+  seat: "content",
+  id: "b_mismatch",
+  name: "Site and email mismatches",
+  primary: false,
+  kind: "max",
+  v: 0,
+  target: "Zero",
+  unit: "n",
+  cadence: "Monthly",
+  source: "Incident note"
+}, {
+  seat: "content",
+  id: "b_va",
+  name: "Creator VA system documented",
+  primary: false,
+  kind: "yes",
+  v: 1,
+  target: "Yes",
+  unit: "yes",
+  cadence: "Monthly",
+  source: "The document"
+}, {
+  seat: "dev",
+  id: "d_road",
+  name: "Roadmap items shipped each week",
+  primary: true,
+  kind: "up",
+  v: null,
+  target: "Per roadmap",
+  unit: "n",
+  cadence: "Weekly",
+  source: "Roadmap"
+}, {
+  seat: "dev",
+  id: "d_bugs",
+  name: "Customer-blocking bugs open over a day",
+  primary: false,
+  kind: "max",
+  v: 0,
+  target: "Zero",
+  unit: "n",
+  cadence: "Daily",
+  source: "Issue list"
+}, {
+  seat: "dev",
+  id: "d_handover",
+  name: "Handover document current",
+  primary: false,
+  kind: "yes",
+  v: 1,
+  target: "Yes",
+  unit: "yes",
+  cadence: "Monthly",
+  source: "The document"
+}, {
+  seat: "support",
+  id: "s_resolve",
+  name: "Time to resolve, median hours",
+  primary: true,
+  kind: "max",
+  v: 24,
+  target: "Under 24 hours",
+  unit: "h",
+  cadence: "Weekly",
+  source: "Support tool"
+}, {
+  seat: "support",
+  id: "s_reply",
+  name: "Time to first reply, median hours",
+  primary: false,
+  kind: "max",
+  v: 24,
+  target: "Under 1 business day, scored at 24 hours",
+  unit: "h",
+  cadence: "Weekly",
+  source: "Support tool"
+}, {
+  seat: "support",
+  id: "s_open",
+  name: "Issues open past a day",
+  primary: false,
+  kind: "max",
+  v: 0,
+  target: "Zero",
+  unit: "n",
+  cadence: "Daily",
+  source: "Support tool"
+}, {
+  seat: "support",
+  id: "s_repeat",
+  name: "Repeat questions turned into written answers",
+  primary: false,
+  kind: "up",
+  v: null,
+  target: "Rising",
+  unit: "n",
+  cadence: "Monthly",
+  source: "Site content"
+}, {
+  seat: "wholesale",
+  id: "w_out",
+  name: "Outbound activity per day",
+  primary: true,
+  kind: "min",
+  v: 10,
+  target: "10 or more a day",
+  unit: "n",
+  cadence: "Daily",
+  source: "Activity log"
+}, {
+  seat: "wholesale",
+  id: "w_inbound",
+  name: "Inbound answered same day",
+  primary: false,
+  kind: "min",
+  v: 100,
+  target: "100%",
+  unit: "pct",
+  cadence: "Weekly",
+  source: "Inbox"
+}, {
+  seat: "wholesale",
+  id: "w_opened",
+  name: "Accounts opened",
+  primary: false,
+  kind: "up",
+  v: null,
+  target: "Rising",
+  unit: "n",
+  cadence: "Monthly",
+  source: "Order records"
+}, {
+  seat: "wholesale",
+  id: "w_reorder",
+  name: "Accounts reordering on pattern",
+  primary: false,
+  kind: "up",
+  v: null,
+  target: "Rising",
+  unit: "pct",
+  cadence: "Monthly",
+  source: "Order records"
+}, {
+  seat: "kitchen",
+  id: "k_output",
+  name: "Output per dollar",
+  primary: true,
+  kind: "up",
+  v: null,
+  target: "Measured, then rising",
+  unit: "rate",
+  cadence: "Per run",
+  source: "Run log"
+}, {
+  seat: "kitchen",
+  id: "k_logged",
+  name: "Runs logged with all three fields",
+  primary: false,
+  kind: "min",
+  v: 100,
+  target: "100%",
+  unit: "pct",
+  cadence: "Monthly",
+  source: "Run log"
+}, {
+  seat: "kitchen",
+  id: "k_sched",
+  name: "Runs completed on schedule",
+  primary: false,
+  kind: "min",
+  v: 100,
+  target: "100%",
+  unit: "pct",
+  cadence: "Monthly",
+  source: "Production schedule"
+}, {
+  seat: "kitchen",
+  id: "k_costed",
+  name: "Products with a measured cost",
+  primary: false,
+  kind: "min",
+  v: 10,
+  target: "All 10",
+  unit: "n",
+  cadence: "Monthly",
+  source: "Run log"
+}, {
+  seat: "warehouse",
+  id: "h_order",
+  name: "Order accuracy",
+  primary: true,
+  kind: "min",
+  v: 99.5,
+  target: "99.5% or better",
+  unit: "pct",
+  cadence: "Monthly",
+  source: "Warehouse system"
+}, {
+  seat: "warehouse",
+  id: "h_inv",
+  name: "Inventory accuracy",
+  primary: false,
+  kind: "min",
+  v: 98,
+  target: "98 to 99%",
+  unit: "pct",
+  cadence: "Monthly",
+  source: "Warehouse system"
+}, {
+  seat: "warehouse",
+  id: "h_freight",
+  name: "Freight as a share of revenue",
+  primary: false,
+  kind: "down",
+  v: null,
+  target: "Flat or falling",
+  unit: "pct",
+  cadence: "Monthly",
+  source: "Warehouse invoices"
+}, {
+  seat: "warehouse",
+  id: "h_unrec",
+  name: "Orders that never reached the platform",
+  primary: false,
+  kind: "max",
+  v: 0,
+  target: "Zero",
+  unit: "n",
+  cadence: "Monthly",
+  source: "Reconciliation"
+}, {
+  seat: "ea",
+  id: "e_tasks",
+  name: "Tasks taken off the owner each week",
+  primary: true,
+  kind: "up",
+  v: null,
+  target: "Rising",
+  unit: "n",
+  cadence: "Weekly",
+  source: "Transfer log"
+}, {
+  seat: "ea",
+  id: "e_doc",
+  name: "Handed-over tasks with a written version",
+  primary: false,
+  kind: "min",
+  v: 100,
+  target: "100%",
+  unit: "pct",
+  cadence: "Monthly",
+  source: "Task notes"
+}, {
+  seat: "ea",
+  id: "e_cred",
+  name: "Credential list current",
+  primary: false,
+  kind: "yes",
+  v: 1,
+  target: "Yes",
+  unit: "yes",
+  cadence: "Monthly",
+  source: "The list"
+}];
+
+// Modeled twelve weeks per metric. Gaps are real states: not built yet, or read monthly or per run.
 const SAMPLE_LOG = {
-  founder: [14, 14, 13, 12, 12, 11, 10, 9, 9, 8, 7, 7],
-  coo: [3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20],
-  content: [_, _, _, _, _, _, _, _, 1240, _, _, 1610],
-  dev: [_, _, 2, 3, 1, 3, 4, 3, 2, 4, 3, 4],
-  support: [_, _, 31, 28, 26, 22, 20, 19, 21, 18, 17, 16],
-  wholesale: [10, 9, 11, 12, 8, 10, 11, 12, 13, 12, 14, 13],
-  kitchen: [_, 0.52, _, 0.55, _, 0.54, _, 0.58, _, 0.61, _, 0.60],
-  warehouse: [_, _, _, _, _, 99.1, _, _, _, 99.6, _, _],
-  ea: [4, 6, 5, 7, 8, 8, 9, 11, 10, 12, 12, 13]
+  f_dec: [14, 14, 13, 12, 12, 11, 10, 9, 9, 8, 7, 7],
+  f_xfer: [null, null, 1, null, null, null, 2, null, null, null, 3, null],
+  f_growth: [null, null, 10, null, null, null, 14, null, null, null, 18, null],
+  c_dec: [3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20],
+  c_lead: [3, 3, 2, 2, 3, 2, 2, 1, 2, 2, 2, 2],
+  c_reorder: [null, null, 50, null, null, null, 67, null, null, null, 75, null],
+  c_late: [null, null, 1, null, null, null, 0, null, null, null, 0, null],
+  b_rev: [null, null, null, null, null, null, 1240, null, null, null, 1610, null],
+  b_review: [2, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1],
+  b_mismatch: [null, null, 1, null, null, null, 0, null, null, null, 0, null],
+  b_va: [null, null, 0, null, null, null, 0, null, null, null, 0, null],
+  d_road: [null, null, 2, 3, 1, 3, 4, 3, 2, 4, 3, 4],
+  d_bugs: [1, 0, 0, 2, 0, 0, 1, 0, 0, 0, 0, 0],
+  d_handover: [null, null, 0, null, null, null, 0, null, null, null, 1, null],
+  s_resolve: [null, null, 31, 28, 26, 22, 20, 19, 21, 18, 17, 16],
+  s_reply: [null, null, 20, 18, 16, 15, 14, 15, 14, 13, 14, 14],
+  s_open: [null, null, 4, 3, 3, 2, 2, 3, 2, 2, 2, 2],
+  s_repeat: [null, null, 2, null, null, null, 4, null, null, null, 6, null],
+  w_out: [10, 9, 11, 12, 8, 10, 11, 12, 13, 12, 14, 13],
+  w_inbound: [100, 100, 0, 100, 100, 100, 0, 100, 100, 0, 100, 100],
+  w_opened: [null, null, 0, null, null, null, 1, null, null, null, 2, null],
+  w_reorder: [null, null, null, null, null, null, 50, null, null, null, 50, null],
+  k_output: [null, 0.52, null, 0.55, null, 0.54, null, 0.58, null, 0.61, null, 0.6],
+  k_logged: [null, null, 50, null, null, null, 67, null, null, null, 83, null],
+  k_sched: [null, null, 100, null, null, null, 100, null, null, null, 50, null],
+  k_costed: [null, null, 1, null, null, null, 3, null, null, null, 3, null],
+  h_order: [null, null, null, null, null, null, 99.1, null, null, null, 99.6, null],
+  h_inv: [null, null, null, null, null, null, 97.2, null, null, null, 98.4, null],
+  h_freight: [null, null, null, null, null, null, 11.8, null, null, null, 11.2, null],
+  h_unrec: [null, null, null, null, null, null, 9, null, null, null, 6, null],
+  e_tasks: [4, 6, 5, 7, 8, 8, 9, 11, 10, 12, 12, 13],
+  e_doc: [null, null, 50, null, null, null, 60, null, null, null, 70, null],
+  e_cred: [null, null, 1, null, null, null, 1, null, null, null, 1, null]
 };
 
 // What moves off the owner, in order, and where each one is in the three-step
@@ -10108,12 +10244,12 @@ const SUBVIEWS = {
 };
 
 /* ==== pages-6.jsx ==== */
-// pages-6.jsx, the team layer. Role scorecards, the weekly score log and the
-// org chart, all reading one score store so a number logged once shows
-// everywhere it's used.
+// pages-6.jsx, the team layer. Every seat is scored on every metric it's held
+// to. Role scorecards, the score log and the org chart all read one store, so a
+// number logged once shows everywhere it's used.
 
 /* ------------------------------------------------------------ score store */
-const SCORE_KEY = "mynd.scorelog.v1";
+const SCORE_KEY = "mynd.scorelog.v2";
 const ScoreStore = {
   mode: "sample",
   live: {},
@@ -10142,17 +10278,17 @@ function scoreSet(k, v) {
   ScoreStore[k] = v;
   scoreEmit();
 }
-function scoreRow(id) {
-  const src = ScoreStore.mode === "sample" ? SAMPLE_LOG[id] || [] : ScoreStore.live[id] || [];
+function scoreRow(mid) {
+  const src = ScoreStore.mode === "sample" ? SAMPLE_LOG[mid] || [] : ScoreStore.live[mid] || [];
   return WEEKS.map((w, i) => src[i] === undefined || src[i] === "" ? null : src[i]);
 }
-function scoreEnter(id, i, raw) {
-  const row = (ScoreStore.live[id] || []).slice();
+function scoreEnter(mid, i, raw) {
+  const row = (ScoreStore.live[mid] || []).slice();
   const v = raw === "" ? null : Number(raw);
   row[i] = raw === "" || isNaN(v) ? null : v;
   ScoreStore.live = {
     ...ScoreStore.live,
-    [id]: row
+    [mid]: row
   };
   try {
     localStorage.setItem(SCORE_KEY, JSON.stringify(ScoreStore.live));
@@ -10168,31 +10304,28 @@ function scoreClear() {
   scoreEmit();
 }
 
-/* ------------------------------------------------------------ status, same rules as the tracker */
-// Prior is the previous entry that holds a number, so monthly and per-run seats
-// compare run to run rather than to an empty week.
-function seatRead(s) {
-  const row = scoreRow(s.id);
-  const idx = row.map((v, i) => v == null ? -1 : i).filter(i => i >= 0);
-  const li = idx.length ? idx[idx.length - 1] : -1,
-    pi = idx.length > 1 ? idx[idx.length - 2] : -1;
-  const latest = li >= 0 ? row[li] : null,
-    prior = pi >= 0 ? row[pi] : null;
-  let st;
-  if (latest == null) st = "Not measured";else if (s.target.kind === "max") st = latest <= s.target.v ? "On target" : "Off target";else if (s.target.kind === "min") st = latest >= s.target.v ? "On target" : "Off target";else if (prior == null) st = "Baseline";else st = latest > prior ? "Improving" : latest === prior ? "Flat" : "Slipping";
-  const better = latest == null || prior == null || latest === prior ? null : s.target.kind === "max" ? latest < prior : latest > prior;
-  const dir = latest == null || prior == null || latest === prior ? 0 : latest > prior ? 1 : -1;
-  return {
-    row,
-    latest,
-    prior,
-    li,
-    st,
-    better,
-    dir,
-    entries: idx.length
-  };
+/* ------------------------------------------------------------ status, same rules as the Metrics tracker */
+function judge(m, latest, prior) {
+  if (latest == null) return "Not measured";
+  if (m.kind === "max") return latest <= m.v ? "On target" : "Off target";
+  if (m.kind === "min") return latest >= m.v ? "On target" : "Off target";
+  if (m.kind === "yes") return latest === 1 ? "On target" : "Off target";
+  if (prior == null) return "Baseline";
+  if (m.kind === "up") return latest > prior ? "Improving" : latest === prior ? "Flat" : "Slipping";
+  return latest < prior ? "Improving" : latest === prior ? "On target" : "Slipping"; // flat or falling
 }
+const HOLD = {
+    "On target": 1,
+    "Improving": 1
+  },
+  WATCH = {
+    "Flat": 1,
+    "Baseline": 1
+  },
+  OFF = {
+    "Off target": 1,
+    "Slipping": 1
+  };
 const ST_TONE = {
   "On target": "good",
   "Improving": "good",
@@ -10211,25 +10344,102 @@ const MEASURE_TONE = {
   "Needs roadmap": "bad",
   "Needs attribution": "bad"
 };
-function fmtSeat(s, v) {
-  if (v == null) return "-";
-  if (s.unit === "usd") return fmt.usd(v);
-  if (s.unit === "pct") return Number(v).toFixed(1) + "%";
-  if (s.unit === "h") return (Number.isInteger(v) ? v : Number(v).toFixed(1)) + " hrs";
-  if (s.unit === "rate") return Number(v).toFixed(2) + " / $";
-  return Number.isInteger(v) ? String(v) : Number(v).toFixed(1);
+
+// status of a metric as of week i: that week's entry against the last one before it
+function statusAt(m, row, i) {
+  const latest = row[i];
+  if (latest == null) return null;
+  let prior = null;
+  for (let j = i - 1; j >= 0; j--) if (row[j] != null) {
+    prior = row[j];
+    break;
+  }
+  return judge(m, latest, prior);
+}
+function metricRead(m) {
+  const row = scoreRow(m.id);
+  const idx = row.map((v, i) => v == null ? -1 : i).filter(i => i >= 0);
+  const li = idx.length ? idx[idx.length - 1] : -1,
+    pi = idx.length > 1 ? idx[idx.length - 2] : -1;
+  const latest = li >= 0 ? row[li] : null,
+    prior = pi >= 0 ? row[pi] : null;
+  const st = judge(m, latest, prior);
+  let streak = 0; // entries in a row that were off, counting back from the latest
+  for (let k = idx.length - 1; k >= 0; k--) {
+    if (OFF[statusAt(m, row, idx[k])]) streak++;else break;
+  }
+  const dir = latest == null || prior == null || latest === prior ? 0 : latest > prior ? 1 : -1;
+  return {
+    m,
+    row,
+    latest,
+    prior,
+    li,
+    st,
+    streak,
+    dir,
+    entries: idx.length
+  };
 }
 const seatById = id => SEATS.find(s => s.id === id);
+const seatMetrics = id => METRICS.filter(m => m.seat === id);
+function seatRead(s) {
+  const reads = seatMetrics(s.id).map(metricRead);
+  const n = set => reads.filter(r => set[r.st]).length;
+  return {
+    s,
+    reads,
+    primary: reads.find(r => r.m.primary),
+    hold: n(HOLD),
+    watch: n(WATCH),
+    off: n(OFF),
+    none: reads.filter(r => r.st === "Not measured").length,
+    stuck: reads.filter(r => OFF[r.st])
+  };
+}
+// share of a seat's measured metrics holding as of week i, using each metric's latest entry up to then
+function seatHealthAt(s, i) {
+  let meas = 0,
+    hold = 0,
+    off = 0;
+  seatMetrics(s.id).forEach(m => {
+    const row = scoreRow(m.id);
+    let j = i;
+    while (j >= 0 && row[j] == null) j--;
+    if (j < 0) return;
+    const st = statusAt(m, row, j);
+    meas++;
+    if (HOLD[st]) hold++;else if (OFF[st]) off++;
+  });
+  if (!meas) return null;
+  // watch states (flat, first entry) sit out of the share; all watch reads amber
+  return {
+    pct: hold + off ? hold / (hold + off) * 100 : 60,
+    meas,
+    hold,
+    off
+  };
+}
+function fmtM(m, v) {
+  if (v == null) return "-";
+  if (m.unit === "yes") return v === 1 ? "Yes" : "No";
+  if (m.unit === "usd") return fmt.usd(v);
+  if (m.unit === "pct") return (Number.isInteger(v) ? v : Number(v).toFixed(1)) + "%";
+  if (m.unit === "h") return (Number.isInteger(v) ? v : Number(v).toFixed(1)) + " hrs";
+  if (m.unit === "rate") return Number(v).toFixed(2) + " / $";
+  return Number.isInteger(v) ? String(v) : Number(v).toFixed(1);
+}
+const lastWeek = () => Math.max(11, ...METRICS.map(m => scoreRow(m.id).reduce((a, v, i) => v != null ? i : a, -1)));
 
-/* ------------------------------------------------------------ trend chart with gaps */
+/* ------------------------------------------------------------ charts */
 function Trend({
-  seat,
+  m,
   row,
   h = 150,
-  compact
+  compact,
+  tone
 }) {
-  const last = Math.max(11, row.reduce((m, v, i) => v != null ? i : m, -1));
-  const span = row.slice(0, last + 1);
+  const span = row.slice(0, lastWeek() + 1);
   const vals = span.filter(v => v != null);
   if (!vals.length) {
     return /*#__PURE__*/React.createElement("div", {
@@ -10240,25 +10450,28 @@ function Trend({
         border: "1px dashed var(--rule)",
         borderRadius: "var(--r-md)",
         color: "var(--ink-mute)",
-        fontSize: 11.5
+        fontSize: 11
       }
     }, "Not measured yet");
   }
-  const tv = seat.target.v;
+  const tv = m.kind === "yes" ? null : m.v;
   let lo = Math.min(...vals, tv ?? Infinity),
     hi = Math.max(...vals, tv ?? -Infinity);
+  if (m.unit === "yes") {
+    lo = 0;
+    hi = 1;
+  }
   if (lo === hi) {
-    lo = lo - 1;
-    hi = hi + 1;
+    lo -= 1;
+    hi += 1;
   }
   const pad = (hi - lo) * 0.15;
   lo -= pad;
   hi += pad;
   const X = i => span.length === 1 ? 50 : i / (span.length - 1) * 100;
   const Y = v => 100 - (v - lo) / (hi - lo) * 100;
-  const pts = span.map((v, i) => v == null ? null : [X(i), Y(v)]).filter(Boolean);
-  const r = seatRead(seat);
-  const tone = ST_TONE[r.st] === "mute" ? "accent" : ST_TONE[r.st];
+  const pts = span.map((v, i) => v == null ? null : [X(i), Y(v), statusAt(m, span, i)]).filter(Boolean);
+  const line = tone && tone !== "mute" ? tone : "accent";
   return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     style: {
       position: "relative",
@@ -10291,25 +10504,26 @@ function Trend({
     strokeDasharray: "3 3",
     vectorEffect: "non-scaling-stroke"
   }), /*#__PURE__*/React.createElement("polyline", {
-    points: pts.map(p => p.join(",")).join(" "),
+    points: pts.map(p => p[0] + "," + p[1]).join(" "),
     fill: "none",
-    stroke: T(tone),
-    strokeWidth: compact ? 1.6 : 2,
+    stroke: T(line),
+    strokeOpacity: "0.55",
+    strokeWidth: compact ? 1.4 : 2,
     strokeLinecap: "round",
     strokeLinejoin: "round",
     vectorEffect: "non-scaling-stroke"
   })), pts.map((p, i) => /*#__PURE__*/React.createElement("span", {
     key: i,
+    title: p[2],
     style: {
       position: "absolute",
       left: p[0] + "%",
       top: p[1] + "%",
-      width: compact ? 5 : 7,
-      height: compact ? 5 : 7,
+      width: compact ? 6 : 8,
+      height: compact ? 6 : 8,
       borderRadius: 99,
       transform: "translate(-50%,-50%)",
-      background: "var(--surface)",
-      border: `1.6px solid ${T(tone)}`
+      background: T(ST_TONE[p[2]])
     }
   })), !compact && tv != null && /*#__PURE__*/React.createElement("span", {
     style: {
@@ -10321,10 +10535,10 @@ function Trend({
       color: "var(--warn)",
       fontWeight: 600
     }
-  }, "Target ", fmtSeat(seat, tv))), !compact && /*#__PURE__*/React.createElement("div", {
+  }, "Target ", fmtM(m, tv))), !compact && /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
-      marginTop: 7
+      marginTop: 6
     }
   }, span.map((v, i) => /*#__PURE__*/React.createElement("span", {
     key: i,
@@ -10332,9 +10546,60 @@ function Trend({
       flex: 1,
       textAlign: "center",
       fontSize: 9,
-      color: v == null ? "var(--ink-dim)" : "var(--ink-mute)"
+      color: "var(--ink-mute)"
     }
-  }, i % 2 === 0 || span.length <= 8 ? WEEKS[i] : ""))));
+  }, i % 3 === 0 ? WEEKS[i] : ""))));
+}
+
+// one row per metric, one cell per week, colored by the status that week
+function StatusStrip({
+  reads,
+  weeks
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "scroll-x"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: `minmax(170px,1.4fr) repeat(${weeks},minmax(22px,1fr))`,
+      gap: 3,
+      minWidth: 520
+    }
+  }, /*#__PURE__*/React.createElement("span", null), Array.from({
+    length: weeks
+  }, (_, i) => /*#__PURE__*/React.createElement("span", {
+    key: i,
+    style: {
+      fontSize: 8.5,
+      color: "var(--ink-mute)",
+      textAlign: "center"
+    }
+  }, i % 2 === 0 ? WEEKS[i] : "")), reads.map(r => /*#__PURE__*/React.createElement(React.Fragment, {
+    key: r.m.id
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 11,
+      color: "var(--ink-soft)",
+      whiteSpace: "nowrap",
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      fontWeight: r.m.primary ? 600 : 400
+    }
+  }, r.m.name), Array.from({
+    length: weeks
+  }, (_, i) => {
+    const st = statusAt(r.m, r.row, i);
+    return /*#__PURE__*/React.createElement("span", {
+      key: i,
+      title: st ? `${WEEKS[i]}: ${fmtM(r.m, r.row[i])}, ${st}` : `${WEEKS[i]}: no entry`,
+      style: {
+        height: 16,
+        borderRadius: 3,
+        background: st ? T(ST_TONE[st]) : "var(--surface-3)",
+        opacity: st ? 0.85 : 1
+      }
+    });
+  })))));
 }
 function ModeSwitch() {
   const S = useScore();
@@ -10352,39 +10617,52 @@ function ModeSwitch() {
 }
 function ModeNote() {
   const S = useScore();
-  return S.mode === "sample" ? /*#__PURE__*/React.createElement("p", {
+  return /*#__PURE__*/React.createElement("p", {
     style: {
       fontSize: 11,
       color: "var(--ink-mute)",
       margin: "-12px 0 18px"
     }
-  }, "Sample history, twelve modeled weeks, shows how the scoring trends. Switch to Live log to enter real numbers.") : /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: 11,
-      color: "var(--ink-mute)",
-      margin: "-12px 0 18px"
-    }
-  }, "Live log. Numbers entered on the Score Log page. An empty week means not measured, not zero.");
+  }, S.mode === "sample" ? `Sample history, twelve modeled weeks across all ${METRICS.length} metrics. Switch to Live log to enter real numbers.` : "Live log. Numbers entered on the Score Log page. An empty week means not measured, not zero.");
 }
+const detailBtn = {
+  border: "1px solid var(--rule)",
+  background: "var(--surface-3)",
+  color: "var(--ink-soft)",
+  borderRadius: "var(--r-sm)",
+  padding: "6px 11px",
+  fontSize: 11.5,
+  fontWeight: 600,
+  cursor: "pointer"
+};
+const Dot = ({
+  st
+}) => /*#__PURE__*/React.createElement("span", {
+  className: "dot",
+  style: {
+    background: T(ST_TONE[st]),
+    flexShrink: 0
+  }
+});
 
 /* ============================== ROLE SCORECARDS ============================== */
 function TeamScorecards({
   go
 }) {
   const S = useScore();
-  const reads = SEATS.map(s => ({
-    s,
-    r: seatRead(s)
-  }));
-  const count = f => reads.filter(x => f(x.r.st)).length;
-  const shown = S.viewAs === "owner" ? reads : reads.filter(x => x.s.id === S.viewAs || S.viewAs === "coo" && x.s.id === "warehouse");
+  const seats = SEATS.map(seatRead);
+  const all = seats.flatMap(x => x.reads);
+  const cnt = set => all.filter(r => set[r.st]).length;
+  const shown = S.viewAs === "owner" ? seats : seats.filter(x => x.s.id === S.viewAs || S.viewAs === "coo" && x.s.id === "warehouse");
   const focus = S.focus && shown.find(x => x.s.id === S.focus);
-  const f = seatRead(seatById("founder"));
+  const f = metricRead(METRICS.find(m => m.id === "f_dec"));
+  const stuck = all.filter(r => OFF[r.st]).sort((a, b) => b.streak - a.streak);
+  const weeks = lastWeek() + 1;
   return /*#__PURE__*/React.createElement("div", {
     className: "page-in"
   }, /*#__PURE__*/React.createElement(PageHead, {
     title: "Role scorecards",
-    sub: "One number per seat. Everyone sees their own card. The owner sees all of them.",
+    sub: "Every seat, scored on every metric it's held to. Everyone sees their own card. The owner sees all of them.",
     right: /*#__PURE__*/React.createElement("span", {
       style: {
         display: "inline-flex",
@@ -10419,40 +10697,39 @@ function TeamScorecards({
       marginBottom: 20
     }
   }, /*#__PURE__*/React.createElement(KPI, {
-    label: "On target or improving",
-    value: String(count(st => st === "On target" || st === "Improving")),
+    label: "Holding",
+    value: String(cnt(HOLD)),
     tone: "good",
-    sub: "of 9 seats"
+    sub: `of ${all.length} metrics, on target or improving`
   }), /*#__PURE__*/React.createElement(KPI, {
-    label: "Off target or slipping",
-    value: String(count(st => st === "Off target" || st === "Slipping")),
+    label: "Off",
+    value: String(cnt(OFF)),
     tone: "bad",
-    sub: "look upstream first"
+    sub: "off target or slipping"
   }), /*#__PURE__*/React.createElement(KPI, {
-    label: "Baseline or flat",
-    value: String(count(st => st === "Baseline" || st === "Flat")),
+    label: "Watch",
+    value: String(cnt(WATCH)),
     tone: "warn",
-    sub: "one entry, or no move"
+    sub: "flat, or a first entry"
   }), /*#__PURE__*/React.createElement(KPI, {
     label: "Not measured",
-    value: String(count(st => st === "Not measured")),
+    value: String(all.filter(r => r.st === "Not measured").length),
     tone: "mute",
     sub: "measure still being built"
-  })), /*#__PURE__*/React.createElement(Card, {
-    pad: 22,
-    style: {
-      marginBottom: 22,
-      borderLeft: "3px solid var(--accent)"
-    }
-  }, /*#__PURE__*/React.createElement(G, {
+  })), /*#__PURE__*/React.createElement(G, {
     c: 2,
     name: "2h",
-    gap: 22,
+    gap: 16,
     style: {
-      gridTemplateColumns: "1fr 1.4fr",
-      alignItems: "center"
+      gridTemplateColumns: "1fr 1.25fr",
+      marginBottom: 20
     }
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement(Card, {
+    pad: 20,
+    style: {
+      borderLeft: "3px solid var(--accent)"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
     className: "sec-label"
   }, "The one that matters most"), /*#__PURE__*/React.createElement("div", {
     style: {
@@ -10460,41 +10737,169 @@ function TeamScorecards({
       alignItems: "baseline",
       gap: 10,
       flexWrap: "wrap",
-      margin: "6px 0 8px"
+      margin: "6px 0 6px"
     }
   }, /*#__PURE__*/React.createElement("span", {
     className: "mono",
     style: {
-      fontSize: 32,
+      fontSize: 30,
       fontWeight: 600,
       color: T(ST_TONE[f.st] === "mute" ? "ink" : ST_TONE[f.st])
     }
-  }, fmtSeat(seatById("founder"), f.latest)), /*#__PURE__*/React.createElement("span", {
+  }, fmtM(f.m, f.latest)), /*#__PURE__*/React.createElement("span", {
     style: {
       fontSize: 12.5,
       color: "var(--ink-soft)"
     }
   }, "decisions routed through the owner this week. Target under 5.")), /*#__PURE__*/React.createElement("p", {
     style: {
-      fontSize: 12,
+      fontSize: 11.5,
       color: "var(--ink-mute)",
-      lineHeight: 1.55
+      lineHeight: 1.55,
+      marginBottom: 10
     }
-  }, "Every other number on these cards improves as this one falls, because most of them are held back by waiting on him.")), /*#__PURE__*/React.createElement(Trend, {
-    seat: seatById("founder"),
+  }, "Every other number improves as this one falls, because most of them are held back by waiting on him."), /*#__PURE__*/React.createElement(Trend, {
+    m: f.m,
     row: f.row,
-    h: 120
-  })))), /*#__PURE__*/React.createElement(G, {
+    h: 96,
+    tone: ST_TONE[f.st]
+  })), /*#__PURE__*/React.createElement(Card, {
+    pad: 0
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: "18px 18px 4px"
+    }
+  }, /*#__PURE__*/React.createElement(SecLabel, {
+    icon: "alert",
+    right: "longest run first",
+    help: "Every metric that's off target or slipping right now, sorted by how many entries in a row it's been off. A long run is a failure mode, not a bad week."
+  }, "Sticking points")), stuck.length === 0 ? /*#__PURE__*/React.createElement("p", {
+    style: {
+      padding: "8px 18px 20px",
+      fontSize: 12.5,
+      color: "var(--ink-mute)"
+    }
+  }, "Nothing's off right now.") : /*#__PURE__*/React.createElement("div", {
+    className: "scroll-x"
+  }, /*#__PURE__*/React.createElement("table", {
+    className: "tbl"
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Seat"), /*#__PURE__*/React.createElement("th", null, "Metric"), /*#__PURE__*/React.createElement("th", {
+    style: {
+      textAlign: "right"
+    }
+  }, "Latest"), /*#__PURE__*/React.createElement("th", null, "Target"), /*#__PURE__*/React.createElement("th", {
+    style: {
+      textAlign: "right"
+    }
+  }, "Off for"))), /*#__PURE__*/React.createElement("tbody", null, stuck.slice(0, 8).map(r => {
+    const s = seatById(r.m.seat);
+    return /*#__PURE__*/React.createElement("tr", {
+      key: r.m.id,
+      className: "clickable",
+      onClick: () => scoreSet("focus", s.id),
+      style: {
+        cursor: "pointer"
+      }
+    }, /*#__PURE__*/React.createElement("td", {
+      style: {
+        fontWeight: 600,
+        whiteSpace: "nowrap"
+      }
+    }, s.short), /*#__PURE__*/React.createElement("td", {
+      style: {
+        fontSize: 12
+      }
+    }, r.m.name), /*#__PURE__*/React.createElement("td", {
+      className: "num",
+      style: {
+        textAlign: "right",
+        color: "var(--bad)",
+        fontWeight: 600,
+        whiteSpace: "nowrap"
+      }
+    }, fmtM(r.m, r.latest)), /*#__PURE__*/React.createElement("td", {
+      style: {
+        fontSize: 11.5,
+        color: "var(--ink-mute)"
+      }
+    }, r.m.target), /*#__PURE__*/React.createElement("td", {
+      style: {
+        textAlign: "right",
+        whiteSpace: "nowrap"
+      }
+    }, /*#__PURE__*/React.createElement(Badge, {
+      tone: r.streak >= 3 ? "bad" : "warn"
+    }, r.streak, " ", r.streak === 1 ? "entry" : "entries")));
+  })))), stuck.length > 8 && /*#__PURE__*/React.createElement("p", {
+    style: {
+      padding: "8px 18px 14px",
+      fontSize: 11,
+      color: "var(--ink-mute)"
+    }
+  }, stuck.length - 8, " more on the seat cards below."))), /*#__PURE__*/React.createElement(Card, {
+    pad: 20,
+    style: {
+      marginBottom: 22
+    }
+  }, /*#__PURE__*/React.createElement(SecLabel, {
+    icon: "pulse",
+    right: "holding against off, by week",
+    help: "Each cell uses every metric's latest entry up to that week, and scores holding against off. Flat and first entries sit out. Gray means nothing measured yet."
+  }, "Seat health over time"), /*#__PURE__*/React.createElement("div", {
+    className: "scroll-x"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: `minmax(130px,1fr) repeat(${weeks},minmax(24px,1fr))`,
+      gap: 3,
+      minWidth: 520
+    }
+  }, /*#__PURE__*/React.createElement("span", null), Array.from({
+    length: weeks
+  }, (_, i) => /*#__PURE__*/React.createElement("span", {
+    key: i,
+    style: {
+      fontSize: 8.5,
+      color: "var(--ink-mute)",
+      textAlign: "center"
+    }
+  }, i % 2 === 0 ? WEEKS[i] : "")), SEATS.map(s => /*#__PURE__*/React.createElement(React.Fragment, {
+    key: s.id
+  }, /*#__PURE__*/React.createElement("span", {
+    onClick: () => scoreSet("focus", s.id),
+    style: {
+      fontSize: 11.5,
+      color: "var(--ink-soft)",
+      cursor: "pointer",
+      whiteSpace: "nowrap"
+    }
+  }, s.short), Array.from({
+    length: weeks
+  }, (_, i) => {
+    const hh = seatHealthAt(s, i);
+    const tone = !hh ? null : hh.pct >= 75 ? "good" : hh.pct >= 50 ? "warn" : "bad";
+    return /*#__PURE__*/React.createElement("span", {
+      key: i,
+      title: hh ? `${WEEKS[i]}: ${hh.hold} holding, ${hh.off} off, ${hh.meas - hh.hold - hh.off} on watch` : `${WEEKS[i]}: nothing measured`,
+      style: {
+        height: 18,
+        borderRadius: 3,
+        background: tone ? T(tone) : "var(--surface-3)",
+        opacity: tone ? 0.85 : 1
+      }
+    });
+  }))))))), /*#__PURE__*/React.createElement(G, {
     c: 3,
     name: "3",
     gap: 16,
     style: {
       marginBottom: 22
     }
-  }, shown.map(({
-    s,
-    r
-  }) => {
+  }, shown.map(x => {
+    const {
+      s,
+      primary: p
+    } = x;
     const on = S.focus === s.id;
     return /*#__PURE__*/React.createElement(Card, {
       key: s.id,
@@ -10525,7 +10930,7 @@ function TeamScorecards({
     }, /*#__PURE__*/React.createElement(Avatar, {
       name: s.who,
       size: 28,
-      tone: ST_TONE[r.st] === "bad" ? "bad" : "accent"
+      tone: x.off ? "bad" : "accent"
     }), /*#__PURE__*/React.createElement("div", {
       style: {
         minWidth: 0
@@ -10541,13 +10946,14 @@ function TeamScorecards({
         color: "var(--ink-mute)"
       }
     }, s.who))), /*#__PURE__*/React.createElement(Badge, {
-      tone: ST_TONE[r.st]
-    }, r.st)), /*#__PURE__*/React.createElement("div", {
+      tone: x.off ? "bad" : x.hold ? "good" : "mute"
+    }, x.off ? `${x.off} stuck` : x.hold ? "Holding" : "Not measured")), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
       style: {
-        fontSize: 11.5,
-        color: "var(--ink-soft)"
+        fontSize: 11,
+        color: "var(--ink-mute)",
+        marginBottom: 2
       }
-    }, s.number), /*#__PURE__*/React.createElement("div", {
+    }, p.m.name), /*#__PURE__*/React.createElement("div", {
       style: {
         display: "flex",
         alignItems: "baseline",
@@ -10557,22 +10963,44 @@ function TeamScorecards({
     }, /*#__PURE__*/React.createElement("span", {
       className: "mono",
       style: {
-        fontSize: 24,
+        fontSize: 22,
         fontWeight: 600,
-        color: r.latest == null ? "var(--ink-mute)" : T(ST_TONE[r.st])
+        color: p.latest == null ? "var(--ink-mute)" : T(ST_TONE[p.st])
       }
-    }, fmtSeat(s, r.latest)), r.prior != null && /*#__PURE__*/React.createElement("span", {
+    }, fmtM(p.m, p.latest)), /*#__PURE__*/React.createElement(Badge, {
+      tone: ST_TONE[p.st]
+    }, p.st))), /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        flexDirection: "column",
+        gap: 6,
+        paddingTop: 9,
+        borderTop: "1px solid var(--rule-soft)"
+      }
+    }, x.reads.filter(r => !r.m.primary).map(r => /*#__PURE__*/React.createElement("div", {
+      key: r.m.id,
+      style: {
+        display: "grid",
+        gridTemplateColumns: "auto 1fr auto",
+        gap: 8,
+        alignItems: "center"
+      }
+    }, /*#__PURE__*/React.createElement(Dot, {
+      st: r.st
+    }), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 11.5,
+        color: OFF[r.st] ? "var(--ink)" : "var(--ink-soft)",
+        fontWeight: OFF[r.st] ? 600 : 400
+      }
+    }, r.m.name), /*#__PURE__*/React.createElement("span", {
       className: "mono",
       style: {
-        fontSize: 11,
-        color: r.better ? "var(--good)" : r.better === false ? "var(--bad)" : "var(--ink-mute)"
+        fontSize: 11.5,
+        color: r.latest == null ? "var(--ink-mute)" : T(ST_TONE[r.st]),
+        whiteSpace: "nowrap"
       }
-    }, r.dir > 0 ? "\u25B2 " : r.dir < 0 ? "\u25BC " : "", "prior ", fmtSeat(s, r.prior))), /*#__PURE__*/React.createElement(Trend, {
-      seat: s,
-      row: r.row,
-      h: 44,
-      compact: true
-    }), /*#__PURE__*/React.createElement("div", {
+    }, fmtM(r.m, r.latest))))), /*#__PURE__*/React.createElement("div", {
       style: {
         display: "flex",
         justifyContent: "space-between",
@@ -10583,24 +11011,26 @@ function TeamScorecards({
         paddingTop: 8,
         borderTop: "1px solid var(--rule-soft)"
       }
-    }, /*#__PURE__*/React.createElement("span", null, "Target ", s.target.text, " · ", s.cadence), /*#__PURE__*/React.createElement(Badge, {
+    }, /*#__PURE__*/React.createElement("span", null, x.hold, " of ", x.reads.length, " holding", x.none ? ` · ${x.none} not measured` : ""), /*#__PURE__*/React.createElement(Badge, {
       tone: MEASURE_TONE[s.measure]
     }, s.measure)));
   })), focus && /*#__PURE__*/React.createElement(SeatDetail, {
-    s: focus.s,
-    r: focus.r,
-    go: go
+    x: focus,
+    go: go,
+    weeks: weeks
   }), /*#__PURE__*/React.createElement(Note, {
     tone: "info",
     icon: "i"
-  }, "If a number is off, look at the supporting numbers before the person. Most of the time a primary number moves because something upstream of it changed, not because somebody stopped trying. Click any card for its trend and supporting numbers."));
+  }, "When a seat is off, the colored dots show which metric it's stuck on. Look there before the person. Most of the time a number moves because something upstream of it changed, not because somebody stopped trying. Click any card for every trend."));
 }
 function SeatDetail({
-  s,
-  r,
-  go
+  x,
+  go,
+  weeks
 }) {
-  const S = useScore();
+  const {
+    s
+  } = x;
   return /*#__PURE__*/React.createElement(Card, {
     pad: 22,
     style: {
@@ -10631,7 +11061,22 @@ function SeatDetail({
       color: "var(--ink-soft)",
       lineHeight: 1.55
     }
-  }, s.line)), /*#__PURE__*/React.createElement("span", {
+  }, s.line), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: 11.5,
+      color: "var(--ink-mute)",
+      marginTop: 6,
+      lineHeight: 1.55
+    }
+  }, /*#__PURE__*/React.createElement("b", {
+    style: {
+      fontWeight: 600
+    }
+  }, "Manages."), " ", s.manages, ". ", /*#__PURE__*/React.createElement("b", {
+    style: {
+      fontWeight: 600
+    }
+  }, "Doesn't."), " ", s.not, " Role document: ", s.doc, ", in the Vault.")), /*#__PURE__*/React.createElement("span", {
     style: {
       display: "flex",
       gap: 8
@@ -10642,91 +11087,77 @@ function SeatDetail({
   }, "Open the log"), /*#__PURE__*/React.createElement("button", {
     onClick: () => go("org"),
     style: detailBtn
-  }, "See on the org chart"))), /*#__PURE__*/React.createElement(G, {
+  }, "See on the org chart"))), /*#__PURE__*/React.createElement(SecLabel, {
+    icon: "target",
+    right: "each dot colored by its status that week"
+  }, "Every metric"), /*#__PURE__*/React.createElement(G, {
     c: 2,
-    name: "2h",
-    gap: 22,
+    name: "2",
+    gap: 14,
     style: {
-      gridTemplateColumns: "1.5fr 1fr"
+      marginBottom: 20
     }
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(SecLabel, {
-    icon: "pulse",
-    right: `${r.entries} ${r.entries === 1 ? "entry" : "entries"} · read ${s.cadence.toLowerCase()}`
-  }, s.number), /*#__PURE__*/React.createElement(Trend, {
-    seat: s,
-    row: r.row,
-    h: 170
-  }), /*#__PURE__*/React.createElement("p", {
+  }, x.reads.map(r => /*#__PURE__*/React.createElement("div", {
+    key: r.m.id,
     style: {
-      fontSize: 11,
-      color: "var(--ink-mute)",
-      marginTop: 12
+      border: "1px solid var(--rule-soft)",
+      borderRadius: "var(--r-md)",
+      padding: 14
     }
-  }, "From ", s.source.toLowerCase(), ". ", s.measure === "Measurable" ? "Readable today." : `Before this number means anything: ${s.need.charAt(0).toLowerCase() + s.need.slice(1)}.`)), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(SecLabel, {
-    icon: "target"
-  }, "Supporting numbers"), s.supporting.map(x => /*#__PURE__*/React.createElement("div", {
-    key: x.n,
+  }, /*#__PURE__*/React.createElement("div", {
     style: {
-      display: "grid",
-      gridTemplateColumns: "1fr auto",
+      display: "flex",
+      justifyContent: "space-between",
       gap: 10,
-      padding: "9px 0",
-      borderBottom: "1px solid var(--rule-soft)"
+      alignItems: "flex-start",
+      marginBottom: 8
     }
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      minWidth: 0
+    }
+  }, /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 12.5,
+      fontWeight: r.m.primary ? 650 : 500
+    }
+  }, r.m.name, r.m.primary && /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: "var(--accent)",
       fontWeight: 500
     }
-  }, x.n), /*#__PURE__*/React.createElement("div", {
+  }, " · primary")), /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 10.5,
       color: "var(--ink-mute)"
     }
-  }, "Target ", x.target, " · ", x.cadence, " · ", x.source)), S.mode === "sample" ? /*#__PURE__*/React.createElement("span", {
+  }, "Target ", r.m.target, " · ", r.m.cadence, " · ", r.m.source)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "right",
+      flexShrink: 0
+    }
+  }, /*#__PURE__*/React.createElement("div", {
     className: "mono",
     style: {
-      fontSize: 13,
+      fontSize: 15,
       fontWeight: 600,
-      color: T(x.tone),
-      alignSelf: "center"
+      color: r.latest == null ? "var(--ink-mute)" : T(ST_TONE[r.st])
     }
-  }, x.sample) : /*#__PURE__*/React.createElement(Badge, {
-    tone: "mute",
-    style: {
-      alignSelf: "center"
-    }
-  }, "Not measured"))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      marginTop: 14,
-      fontSize: 11.5,
-      color: "var(--ink-soft)",
-      lineHeight: 1.55
-    }
-  }, /*#__PURE__*/React.createElement("b", {
-    style: {
-      fontWeight: 600
-    }
-  }, "Manages."), " ", s.manages, /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("b", {
-    style: {
-      fontWeight: 600
-    }
-  }, "Doesn't."), " ", s.not, /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("span", {
-    style: {
-      color: "var(--ink-mute)"
-    }
-  }, "Role document: ", s.doc, ", in the Vault.")))));
+  }, fmtM(r.m, r.latest)), /*#__PURE__*/React.createElement(Badge, {
+    tone: ST_TONE[r.st]
+  }, r.st, OFF[r.st] && r.streak > 1 ? `, ${r.streak} entries` : ""))), /*#__PURE__*/React.createElement(Trend, {
+    m: r.m,
+    row: r.row,
+    h: 84,
+    tone: ST_TONE[r.st]
+  })))), /*#__PURE__*/React.createElement(SecLabel, {
+    icon: "clock",
+    right: "green holding, amber flat, blue first entry, red off, gray no entry"
+  }, "Status by week"), /*#__PURE__*/React.createElement(StatusStrip, {
+    reads: x.reads,
+    weeks: weeks
+  }));
 }
-const detailBtn = {
-  border: "1px solid var(--rule)",
-  background: "var(--surface-3)",
-  color: "var(--ink-soft)",
-  borderRadius: "var(--r-sm)",
-  padding: "6px 11px",
-  fontSize: 11.5,
-  fontWeight: 600,
-  cursor: "pointer"
-};
 
 /* ============================== SCORE LOG ============================== */
 function ScoreLog() {
@@ -10734,10 +11165,11 @@ function ScoreLog() {
   const live = S.mode === "live";
   const shownWeeks = live ? WEEKS.length : 12;
   const exportCsv = () => {
-    const head = ["Seat", "Who", "The number", "Target", ...WEEKS, "Latest", "Prior", "Status"];
-    const lines = [head].concat(SEATS.map(s => {
-      const r = seatRead(s);
-      return [s.seat, s.who, s.number, s.target.text, ...r.row.map(v => v == null ? "" : v), r.latest ?? "", r.prior ?? "", r.st];
+    const head = ["Seat", "Who", "Metric", "Primary", "Target", "Cadence", "Source", ...WEEKS, "Latest", "Prior", "Status"];
+    const lines = [head].concat(METRICS.map(m => {
+      const r = metricRead(m),
+        s = seatById(m.seat);
+      return [s.seat, s.who, m.name, m.primary ? "Primary" : "", m.target, m.cadence, m.source, ...r.row.map(v => v == null ? "" : v), r.latest ?? "", r.prior ?? "", r.st];
     }));
     const csv = lines.map(l => l.map(c => `"${String(c).replace(/"/g, '""')}"`).join(",")).join("\n");
     const a = document.createElement("a");
@@ -10747,8 +11179,8 @@ function ScoreLog() {
     a.download = `mynd_score_log_${S.mode}.csv`;
     a.click();
   };
-  const cell = {
-    width: 62,
+  const inp = {
+    width: 60,
     background: "var(--surface-3)",
     border: "1px solid var(--rule)",
     borderRadius: 6,
@@ -10758,11 +11190,17 @@ function ScoreLog() {
     textAlign: "right",
     fontFamily: "var(--mono)"
   };
+  const sticky = {
+    position: "sticky",
+    left: 0,
+    background: "var(--surface)",
+    zIndex: 1
+  };
   return /*#__PURE__*/React.createElement("div", {
     className: "page-in"
   }, /*#__PURE__*/React.createElement(PageHead, {
     title: "Score log",
-    sub: "One number per seat per week. Status calculates on its own.",
+    sub: "Every metric, every week it's read. Each entry is scored the moment it lands.",
     right: /*#__PURE__*/React.createElement("span", {
       style: {
         display: "inline-flex",
@@ -10791,99 +11229,87 @@ function ScoreLog() {
     className: "tbl"
   }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", {
     style: {
-      position: "sticky",
-      left: 0,
-      background: "var(--surface)",
-      zIndex: 1,
-      minWidth: 190
+      ...sticky,
+      minWidth: 230
     }
-  }, "Seat and number"), /*#__PURE__*/React.createElement("th", null, "Target"), WEEKS.slice(0, shownWeeks).map((w, i) => /*#__PURE__*/React.createElement("th", {
+  }, "Metric"), /*#__PURE__*/React.createElement("th", null, "Target"), WEEKS.slice(0, shownWeeks).map((w, i) => /*#__PURE__*/React.createElement("th", {
     key: w,
     style: {
       textAlign: "right",
       color: i === 0 ? "var(--accent)" : undefined
     }
-  }, w)), /*#__PURE__*/React.createElement("th", {
+  }, w)), /*#__PURE__*/React.createElement("th", null, "Status"))), /*#__PURE__*/React.createElement("tbody", null, SEATS.map(s => /*#__PURE__*/React.createElement(React.Fragment, {
+    key: s.id
+  }, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", {
+    colSpan: shownWeeks + 3,
     style: {
-      textAlign: "right"
+      background: "var(--surface-3)",
+      fontWeight: 650,
+      fontSize: 12
     }
-  }, "Latest"), /*#__PURE__*/React.createElement("th", {
+  }, /*#__PURE__*/React.createElement("span", {
     style: {
-      textAlign: "right"
+      position: "sticky",
+      left: 13
     }
-  }, "Prior"), /*#__PURE__*/React.createElement("th", null, "Status"))), /*#__PURE__*/React.createElement("tbody", null, SEATS.map(s => {
-    const r = seatRead(s);
+  }, s.seat, " ", /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontWeight: 400,
+      color: "var(--ink-mute)"
+    }
+  }, "· ", s.who)))), seatMetrics(s.id).map(m => {
+    const r = metricRead(m);
     return /*#__PURE__*/React.createElement("tr", {
-      key: s.id
+      key: m.id
     }, /*#__PURE__*/React.createElement("td", {
-      style: {
-        position: "sticky",
-        left: 0,
-        background: "var(--surface)",
-        zIndex: 1
-      }
+      style: sticky
     }, /*#__PURE__*/React.createElement("div", {
       style: {
-        fontWeight: 600
+        fontWeight: m.primary ? 600 : 400,
+        fontSize: 12.5
       }
-    }, s.short, " ", /*#__PURE__*/React.createElement("span", {
-      style: {
-        fontWeight: 400,
-        color: "var(--ink-mute)"
-      }
-    }, "· ", s.who)), /*#__PURE__*/React.createElement("div", {
+    }, m.name), /*#__PURE__*/React.createElement("div", {
       style: {
         fontSize: 10.5,
         color: "var(--ink-mute)"
       }
-    }, s.number)), /*#__PURE__*/React.createElement("td", {
+    }, m.cadence, m.primary ? " · primary" : "", m.unit === "yes" ? " · 1 yes, 0 no" : m.unit === "pct" ? " · whole percent" : "")), /*#__PURE__*/React.createElement("td", {
       style: {
         fontSize: 11.5,
         color: "var(--ink-soft)",
-        whiteSpace: "nowrap"
+        minWidth: 110
       }
-    }, s.target.text), r.row.slice(0, shownWeeks).map((v, i) => /*#__PURE__*/React.createElement("td", {
-      key: i,
-      className: "num",
-      style: {
-        textAlign: "right",
-        whiteSpace: "nowrap",
-        color: v == null ? "var(--ink-dim)" : "var(--ink)"
-      }
-    }, live ? /*#__PURE__*/React.createElement("input", {
-      type: "number",
-      step: "any",
-      defaultValue: v ?? "",
-      "aria-label": `${s.short} week of ${WEEKS[i]}`,
-      onBlur: e => {
-        const nv = e.target.value;
-        if (String(v ?? "") !== nv) scoreEnter(s.id, i, nv);
-      },
-      style: cell
-    }) : v == null ? "-" : fmtSeat(s, v))), /*#__PURE__*/React.createElement("td", {
-      className: "num",
-      style: {
-        textAlign: "right",
-        fontWeight: 600,
-        whiteSpace: "nowrap"
-      }
-    }, fmtSeat(s, r.latest)), /*#__PURE__*/React.createElement("td", {
-      className: "num",
-      style: {
-        textAlign: "right",
-        color: "var(--ink-mute)",
-        whiteSpace: "nowrap"
-      }
-    }, fmtSeat(s, r.prior)), /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement(Badge, {
+    }, m.target), r.row.slice(0, shownWeeks).map((v, i) => {
+      const st = statusAt(m, r.row, i);
+      return /*#__PURE__*/React.createElement("td", {
+        key: i,
+        className: "num",
+        style: {
+          textAlign: "right",
+          whiteSpace: "nowrap",
+          color: v == null ? "var(--ink-dim)" : T(ST_TONE[st]),
+          background: st && OFF[st] ? "var(--bad-tint)" : undefined
+        }
+      }, live ? /*#__PURE__*/React.createElement("input", {
+        type: "number",
+        step: "any",
+        min: m.unit === "yes" ? 0 : undefined,
+        max: m.unit === "yes" ? 1 : undefined,
+        defaultValue: v ?? "",
+        "aria-label": `${m.name}, week of ${WEEKS[i]}`,
+        onBlur: e => {
+          const nv = e.target.value;
+          if (String(v ?? "") !== nv) scoreEnter(m.id, i, nv);
+        },
+        style: inp
+      }) : v == null ? "-" : fmtM(m, v));
+    }), /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement(Badge, {
       tone: ST_TONE[r.st]
     }, r.st)));
-  }))))), /*#__PURE__*/React.createElement(G, {
+  }))))))), /*#__PURE__*/React.createElement(G, {
     c: 2,
     name: "2h",
-    gap: 16,
-    style: {
-      marginBottom: 20
-    }
+    gap: 16
   }, /*#__PURE__*/React.createElement(Card, {
     pad: 20
   }, /*#__PURE__*/React.createElement(SecLabel, {
@@ -10894,68 +11320,26 @@ function ScoreLog() {
       color: "var(--ink-soft)",
       lineHeight: 1.6
     }
-  }, "Where a seat has a fixed target, status compares the latest number to that target. Where the target is a direction, it compares the latest number to the one before it. Monthly and per-run seats compare to their last entry, not to an empty week. Not measured means nothing has been entered yet, and that's a real state rather than a zero.")), /*#__PURE__*/React.createElement(Card, {
+  }, "At or under and at or over compare each entry to the target. Yes metrics take 1 for yes and 0 for no. Rising compares each entry to the last one before it, and flat or falling counts no change as on target. Every entry gets scored, so a metric that stays off shows as a red run across the weeks. Not measured means nothing was entered, and that's a real state rather than a zero.")), /*#__PURE__*/React.createElement(Card, {
     pad: 20
   }, /*#__PURE__*/React.createElement(SecLabel, {
     icon: "clock"
-  }, "Setting a target"), /*#__PURE__*/React.createElement("p", {
+  }, "What to enter"), /*#__PURE__*/React.createElement("p", {
     style: {
       fontSize: 12.5,
       color: "var(--ink-soft)",
       lineHeight: 1.6
     }
-  }, "Five seats have a direction rather than a number, on purpose. Measure for thirty days, set the target against the baseline, and move it once it has held for two months. Order accuracy at 99.5% is the industry standard, so it applies from day one."))), /*#__PURE__*/React.createElement(SecLabel, {
-    icon: "pulse",
-    right: "read when a primary number moves"
-  }, "Supporting numbers"), /*#__PURE__*/React.createElement(Card, {
-    pad: 0
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "scroll-x"
-  }, /*#__PURE__*/React.createElement("table", {
-    className: "tbl"
-  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Seat"), /*#__PURE__*/React.createElement("th", null, "Supporting number"), /*#__PURE__*/React.createElement("th", null, "Target"), /*#__PURE__*/React.createElement("th", null, "Cadence"), /*#__PURE__*/React.createElement("th", null, "Source"), /*#__PURE__*/React.createElement("th", {
-    style: {
-      textAlign: "right"
-    }
-  }, "Latest"))), /*#__PURE__*/React.createElement("tbody", null, SEATS.flatMap(s => s.supporting.map((x, j) => /*#__PURE__*/React.createElement("tr", {
-    key: s.id + j
-  }, /*#__PURE__*/React.createElement("td", {
-    style: {
-      fontWeight: j === 0 ? 600 : 400,
-      color: j === 0 ? "var(--ink)" : "transparent"
-    }
-  }, s.short), /*#__PURE__*/React.createElement("td", null, x.n), /*#__PURE__*/React.createElement("td", {
-    style: {
-      color: "var(--ink-soft)",
-      fontSize: 12
-    }
-  }, x.target), /*#__PURE__*/React.createElement("td", {
-    style: {
-      color: "var(--ink-mute)",
-      fontSize: 12
-    }
-  }, x.cadence), /*#__PURE__*/React.createElement("td", {
-    style: {
-      color: "var(--ink-mute)",
-      fontSize: 12
-    }
-  }, x.source), /*#__PURE__*/React.createElement("td", {
-    className: "num",
-    style: {
-      textAlign: "right",
-      fontWeight: 600,
-      color: S.mode === "sample" ? T(x.tone) : "var(--ink-mute)"
-    }
-  }, S.mode === "sample" ? x.sample : "Not measured")))))))));
+  }, "Weekly and daily metrics get a number every week. Daily ones take the week's figure: the average for activity, the worst day for anything targeted at zero. Monthly metrics get one number in the first week of the month, per-run metrics one in the week of the run. Percentages go in as whole numbers."))));
 }
 
 /* ============================== ORG CHART ============================== */
 function OrgCard({
   s,
-  go,
-  dim
+  go
 }) {
-  const r = seatRead(s);
+  const x = seatRead(s),
+    p = x.primary;
   return /*#__PURE__*/React.createElement(Card, {
     pad: 16,
     hover: true,
@@ -11016,15 +11400,31 @@ function OrgCard({
       color: "var(--ink-mute)",
       minWidth: 0
     }
-  }, s.number), /*#__PURE__*/React.createElement("span", {
+  }, p.m.name), /*#__PURE__*/React.createElement("span", {
     className: "mono",
     style: {
       fontSize: 13,
       fontWeight: 600,
-      color: r.latest == null ? "var(--ink-mute)" : T(ST_TONE[r.st]),
+      color: p.latest == null ? "var(--ink-mute)" : T(ST_TONE[p.st]),
       whiteSpace: "nowrap"
     }
-  }, fmtSeat(s, r.latest))), s.moving && /*#__PURE__*/React.createElement(Badge, {
+  }, fmtM(p.m, p.latest))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: 5,
+      flexWrap: "wrap"
+    }
+  }, x.reads.map(r => /*#__PURE__*/React.createElement(Dot, {
+    key: r.m.id,
+    st: r.st
+  })), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 10.5,
+      color: "var(--ink-mute)",
+      marginLeft: 4
+    }
+  }, x.hold, " of ", x.reads.length, " holding")), s.moving && /*#__PURE__*/React.createElement(Badge, {
     tone: "info",
     style: {
       alignSelf: "flex-start"
@@ -11045,24 +11445,17 @@ function TeamOrg({
   const direct = SEATS.filter(s => s.reports === "founder" && s.id !== "coo" && !s.moving);
   const underCoo = SEATS.filter(s => s.reports === "coo");
   const moving = SEATS.filter(s => s.moving === "coo");
-  const fr = seatRead(owner);
+  const fo = seatRead(owner),
+    fr = fo.primary;
   const steps = S.mode === "sample" ? TRANSFERS : TRANSFERS.map(t => ({
     ...t,
     step: t.step == null ? null : 0
   }));
-  const vline = /*#__PURE__*/React.createElement("div", {
-    style: {
-      width: 1,
-      height: 20,
-      background: "var(--rule)",
-      margin: "0 auto"
-    }
-  });
   return /*#__PURE__*/React.createElement("div", {
     className: "page-in"
   }, /*#__PURE__*/React.createElement(PageHead, {
     title: "Org chart",
-    sub: "Who does what, who it reports to, and the one number each seat is held to.",
+    sub: "Who does what, who it reports to, and how each seat is scoring across its metrics.",
     meta: "Nine seats, each with a written role document. Click any seat for its scorecard.",
     right: /*#__PURE__*/React.createElement(ModeSwitch, null)
   }), /*#__PURE__*/React.createElement("div", {
@@ -11113,15 +11506,37 @@ function TeamOrg({
       fontSize: 11.5,
       color: "var(--ink-soft)"
     }
-  }, owner.number, ": ", /*#__PURE__*/React.createElement("b", {
+  }, fr.m.name, ": ", /*#__PURE__*/React.createElement("b", {
     className: "mono",
     style: {
       color: T(ST_TONE[fr.st] === "mute" ? "ink" : ST_TONE[fr.st])
     }
-  }, fmtSeat(owner, fr.latest)), ", target under 5")))), vline, /*#__PURE__*/React.createElement("div", {
+  }, fmtM(fr.m, fr.latest)), ", target under 5"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: 5
+    }
+  }, fo.reads.map(r => /*#__PURE__*/React.createElement(Dot, {
+    key: r.m.id,
+    st: r.st
+  })), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 10.5,
+      color: "var(--ink-mute)",
+      marginLeft: 4
+    }
+  }, fo.hold, " of ", fo.reads.length, " holding"))))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: 1,
+      height: 20,
+      background: "var(--rule)",
+      margin: "0 auto"
+    }
+  }), /*#__PURE__*/React.createElement("div", {
     style: {
       maxWidth: 340,
-      margin: "0 auto"
+      margin: "0 auto 22px"
     }
   }, /*#__PURE__*/React.createElement(OrgCard, {
     s: coo,
@@ -11150,12 +11565,8 @@ function TeamOrg({
     style: {
       marginBottom: 26
     }
-  }, underCoo.map(s => /*#__PURE__*/React.createElement(OrgCard, {
+  }, underCoo.concat(moving).map(s => /*#__PURE__*/React.createElement(OrgCard, {
     key: s.id,
-    s: s,
-    go: go
-  })), moving.map(s => /*#__PURE__*/React.createElement(OrgCard, {
-    key: s.id + "m",
     s: s,
     go: go
   }))), /*#__PURE__*/React.createElement(G, {
@@ -11261,7 +11672,7 @@ function TeamOrg({
   }, "A function has transferred when the written version is good enough for a third person to run it. Not when the COO can do it. When somebody who isn't the COO could."));
 }
 function ownerTicker() {
-  const r = seatRead(seatById("founder"));
+  const r = metricRead(METRICS.find(m => m.id === "f_dec"));
   return {
     i: "team",
     l: "Owner decisions this week",
