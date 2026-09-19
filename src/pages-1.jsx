@@ -14,6 +14,18 @@ function Boardroom({ go, period }) {
              u.k==="appr" ? "rails" : "revenue")} />)}
       </G>
 
+      <SecLabel icon="alert" help="Things worth a look. Not a task list, just what the numbers are flagging."
+        right="6 items">Action and watch items</SecLabel>
+      <Card pad={18} style={{ marginBottom: 26 }}>
+        {D.attention.map((a,i)=>(
+          <div key={i} style={{ display:"flex", gap:11, alignItems:"flex-start",
+            padding:"10px 0", borderBottom: i<D.attention.length-1?"1px solid var(--rule-soft)":"none" }}>
+            <span className="dot" style={{ background:T(a.tone), marginTop:7 }} />
+            <span style={{ fontSize:12.5, color:"var(--ink-soft)" }}>{a.t}</span>
+          </div>
+        ))}
+      </Card>
+
       <SecLabel icon="funnel" help="Where people fall out between landing on the site and rebilling a third time."
         right={`${PERIOD.label} window · site to third rebill`}>The funnel · {period}</SecLabel>
       <Card style={{ marginBottom: 26 }} pad={20}>
@@ -76,17 +88,6 @@ function Boardroom({ go, period }) {
         </Card>
       </G>
 
-      <SecLabel icon="alert" help="Things worth a look. Not a task list, just what the numbers are flagging."
-        right="6 items">Action and watch items</SecLabel>
-      <Card pad={18}>
-        {D.attention.map((a,i)=>(
-          <div key={i} style={{ display:"flex", gap:11, alignItems:"flex-start",
-            padding:"10px 0", borderBottom: i<D.attention.length-1?"1px solid var(--rule-soft)":"none" }}>
-            <span className="dot" style={{ background:T(a.tone), marginTop:7 }} />
-            <span style={{ fontSize:12.5, color:"var(--ink-soft)" }}>{a.t}</span>
-          </div>
-        ))}
-      </Card>
     </div>
   );
 }
@@ -358,14 +359,32 @@ function PL() {
       <CMDaily />
       <G c={1} gap={16}>
         <Card pad={20}>
-          <SecLabel icon="chart">Fixed cost, monthly</SecLabel>
-          <BarChart data={[{m:"Jun",v:28860,tone:"bad"},{m:"Jul",v:28860,tone:"bad"},{m:"Aug",v:21400,tone:"warn"},{m:"Sep",v:14050,tone:"good"},{m:"Oct",v:11050,tone:"good",dim:true}]} h={175}/>
-          <p style={{ fontSize:11.5, color:"var(--ink-mute)", marginTop:11 }}>October is projected once email moves.</p>
+          <SecLabel icon="chart" right="exact dollars, with share of revenue"
+            help="Bars are the dollar amount of fixed operating cost each month. The row underneath is that amount as a share of the month's revenue. A healthy DTC business runs near 15%.">Fixed cost, monthly</SecLabel>
+          <BarChart data={FIXED.map(r=>({ m:r.m, v:r.v, tone:fixedTone(r.pct), dim:r.proj }))} h={175}/>
+          <div style={{ display:"flex", marginTop:8 }}>
+            {FIXED.map(r => <span key={r.m} style={{ flex:1, textAlign:"center" }}>
+              <span className="mono" style={{ display:"block", fontSize:13, fontWeight:600 }}>{fmt.usd(r.v)}</span>
+              <span className="mono" style={{ display:"block", fontSize:11.5, fontWeight:600, color:T(fixedTone(r.pct)) }}>{r.pct.toFixed(1)}% of revenue</span>
+            </span>)}
+          </div>
+          <p style={{ fontSize:11.5, color:"var(--ink-mute)", marginTop:11 }}>
+            Exact dollars each month, with the share of that month's revenue under it. The benchmark is about 15%. September is the last 30 days. October is projected once email moves,
+            against September's revenue.
+          </p>
         </Card>
       </G>
     </div>
   );
 }
+
+/* fixed cost by month, dollars and share of that month's revenue */
+const FIXED = [
+  { m:"Jun", v:28860, rev:43900, tone:"bad" }, { m:"Jul", v:28860, rev:42112, tone:"bad" },
+  { m:"Aug", v:21400, rev:44380, tone:"warn" }, { m:"Sep", v:14050, rev:46814, tone:"good" },
+  { m:"Oct", v:11050, rev:46814, tone:"good", proj:true },
+].map(r => ({ ...r, pct: r.v / r.rev * 100 }));
+const fixedTone = (p) => p > 25 ? "bad" : p > 15 ? "warn" : "good";
 
 /* daily contribution margin, follows the period selector */
 function CMDaily() {
@@ -418,10 +437,10 @@ function Debt() {
     <div className="page-in">
       <PageHead title="Debt and obligations" sub="What's owed, to whom, and when it lands." />
       <G c={4} style={{ marginBottom:24 }}>
-        <KPI label="Total owed" value="$251,525" tone="ink" delta={-11.6} sub="down $33K in 30 days" />
+        <KPI label="Total owed" value="$176,859" tone="ink" delta={-15.7} sub="down $33K in 30 days" />
         <KPI label="Next payment" value="$9,481" tone="warn" sub="Oct 1 · from debt bucket" />
+        <KPI label="Paid off by" value="Jun 15, 2027" tone="good" sub="buyout May 1 · card Jun 15" help="The date the buyout note and the card both reach zero, on the payment schedule and the card plan. The second obligation has no date or terms, so it isn't in this." />
         <KPI label="Card utilization" value="49%" tone="warn" sub="$23,081 of $46,700" />
-        <KPI label="Payments remaining" value="8 of 9" tone="ink" sub="through May 2027" />
       </G>
       <G c={2} name="2h" gap={16} style={{ gridTemplateColumns:"1fr 1.3fr" }}>
         <Card pad={20}>
@@ -432,8 +451,10 @@ function Debt() {
                 <span style={{ fontSize:13 }}>{d.n}</span>
                 <span className="mono" style={{ fontSize:14, fontWeight:600, color:T(d.tone) }}>{fmt.usd(d.v)}</span>
               </div>
-              <Bar pct={(d.v/251525)*100} tone={d.tone} />
+              <Bar pct={(d.v/176859)*100} tone={d.tone} />
               <p style={{ fontSize:10.5, color:"var(--ink-mute)", marginTop:5 }}>{d.note}</p>
+              <p style={{ fontSize:11, marginTop:3 }}><span style={{ color:"var(--ink-mute)" }}>Paid off by </span>
+                <b className="mono" style={{ color:d.payoff === "No date set" ? "var(--ink-mute)" : "var(--ink)" }}>{d.payoff}</b></p>
             </div>
           ))}
         </Card>
@@ -451,6 +472,15 @@ function Debt() {
           </table></div>
         </Card>
       </G>
+      <Card pad={20} style={{ marginTop:16 }}>
+        <SecLabel icon="clock" right="buyout and card, month end"
+          help="What's left on the buyout note and the card after each month's payments. The second obligation sits outside this until it has a date.">Road to zero</SecLabel>
+        <Line data={D.payoffPath} h={180} tone="good" vf={fmt.k} yMin={0} />
+        <p style={{ fontSize:11.5, color:"var(--ink-mute)", marginTop:12 }}>
+          $96,859 today on the two dated debts. The buyout clears May 1, 2027 and the card on June 15, 2027 at $2,600 a month.
+          Anything extra onto the card pulls that date in.
+        </p>
+      </Card>
     </div>
   );
 }

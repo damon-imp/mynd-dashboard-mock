@@ -67,6 +67,7 @@ that rather than printing confident splits.
 
 ```
 index.html            entry
+fonts.css             the three fonts, inlined
 base.css              tokens, both themes, responsive layer
 assets/               MYND wordmark
 vendor/               React 18 UMD + compiled bundle
@@ -171,8 +172,16 @@ Seats were scored on one number. Now every seat is scored on every metric it's h
 
 DB's call. Labels in caps, numbers in a monospace face, cleaner and less playful.
 
-- **Inter** for all text and titles, **IBM Plex Mono** for every number, KPI values included. Both vendored in `assets/fonts` with their licenses, so there's still no CDN.
+- **Inter** for all text and titles, **IBM Plex Mono** for every number, KPI values included. Both now inlined in `fonts.css`, so there's still no CDN.
 - **Caps labels.** KPI labels, section labels, table headers, nav groups, the Live marker and the sidebar subtitle render in caps through CSS. The source text stays sentence case, so switching back is one line in `base.css` and the uppercase styles in the JSX.
+
+## Ninth pass, DB's third round
+
+- **Boardroom.** Action and watch items sit above the funnel.
+- **Fixed cost, monthly** shows exact dollars under each bar and the share of that month's revenue under that, colored against the 15% benchmark.
+- **Debt and obligations.** A Paid off by tile, a paid-off date on every obligation, and a Road to zero chart of the buyout and card balance by month. The mock buyout balance now equals the eight scheduled payments left, so the end date is true. Total owed moved to $176,859 everywhere it appears.
+- **Period selector** shows only on pages it changes: Boardroom, P&L, Payment rails, Revenue, Retention, Wholesale, Daily tracker, Marketing performance and Customer experience.
+- **Tougher type.** Barlow Semi Condensed for titles, tabs, section labels and table headers. Inter stays for body text and IBM Plex Mono for numbers, now heavier. Inlined in `fonts.css` as base64, so the repo carries no binary font files. Licenses in `assets/fonts`.
 
 ## Known gaps
 

@@ -51,6 +51,8 @@ const SUBTABS = {
 
 };
 
+const PERIOD_PAGES = new Set(["boardroom","pl","rails","revenue","retention","wholesale","daily","mktperf","opshealth"]);
+
 const PAGE_GROUP = {};
 NAV.forEach(g => g.items.forEach(i => { PAGE_GROUP[i.id] = g.g; }));
 
@@ -122,6 +124,8 @@ function App() {
   }[page];
 
   const subs = SUBTABS[page];
+  // the period selector shows only where it changes the numbers on the page
+  const usesPeriod = PERIOD_PAGES.has(page);
 
   return (
     <div className="shell" data-open={sideOpen}>
@@ -246,11 +250,11 @@ function App() {
               <span style={{ color:"var(--ink-soft)" }}>{all.find(i=>i.id===page)?.l}</span>
             </span>
             <span style={{ display:"inline-flex", alignItems:"center", gap:10, flexWrap:"wrap" }}>
-              {period==="Custom" && <CustomRange from={range[0]} to={range[1]} onChange={(a,b)=>setRange([a,b])} />}
-              <Seg options={["1 day","7 days","30 days","90 days","MTD","Custom"]} value={period} onChange={setPeriod}/>
+              {usesPeriod && period==="Custom" && <CustomRange from={range[0]} to={range[1]} onChange={(a,b)=>setRange([a,b])} />}
+              {usesPeriod && <Seg options={["1 day","7 days","30 days","90 days","MTD","Custom"]} value={period} onChange={setPeriod}/>}
             </span>
           </div>
-          <PeriodNote />
+          {usesPeriod && <PeriodNote />}
           <div key={pKey + ":" + sub}>
             {sub === 0 || !SUBVIEWS[page] ? P : React.createElement(SUBVIEWS[page][sub], { go:setPage })}
           </div>

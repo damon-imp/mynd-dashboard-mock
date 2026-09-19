@@ -26,7 +26,7 @@ const D = {
     { k:"amer",  label:"aMER",            value:"1.92x", delta:3.1, sub:"new cust rev / spend", tone:"good", help:"Acquisition MER. New customer revenue divided by ad spend. Blended and unattributed." },
     { k:"ncac",  label:"Cost per new customer", value:"$36.42", delta:-4.2, sub:"blended nCAC", tone:"warn", help:"Ad spend divided by new customer orders." },
     { k:"appr",  label:"Approval rate",   value:"94.75%", delta:0, sub:"target 98%", tone:"warn", help:"Three points below target is about $18,000 a year." },
-    { k:"debt",  label:"Total owed",      value:"$251,525", delta:-11.6, sub:"next $9,481 Oct 1", tone:"ink", help:"Buyout note, card and the undated second obligation." },
+    { k:"debt",  label:"Total owed",      value:"$176,859", delta:-15.7, sub:"next $9,481 Oct 1", tone:"ink", help:"Buyout note, card and the undated second obligation." },
   ],
 
   funnel: [
@@ -96,9 +96,14 @@ const D = {
     { line:"Operating profit", v:15197, pct:32.5, tone:"good", bench:"15-20%", d:"Contribution margin less OPEX. Before debt service and distributions", sub:true },
   ],
   debt: [
-    { n:"Buyout note", v:148444, note:"8 of 9 payments through May 2027", tone:"bad" },
-    { n:"Chase card",  v:23081,  note:"$46,700 limit · 49% used", tone:"warn" },
-    { n:"Second obligation", v:80000, note:"Undated, no written terms", tone:"mute" },
+    { n:"Buyout note", v:73778, note:"8 of 9 payments left", payoff:"May 1, 2027", tone:"bad" },
+    { n:"Chase card",  v:23081,  note:"$46,700 limit · 49% used · $2,600 a month from the debt bucket", payoff:"Jun 15, 2027", tone:"warn" },
+    { n:"Second obligation", v:80000, note:"Undated, no written terms", payoff:"No date set", tone:"mute" },
+  ],
+  // combined buyout and card balance at each month end, on the schedule and the card plan
+  payoffPath: [
+    { m:"Sep", v:96859 },{ m:"Oct", v:84777 },{ m:"Nov", v:72770 },{ m:"Dec", v:60837 },{ m:"Jan", v:48977 },
+    { m:"Feb", v:37192 },{ m:"Mar", v:25481 },{ m:"Apr", v:13844 },{ m:"May", v:2281 },{ m:"Jun", v:0 },
   ],
   schedule: [
     { d:"Sep 1, 2026", v:11555.56, s:"paid" },{ d:"Oct 1, 2026", v:9481.48, s:"next" },
@@ -265,7 +270,7 @@ const D = {
     { g:"Subscription attach", now:"13.4%", target:"30%", pct:45, tone:"bad", bench:62, note:"Every point of attach compounds" },
     { g:"Cycle-3 retention", now:"11.0%", target:"45%", pct:24, tone:"bad", bench:55, note:"The single weakest number in the business" },
     { g:"Days of cover, worst SKU", now:"8d", target:"45d", pct:18, tone:"bad", bench:60, note:"Anything under lead time is a stockout waiting" },
-    { g:"Debt outstanding", now:"$251K", target:"$0", pct:38, tone:"warn", bench:50, note:"$33,000 paid down in the last month" },
+    { g:"Debt outstanding", now:"$177K", target:"$0", pct:38, tone:"warn", bench:50, note:"$33,000 paid down in the last month" },
     { g:"Processes written", now:"0", target:"20", pct:0, tone:"bad", bench:0, note:"Nothing about how this runs is written down" },
   ],
 

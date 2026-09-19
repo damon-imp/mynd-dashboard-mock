@@ -1,11 +1,4 @@
-/* Type: Inter for text, IBM Plex Mono for numbers. Vendored, no CDN. */
-@font-face { font-family:"Inter"; font-style:normal; font-weight:400; font-display:swap; src:url("assets/fonts/inter-latin-400-normal.woff2") format("woff2"); }
-@font-face { font-family:"Inter"; font-style:normal; font-weight:500; font-display:swap; src:url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
-@font-face { font-family:"Inter"; font-style:normal; font-weight:600; font-display:swap; src:url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
-@font-face { font-family:"Inter"; font-style:normal; font-weight:700; font-display:swap; src:url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
-@font-face { font-family:"IBM Plex Mono"; font-style:normal; font-weight:400; font-display:swap; src:url("assets/fonts/ibm-plex-mono-latin-400-normal.woff2") format("woff2"); }
-@font-face { font-family:"IBM Plex Mono"; font-style:normal; font-weight:500; font-display:swap; src:url("assets/fonts/ibm-plex-mono-latin-500-normal.woff2") format("woff2"); }
-@font-face { font-family:"IBM Plex Mono"; font-style:normal; font-weight:600; font-display:swap; src:url("assets/fonts/ibm-plex-mono-latin-600-normal.woff2") format("woff2"); }
+/* Type: Barlow Semi Condensed for titles and labels, Inter for text, IBM Plex Mono for numbers. Font files live in fonts.css. */
 
 /* base.css, MYND Command
    Dark-first operations surface. Apple-calm neutrals, one accent derived from the
@@ -47,7 +40,7 @@
   --r-sm: 7px; --r-md: 11px; --r-lg: 15px; --r-pill: 980px;
 
   --sans: "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-  --display: "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  --display: "Barlow Semi Condensed", "Inter", -apple-system, BlinkMacSystemFont, "Arial Narrow", Arial, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
   --side-w: 236px;
@@ -261,7 +254,12 @@ body[data-theme="light"] .nav-item[data-on="true"] { color:#fff; }
   * { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
 }
 
-/* DB's type direction: caps labels, mono numbers, tight titles */
-.caps { text-transform:uppercase; letter-spacing:0.1em; }
-.kpi-val { font-family: var(--mono); font-variant-numeric: tabular-nums; letter-spacing:-0.01em; }
-h1 { letter-spacing:-0.025em; font-weight:700; }
+/* DB's type direction: tough condensed titles and caps labels, mono numbers */
+.caps { text-transform:uppercase; letter-spacing:0.1em; font-family: var(--display); font-weight:600; }
+.kpi-val { font-family: var(--mono); font-variant-numeric: tabular-nums; letter-spacing:-0.01em; font-weight:600; }
+h1, h2, h3 { font-family: var(--display); font-weight:700; letter-spacing:0; }
+h1 { font-size:28px !important; }
+.sec-label, .tbl th, .nav-group-label, .kpi > div:first-child > span:first-child {
+  font-family: var(--display); font-weight:600 !important; letter-spacing:0.08em !important; font-size:11.5px !important; }
+.tbl th { font-size:11px !important; }
+.subtab { font-family: var(--display); font-weight:600; font-size:14px; letter-spacing:0.02em; }

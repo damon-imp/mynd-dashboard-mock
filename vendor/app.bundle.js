@@ -118,8 +118,8 @@ const D = {
   }, {
     k: "debt",
     label: "Total owed",
-    value: "$251,525",
-    delta: -11.6,
+    value: "$176,859",
+    delta: -15.7,
     sub: "next $9,481 Oct 1",
     tone: "ink",
     help: "Buyout note, card and the undated second obligation."
@@ -371,19 +371,54 @@ const D = {
   }],
   debt: [{
     n: "Buyout note",
-    v: 148444,
-    note: "8 of 9 payments through May 2027",
+    v: 73778,
+    note: "8 of 9 payments left",
+    payoff: "May 1, 2027",
     tone: "bad"
   }, {
     n: "Chase card",
     v: 23081,
-    note: "$46,700 limit · 49% used",
+    note: "$46,700 limit · 49% used · $2,600 a month from the debt bucket",
+    payoff: "Jun 15, 2027",
     tone: "warn"
   }, {
     n: "Second obligation",
     v: 80000,
     note: "Undated, no written terms",
+    payoff: "No date set",
     tone: "mute"
+  }],
+  // combined buyout and card balance at each month end, on the schedule and the card plan
+  payoffPath: [{
+    m: "Sep",
+    v: 96859
+  }, {
+    m: "Oct",
+    v: 84777
+  }, {
+    m: "Nov",
+    v: 72770
+  }, {
+    m: "Dec",
+    v: 60837
+  }, {
+    m: "Jan",
+    v: 48977
+  }, {
+    m: "Feb",
+    v: 37192
+  }, {
+    m: "Mar",
+    v: 25481
+  }, {
+    m: "Apr",
+    v: 13844
+  }, {
+    m: "May",
+    v: 2281
+  }, {
+    m: "Jun",
+    v: 0
   }],
   schedule: [{
     d: "Sep 1, 2026",
@@ -1343,7 +1378,7 @@ const D = {
     note: "Anything under lead time is a stockout waiting"
   }, {
     g: "Debt outstanding",
-    now: "$251K",
+    now: "$177K",
     target: "$0",
     pct: 38,
     tone: "warn",
@@ -5339,6 +5374,35 @@ function Boardroom({
     ...u,
     onClick: () => go(u.k === "cash" || u.k === "debt" ? "cash" : u.k === "cm" || u.k === "burn" ? "pl" : u.k === "appr" ? "rails" : "revenue")
   }))), /*#__PURE__*/React.createElement(SecLabel, {
+    icon: "alert",
+    help: "Things worth a look. Not a task list, just what the numbers are flagging.",
+    right: "6 items"
+  }, "Action and watch items"), /*#__PURE__*/React.createElement(Card, {
+    pad: 18,
+    style: {
+      marginBottom: 26
+    }
+  }, D.attention.map((a, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    style: {
+      display: "flex",
+      gap: 11,
+      alignItems: "flex-start",
+      padding: "10px 0",
+      borderBottom: i < D.attention.length - 1 ? "1px solid var(--rule-soft)" : "none"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "dot",
+    style: {
+      background: T(a.tone),
+      marginTop: 7
+    }
+  }), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 12.5,
+      color: "var(--ink-soft)"
+    }
+  }, a.t)))), /*#__PURE__*/React.createElement(SecLabel, {
     icon: "funnel",
     help: "Where people fall out between landing on the site and rebilling a third time.",
     right: `${PERIOD.label} window · site to third rebill`
@@ -5487,33 +5551,7 @@ function Boardroom({
     data: D.cashTrail,
     h: 90,
     tone: "warn"
-  }))), /*#__PURE__*/React.createElement(SecLabel, {
-    icon: "alert",
-    help: "Things worth a look. Not a task list, just what the numbers are flagging.",
-    right: "6 items"
-  }, "Action and watch items"), /*#__PURE__*/React.createElement(Card, {
-    pad: 18
-  }, D.attention.map((a, i) => /*#__PURE__*/React.createElement("div", {
-    key: i,
-    style: {
-      display: "flex",
-      gap: 11,
-      alignItems: "flex-start",
-      padding: "10px 0",
-      borderBottom: i < D.attention.length - 1 ? "1px solid var(--rule-soft)" : "none"
-    }
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "dot",
-    style: {
-      background: T(a.tone),
-      marginTop: 7
-    }
-  }), /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: 12.5,
-      color: "var(--ink-soft)"
-    }
-  }, a.t)))));
+  }))));
 }
 
 /* owner distributions by month, used on the Boardroom and Financials */
@@ -6177,39 +6215,84 @@ function PL() {
   }, /*#__PURE__*/React.createElement(Card, {
     pad: 20
   }, /*#__PURE__*/React.createElement(SecLabel, {
-    icon: "chart"
+    icon: "chart",
+    right: "exact dollars, with share of revenue",
+    help: "Bars are the dollar amount of fixed operating cost each month. The row underneath is that amount as a share of the month's revenue. A healthy DTC business runs near 15%."
   }, "Fixed cost, monthly"), /*#__PURE__*/React.createElement(BarChart, {
-    data: [{
-      m: "Jun",
-      v: 28860,
-      tone: "bad"
-    }, {
-      m: "Jul",
-      v: 28860,
-      tone: "bad"
-    }, {
-      m: "Aug",
-      v: 21400,
-      tone: "warn"
-    }, {
-      m: "Sep",
-      v: 14050,
-      tone: "good"
-    }, {
-      m: "Oct",
-      v: 11050,
-      tone: "good",
-      dim: true
-    }],
+    data: FIXED.map(r => ({
+      m: r.m,
+      v: r.v,
+      tone: fixedTone(r.pct),
+      dim: r.proj
+    })),
     h: 175
-  }), /*#__PURE__*/React.createElement("p", {
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      marginTop: 8
+    }
+  }, FIXED.map(r => /*#__PURE__*/React.createElement("span", {
+    key: r.m,
+    style: {
+      flex: 1,
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "mono",
+    style: {
+      display: "block",
+      fontSize: 13,
+      fontWeight: 600
+    }
+  }, fmt.usd(r.v)), /*#__PURE__*/React.createElement("span", {
+    className: "mono",
+    style: {
+      display: "block",
+      fontSize: 11.5,
+      fontWeight: 600,
+      color: T(fixedTone(r.pct))
+    }
+  }, r.pct.toFixed(1), "% of revenue")))), /*#__PURE__*/React.createElement("p", {
     style: {
       fontSize: 11.5,
       color: "var(--ink-mute)",
       marginTop: 11
     }
-  }, "October is projected once email moves."))));
+  }, "Exact dollars each month, with the share of that month's revenue under it. The benchmark is about 15%. September is the last 30 days. October is projected once email moves, against September's revenue."))));
 }
+
+/* fixed cost by month, dollars and share of that month's revenue */
+const FIXED = [{
+  m: "Jun",
+  v: 28860,
+  rev: 43900,
+  tone: "bad"
+}, {
+  m: "Jul",
+  v: 28860,
+  rev: 42112,
+  tone: "bad"
+}, {
+  m: "Aug",
+  v: 21400,
+  rev: 44380,
+  tone: "warn"
+}, {
+  m: "Sep",
+  v: 14050,
+  rev: 46814,
+  tone: "good"
+}, {
+  m: "Oct",
+  v: 11050,
+  rev: 46814,
+  tone: "good",
+  proj: true
+}].map(r => ({
+  ...r,
+  pct: r.v / r.rev * 100
+}));
+const fixedTone = p => p > 25 ? "bad" : p > 15 ? "warn" : "good";
 
 /* daily contribution margin, follows the period selector */
 function CMDaily() {
@@ -6380,9 +6463,9 @@ function Debt() {
     }
   }, /*#__PURE__*/React.createElement(KPI, {
     label: "Total owed",
-    value: "$251,525",
+    value: "$176,859",
     tone: "ink",
-    delta: -11.6,
+    delta: -15.7,
     sub: "down $33K in 30 days"
   }), /*#__PURE__*/React.createElement(KPI, {
     label: "Next payment",
@@ -6390,15 +6473,16 @@ function Debt() {
     tone: "warn",
     sub: "Oct 1 · from debt bucket"
   }), /*#__PURE__*/React.createElement(KPI, {
+    label: "Paid off by",
+    value: "Jun 15, 2027",
+    tone: "good",
+    sub: "buyout May 1 · card Jun 15",
+    help: "The date the buyout note and the card both reach zero, on the payment schedule and the card plan. The second obligation has no date or terms, so it isn't in this."
+  }), /*#__PURE__*/React.createElement(KPI, {
     label: "Card utilization",
     value: "49%",
     tone: "warn",
     sub: "$23,081 of $46,700"
-  }), /*#__PURE__*/React.createElement(KPI, {
-    label: "Payments remaining",
-    value: "8 of 9",
-    tone: "ink",
-    sub: "through May 2027"
   })), /*#__PURE__*/React.createElement(G, {
     c: 2,
     name: "2h",
@@ -6433,7 +6517,7 @@ function Debt() {
       color: T(d.tone)
     }
   }, fmt.usd(d.v))), /*#__PURE__*/React.createElement(Bar, {
-    pct: d.v / 251525 * 100,
+    pct: d.v / 176859 * 100,
     tone: d.tone
   }), /*#__PURE__*/React.createElement("p", {
     style: {
@@ -6441,7 +6525,21 @@ function Debt() {
       color: "var(--ink-mute)",
       marginTop: 5
     }
-  }, d.note)))), /*#__PURE__*/React.createElement(Card, {
+  }, d.note), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: 11,
+      marginTop: 3
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: "var(--ink-mute)"
+    }
+  }, "Paid off by "), /*#__PURE__*/React.createElement("b", {
+    className: "mono",
+    style: {
+      color: d.payoff === "No date set" ? "var(--ink-mute)" : "var(--ink)"
+    }
+  }, d.payoff))))), /*#__PURE__*/React.createElement(Card, {
     pad: 0
   }, /*#__PURE__*/React.createElement("div", {
     style: {
@@ -6483,7 +6581,28 @@ function Debt() {
       fontSize: 11.5,
       color: "var(--ink-mute)"
     }
-  }, "Debt service bucket")))))))));
+  }, "Debt service bucket")))))))), /*#__PURE__*/React.createElement(Card, {
+    pad: 20,
+    style: {
+      marginTop: 16
+    }
+  }, /*#__PURE__*/React.createElement(SecLabel, {
+    icon: "clock",
+    right: "buyout and card, month end",
+    help: "What's left on the buyout note and the card after each month's payments. The second obligation sits outside this until it has a date."
+  }, "Road to zero"), /*#__PURE__*/React.createElement(Line, {
+    data: D.payoffPath,
+    h: 180,
+    tone: "good",
+    vf: fmt.k,
+    yMin: 0
+  }), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: 11.5,
+      color: "var(--ink-mute)",
+      marginTop: 12
+    }
+  }, "$96,859 today on the two dated debts. The buyout clears May 1, 2027 and the card on June 15, 2027 at $2,600 a month. Anything extra onto the card pulls that date in.")));
 }
 
 /* ============================== RAILS ============================== */
@@ -12366,6 +12485,7 @@ const SUBTABS = {
   revenue: ["Overview", "By Channel"],
   inventory: ["Inventory", "Reorders", "Movements"]
 };
+const PERIOD_PAGES = new Set(["boardroom", "pl", "rails", "revenue", "retention", "wholesale", "daily", "mktperf", "opshealth"]);
 const PAGE_GROUP = {};
 NAV.forEach(g => g.items.forEach(i => {
   PAGE_GROUP[i.id] = g.g;
@@ -12496,6 +12616,8 @@ function App() {
     data: /*#__PURE__*/React.createElement(DataHealth, null)
   }[page];
   const subs = SUBTABS[page];
+  // the period selector shows only where it changes the numbers on the page
+  const usesPeriod = PERIOD_PAGES.has(page);
   return /*#__PURE__*/React.createElement("div", {
     className: "shell",
     "data-open": sideOpen
@@ -12844,15 +12966,15 @@ function App() {
       gap: 10,
       flexWrap: "wrap"
     }
-  }, period === "Custom" && /*#__PURE__*/React.createElement(CustomRange, {
+  }, usesPeriod && period === "Custom" && /*#__PURE__*/React.createElement(CustomRange, {
     from: range[0],
     to: range[1],
     onChange: (a, b) => setRange([a, b])
-  }), /*#__PURE__*/React.createElement(Seg, {
+  }), usesPeriod && /*#__PURE__*/React.createElement(Seg, {
     options: ["1 day", "7 days", "30 days", "90 days", "MTD", "Custom"],
     value: period,
     onChange: setPeriod
-  }))), /*#__PURE__*/React.createElement(PeriodNote, null), /*#__PURE__*/React.createElement("div", {
+  }))), usesPeriod && /*#__PURE__*/React.createElement(PeriodNote, null), /*#__PURE__*/React.createElement("div", {
     key: pKey + ":" + sub
   }, sub === 0 || !SUBVIEWS[page] ? P : React.createElement(SUBVIEWS[page][sub], {
     go: setPage
