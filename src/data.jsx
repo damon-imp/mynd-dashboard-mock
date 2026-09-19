@@ -264,14 +264,12 @@ const D = {
   goals: [
     { g:"Monthly revenue", now:"$46.8K", target:"$85K", pct:55, tone:"warn", bench:70, note:"Back to the November run rate, then past it" },
     { g:"Fixed cost ratio", now:"30.0%", target:"15%", pct:50, tone:"bad", bench:100, note:"Benchmark for DTC is about 15% of revenue" },
-    { g:"Gross margin", now:"90%", target:"85%", pct:100, tone:"good", bench:88, note:"Already ahead. Protect it rather than chase it" },
-    { g:"Approval rate", now:"94.75%", target:"98%", pct:77, tone:"warn", bench:96, note:"Three points is about $18,000 a year" },
+    { g:"Contribution margin", now:"$29.2K", target:"$53K", pct:55, tone:"warn", bench:null, note:"62.5% of revenue. The target is the same margin on the $85K revenue goal" },
+    { g:"Chargeback rate", now:"0.42%", target:"under 1%", pct:100, tone:"good", bench:null, note:"Across all rails, last 30 days. Rail C runs highest at 0.67%" },
     { g:"Rebill rate", now:"74%", target:"90%", pct:82, tone:"warn", bench:85, note:"Was 27.3% in July. Credentials restored" },
-    { g:"Subscription attach", now:"13.4%", target:"30%", pct:45, tone:"bad", bench:62, note:"Every point of attach compounds" },
     { g:"Cycle-3 retention", now:"11.0%", target:"45%", pct:24, tone:"bad", bench:55, note:"The single weakest number in the business" },
     { g:"Days of cover, worst SKU", now:"8d", target:"45d", pct:18, tone:"bad", bench:60, note:"Anything under lead time is a stockout waiting" },
     { g:"Debt outstanding", now:"$177K", target:"$0", pct:38, tone:"warn", bench:50, note:"$33,000 paid down in the last month" },
-    { g:"Processes written", now:"0", target:"20", pct:0, tone:"bad", bench:0, note:"Nothing about how this runs is written down" },
   ],
 
   // ---------------------------------------------------------------- TEAM

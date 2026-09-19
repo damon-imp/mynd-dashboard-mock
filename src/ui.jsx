@@ -222,7 +222,7 @@ function Donut({ v, max = 100, size = 104, sw = 9, tone = "accent", label, sub }
 }
 
 /* goal row: current vs target with a benchmark marker */
-function GoalRow({ label, now, target, unit = "", pct, tone, note, bench }) {
+function GoalRow({ label, now, target, unit = "", pct, tone, note, bench, trend }) {
   return (
     <div style={{ padding:"13px 0", borderBottom:"1px solid var(--rule-soft)" }}>
       <div style={{ display:"flex", justifyContent:"space-between", gap:12, marginBottom:7, flexWrap:"wrap" }}>
@@ -233,7 +233,7 @@ function GoalRow({ label, now, target, unit = "", pct, tone, note, bench }) {
         </span>
       </div>
       <div style={{ position:"relative" }}>
-        <Bar pct={pct} tone={tone} h={7} />
+        {trend ? <Spark data={trend} tone={tone} h={26} /> : <Bar pct={pct} tone={tone} h={7} />}
         {bench != null && <span style={{ position:"absolute", left:bench+"%", top:-2, bottom:-2, width:2,
           background:"var(--ink-soft)", borderRadius:2 }} title="benchmark" />}
       </div>

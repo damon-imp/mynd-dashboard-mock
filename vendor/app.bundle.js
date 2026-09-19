@@ -1329,21 +1329,21 @@ const D = {
     bench: 100,
     note: "Benchmark for DTC is about 15% of revenue"
   }, {
-    g: "Gross margin",
-    now: "90%",
-    target: "85%",
+    g: "Contribution margin",
+    now: "$29.2K",
+    target: "$53K",
+    pct: 55,
+    tone: "warn",
+    bench: null,
+    note: "62.5% of revenue. The target is the same margin on the $85K revenue goal"
+  }, {
+    g: "Chargeback rate",
+    now: "0.42%",
+    target: "under 1%",
     pct: 100,
     tone: "good",
-    bench: 88,
-    note: "Already ahead. Protect it rather than chase it"
-  }, {
-    g: "Approval rate",
-    now: "94.75%",
-    target: "98%",
-    pct: 77,
-    tone: "warn",
-    bench: 96,
-    note: "Three points is about $18,000 a year"
+    bench: null,
+    note: "Across all rails, last 30 days. Rail C runs highest at 0.67%"
   }, {
     g: "Rebill rate",
     now: "74%",
@@ -1352,14 +1352,6 @@ const D = {
     tone: "warn",
     bench: 85,
     note: "Was 27.3% in July. Credentials restored"
-  }, {
-    g: "Subscription attach",
-    now: "13.4%",
-    target: "30%",
-    pct: 45,
-    tone: "bad",
-    bench: 62,
-    note: "Every point of attach compounds"
   }, {
     g: "Cycle-3 retention",
     now: "11.0%",
@@ -1384,14 +1376,6 @@ const D = {
     tone: "warn",
     bench: 50,
     note: "$33,000 paid down in the last month"
-  }, {
-    g: "Processes written",
-    now: "0",
-    target: "20",
-    pct: 0,
-    tone: "bad",
-    bench: 0,
-    note: "Nothing about how this runs is written down"
   }],
   // ---------------------------------------------------------------- TEAM
   tasks: {
@@ -4950,7 +4934,8 @@ function GoalRow({
   pct,
   tone,
   note,
-  bench
+  bench,
+  trend
 }) {
   return /*#__PURE__*/React.createElement("div", {
     style: {
@@ -4992,7 +4977,11 @@ function GoalRow({
     style: {
       position: "relative"
     }
-  }, /*#__PURE__*/React.createElement(Bar, {
+  }, trend ? /*#__PURE__*/React.createElement(Spark, {
+    data: trend,
+    tone: tone,
+    h: 26
+  }) : /*#__PURE__*/React.createElement(Bar, {
     pct: pct,
     tone: tone,
     h: 7
@@ -5580,6 +5569,26 @@ function DistributionsTrend({
   }, paid, " of ", d.length, " months paid anything, and no two the same. September is month to date. From the cut-over the Owner profit bucket fills on every sweep, so this line should steady."));
 }
 
+/* decision velocity: decisions made plus tasks completed each week, read from the score log */
+function velocityGoal() {
+  const ids = ["f_dec", "c_dec", "e_tasks"];
+  const rows = ids.map(id => scoreRow(id));
+  const weekly = WEEKS.map((w, i) => rows.every(r => r[i] == null) ? null : rows.reduce((a, r) => a + (r[i] || 0), 0));
+  const vals = weekly.filter(v => v != null);
+  const now = vals.length ? vals[vals.length - 1] : null,
+    first = vals.length ? vals[0] : null;
+  return {
+    g: "Decision velocity",
+    now: now == null ? "not logged" : `${now} a week`,
+    target: "rising, set after 30 days",
+    pct: 0,
+    tone: now == null ? "mute" : now > first ? "good" : "warn",
+    bench: null,
+    trend: vals.length > 1 ? vals : null,
+    note: now == null ? "Decisions made plus tasks completed each week, from the decision and transfer logs" : `Decisions made by the owner and the COO, plus tasks completed, each week. ${first} in the first week logged`
+  };
+}
+
 /* ============================== GOALS ============================== */
 function Goals({
   period
@@ -5592,14 +5601,15 @@ function Goals({
     target: ""
   });
   const [extra, setExtra] = useState([]);
-  const all = [...D.goals.filter((_, i) => kept.includes(i)), ...extra];
+  const [keptVel, setKeptVel] = useState(true);
+  const all = [...D.goals.filter((_, i) => kept.includes(i)), velocityGoal(), ...extra].filter(g => g.g !== "Decision velocity" || keptVel);
   const hit = all.filter(g => g.pct >= 90).length;
   return /*#__PURE__*/React.createElement("div", {
     className: "page-in"
   }, /*#__PURE__*/React.createElement(PageHead, {
     title: "Goals and targets",
     sub: "Where every number sits against where it should sit.",
-    meta: "Ten to start. Delete the ones you aren't sure about, add the ones you want.",
+    meta: "Nine to start. Delete the ones you aren't sure about, add the ones you want.",
     right: /*#__PURE__*/React.createElement("button", {
       onClick: () => setAdding(a => !a),
       style: {
@@ -5676,7 +5686,7 @@ function Goals({
     label: "Goals tracked",
     value: String(all.length),
     tone: "ink",
-    sub: `${D.goals.length - kept.length} removed`
+    sub: `${D.goals.length - kept.length + (keptVel ? 0 : 1)} removed`
   }), /*#__PURE__*/React.createElement(KPI, {
     label: "On target",
     value: `${hit} of ${all.length}`,
@@ -5689,9 +5699,9 @@ function Goals({
     sub: "11% against a 45% target"
   }), /*#__PURE__*/React.createElement(KPI, {
     label: "Already ahead",
-    value: "Gross margin",
+    value: "Chargebacks",
     tone: "good",
-    sub: "90% against 85%"
+    sub: "0.42% against under 1%"
   })), /*#__PURE__*/React.createElement(Card, {
     pad: 22
   }, /*#__PURE__*/React.createElement(SecLabel, {
@@ -5705,7 +5715,7 @@ function Goals({
         position: "relative"
       }
     }, /*#__PURE__*/React.createElement("button", {
-      onClick: () => orig >= 0 ? setKept(k => k.filter(x => x !== orig)) : setExtra(x => x.filter(y => y.g !== g.g)),
+      onClick: () => orig >= 0 ? setKept(k => k.filter(x => x !== orig)) : g.g === "Decision velocity" ? setKeptVel(false) : setExtra(x => x.filter(y => y.g !== g.g)),
       title: "Remove this goal",
       style: {
         position: "absolute",
@@ -5735,7 +5745,8 @@ function Goals({
       pct: g.pct,
       tone: g.tone,
       note: g.note,
-      bench: g.bench
+      bench: g.bench,
+      trend: g.trend
     })));
   }), all.length === 0 && /*#__PURE__*/React.createElement("p", {
     style: {

@@ -107,19 +107,33 @@ function DistributionsTrend({ h = 150 }) {
   </>);
 }
 
+/* decision velocity: decisions made plus tasks completed each week, read from the score log */
+function velocityGoal() {
+  const ids = ["f_dec", "c_dec", "e_tasks"];
+  const rows = ids.map(id => scoreRow(id));
+  const weekly = WEEKS.map((w, i) => rows.every(r => r[i] == null) ? null : rows.reduce((a, r) => a + (r[i] || 0), 0));
+  const vals = weekly.filter(v => v != null);
+  const now = vals.length ? vals[vals.length - 1] : null, first = vals.length ? vals[0] : null;
+  return { g:"Decision velocity", now: now == null ? "not logged" : `${now} a week`, target:"rising, set after 30 days",
+    pct:0, tone: now == null ? "mute" : now > first ? "good" : "warn", bench:null, trend: vals.length > 1 ? vals : null,
+    note: now == null ? "Decisions made plus tasks completed each week, from the decision and transfer logs"
+      : `Decisions made by the owner and the COO, plus tasks completed, each week. ${first} in the first week logged` };
+}
+
 /* ============================== GOALS ============================== */
 function Goals({ period }) {
   const [kept, setKept] = useState(() => D.goals.map((_, i) => i));
   const [adding, setAdding] = useState(false);
   const [draft, setDraft] = useState({ g:"", now:"", target:"" });
   const [extra, setExtra] = useState([]);
-  const all = [...D.goals.filter((_, i) => kept.includes(i)), ...extra];
+  const [keptVel, setKeptVel] = useState(true);
+  const all = [...D.goals.filter((_, i) => kept.includes(i)), velocityGoal(), ...extra].filter(g => g.g !== "Decision velocity" || keptVel);
   const hit = all.filter(g => g.pct >= 90).length;
 
   return (
     <div className="page-in">
       <PageHead title="Goals and targets" sub="Where every number sits against where it should sit."
-        meta="Ten to start. Delete the ones you aren't sure about, add the ones you want."
+        meta="Nine to start. Delete the ones you aren't sure about, add the ones you want."
         right={<button onClick={()=>setAdding(a=>!a)}
           style={{ border:"1px solid var(--rule)", background: adding?"var(--accent)":"var(--surface-3)",
             color: adding?"#fff":"var(--ink-soft)", borderRadius:"var(--r-pill)", padding:"6px 14px",
@@ -147,10 +161,10 @@ function Goals({ period }) {
       )}
 
       <G c={4} style={{ marginBottom:24 }}>
-        <KPI label="Goals tracked" value={String(all.length)} tone="ink" sub={`${D.goals.length - kept.length} removed`} />
+        <KPI label="Goals tracked" value={String(all.length)} tone="ink" sub={`${D.goals.length - kept.length + (keptVel ? 0 : 1)} removed`} />
         <KPI label="On target" value={`${hit} of ${all.length}`} tone={hit>4?"good":"warn"} sub="at or above 90%" />
         <KPI label="Furthest behind" value="Cycle-3 retention" tone="bad" sub="11% against a 45% target" />
-        <KPI label="Already ahead" value="Gross margin" tone="good" sub="90% against 85%" />
+        <KPI label="Already ahead" value="Chargebacks" tone="good" sub="0.42% against under 1%" />
       </G>
 
       <Card pad={22}>
@@ -161,6 +175,7 @@ function Goals({ period }) {
             <div key={g.g} style={{ position:"relative" }}>
               <button onClick={()=> orig >= 0
                   ? setKept(k => k.filter(x => x !== orig))
+                  : g.g === "Decision velocity" ? setKeptVel(false)
                   : setExtra(x => x.filter(y => y.g !== g.g))}
                 title="Remove this goal"
                 style={{ position:"absolute", right:0, top:13, width:20, height:20,
@@ -169,7 +184,7 @@ function Goals({ period }) {
                   display:"grid", placeItems:"center" }}>&times;</button>
               <div style={{ paddingRight:30 }}>
                 <GoalRow label={g.g} now={g.now} target={g.target} pct={g.pct}
-                  tone={g.tone} note={g.note} bench={g.bench} />
+                  tone={g.tone} note={g.note} bench={g.bench} trend={g.trend} />
               </div>
             </div>
           );

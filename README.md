@@ -183,6 +183,13 @@ DB's call. Labels in caps, numbers in a monospace face, cleaner and less playful
 - **Period selector** shows only on pages it changes: Boardroom, P&L, Payment rails, Revenue, Retention, Wholesale, Daily tracker, Marketing performance and Customer experience.
 - **Tougher type.** Barlow Semi Condensed for titles, tabs, section labels and table headers. Inter stays for body text and IBM Plex Mono for numbers, now heavier. Inlined in `fonts.css` as base64, so the repo carries no binary font files. Licenses in `assets/fonts`.
 
+## Tenth pass, the goals scorecard
+
+- **Removed** approval rate, gross margin, subscription attach and processes written.
+- **Added** contribution margin ($29.2K against $53K, the same 62.5% margin on the $85K revenue goal), chargeback rate (0.42% against under 1%) and decision velocity.
+- **Decision velocity** is decisions made by the owner and the COO plus tasks completed, each week. It reads straight from the score log, so it follows Sample history or Live log and trends as weeks are logged. Its target gets set after 30 days of history, the same rule as the scorecards.
+- Already ahead now reads chargebacks.
+
 ## Known gaps
 
 - Agents are scoped, not built. Outside the current engagement
